@@ -26,19 +26,19 @@ export class VisitorProfileEntity {
   @Column({ name: 'ocr_raw_text', type: 'text', nullable: true })
   ocrRawText: string | null;
 
-  @Column({ name: 'ocr_name', length: 100, nullable: true })
+  @Column({ name: 'ocr_name', type: 'varchar', length: 100, nullable: true })
   ocrName: string | null;
 
-  @Column({ name: 'ocr_organization', length: 150, nullable: true })
+  @Column({ name: 'ocr_organization', type: 'varchar', length: 150, nullable: true })
   ocrOrganization: string | null;
 
-  @Column({ name: 'ocr_position', length: 100, nullable: true })
+  @Column({ name: 'ocr_position', type: 'varchar', length: 100, nullable: true })
   ocrPosition: string | null;
 
-  @Column({ name: 'ocr_email', length: 255, nullable: true })
+  @Column({ name: 'ocr_email', type: 'varchar', length: 255, nullable: true })
   ocrEmail: string | null;
 
-  @Column({ name: 'ocr_phone', length: 50, nullable: true })
+  @Column({ name: 'ocr_phone', type: 'varchar', length: 50, nullable: true })
   ocrPhone: string | null;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })

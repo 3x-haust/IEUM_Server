@@ -9,7 +9,7 @@ export class EventOutboxEntity {
   @Column({ length: 120 })
   topic: string;
 
-  @Column({ name: 'event_key', length: 120, nullable: true })
+  @Column({ name: 'event_key', type: 'varchar', length: 120, nullable: true })
   eventKey: string | null;
 
   @Column({ name: 'event_type', length: 120 })

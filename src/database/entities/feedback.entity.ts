@@ -25,7 +25,7 @@ export class FeedbackEntity {
   @Column({ name: 'moderation_reason', type: 'text', nullable: true })
   moderationReason: string | null;
 
-  @Column({ name: 'ip_hash', length: 255, nullable: true })
+  @Column({ name: 'ip_hash', type: 'varchar', length: 255, nullable: true })
   ipHash: string | null;
 
   @Column({ name: 'user_agent', type: 'text', nullable: true })

@@ -39,19 +39,19 @@ export class ContactEntity {
   @Column({ name: 'visitor_type', type: 'enum', enum: VisitorType })
   visitorType: VisitorType;
 
-  @Column({ length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   name: string | null;
 
-  @Column({ length: 150, nullable: true })
+  @Column({ type: 'varchar', length: 150, nullable: true })
   organization: string | null;
 
-  @Column({ length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   position: string | null;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   email: string | null;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   phone: string | null;
 
   @Column({ type: 'text', nullable: true })
@@ -67,25 +67,25 @@ export class ContactEntity {
   @Column({ name: 'ocr_raw_text', type: 'text', nullable: true })
   ocrRawText: string | null;
 
-  @Column({ name: 'ocr_name', length: 100, nullable: true })
+  @Column({ name: 'ocr_name', type: 'varchar', length: 100, nullable: true })
   ocrName: string | null;
 
-  @Column({ name: 'ocr_organization', length: 150, nullable: true })
+  @Column({ name: 'ocr_organization', type: 'varchar', length: 150, nullable: true })
   ocrOrganization: string | null;
 
-  @Column({ name: 'ocr_position', length: 100, nullable: true })
+  @Column({ name: 'ocr_position', type: 'varchar', length: 100, nullable: true })
   ocrPosition: string | null;
 
-  @Column({ name: 'ocr_email', length: 255, nullable: true })
+  @Column({ name: 'ocr_email', type: 'varchar', length: 255, nullable: true })
   ocrEmail: string | null;
 
-  @Column({ name: 'ocr_phone', length: 50, nullable: true })
+  @Column({ name: 'ocr_phone', type: 'varchar', length: 50, nullable: true })
   ocrPhone: string | null;
 
   @Column({ type: 'enum', enum: ContactStatus, default: ContactStatus.New })
   status: ContactStatus;
 
-  @Column({ name: 'ip_hash', length: 255, nullable: true })
+  @Column({ name: 'ip_hash', type: 'varchar', length: 255, nullable: true })
   ipHash: string | null;
 
   @Column({ name: 'user_agent', type: 'text', nullable: true })
