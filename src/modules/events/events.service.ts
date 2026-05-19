@@ -25,7 +25,15 @@ export class EventsService {
   }
 
   private topicFor(type: RealtimeEventType): string {
-    const normalized = type.replace('.', '.').replace('_', '-');
-    return `ieum.${normalized}.v1`;
+    const topics: Record<RealtimeEventType, string> = {
+      [RealtimeEventType.FeedbackCreated]: 'ieum.feedback.created.v1',
+      [RealtimeEventType.FeedbackStatusChanged]: 'ieum.feedback.status-changed.v1',
+      [RealtimeEventType.ContactCreated]: 'ieum.contact.created.v1',
+      [RealtimeEventType.ContactStatusChanged]: 'ieum.contact.status-changed.v1',
+      [RealtimeEventType.VisitorProfileCreated]: 'ieum.visitor-profile.created.v1',
+      [RealtimeEventType.FileUploaded]: 'ieum.file.uploaded.v1',
+      [RealtimeEventType.AuditCreated]: 'ieum.audit.created.v1'
+    };
+    return topics[type];
   }
 }

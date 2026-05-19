@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, UserEntity } from '../../database/entities';
 import { ProjectsService } from '../projects/projects.service';
 
@@ -17,7 +17,7 @@ export class StatsService {
     const [projectCount, feedbackCount, contactCount, newContactCount, feedbackByStatus, contactsByStatus] = await Promise.all([
       this.projects.count({ where: { isPublished: true } }),
       this.feedback.count({ where: { status: FeedbackStatus.Public } }),
-      this.contacts.count({ where: { status: ContactStatus.New } }),
+      this.contacts.count({ where: { status: Not(ContactStatus.Deleted) } }),
       this.contacts.count({ where: { status: ContactStatus.New } }),
       this.countFeedbackByStatus(),
       this.countContactsByStatus()
@@ -28,7 +28,7 @@ export class StatsService {
   async projectStats(projectId: string): Promise<unknown> {
     const [feedbackCount, contactCount, feedbackByDate, contactsByDate] = await Promise.all([
       this.feedback.count({ where: { projectId, status: FeedbackStatus.Public } }),
-      this.contacts.count({ where: { projectId, status: ContactStatus.New } }),
+      this.contacts.count({ where: { projectId, status: Not(ContactStatus.Deleted) } }),
       this.countByDate(this.feedback, 'feedback', projectId),
       this.countByDate(this.contacts, 'contact', projectId)
     ]);
