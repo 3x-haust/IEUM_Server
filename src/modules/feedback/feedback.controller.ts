@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -21,7 +21,7 @@ export class FeedbackController {
   }
 
   @Get('student/projects/:projectId/feedback')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Student, UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched student feedback')
@@ -30,7 +30,7 @@ export class FeedbackController {
   }
 
   @Get('admin/feedback')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched feedback')
@@ -39,7 +39,7 @@ export class FeedbackController {
   }
 
   @Patch('admin/feedback/:id/status')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Updated feedback status')

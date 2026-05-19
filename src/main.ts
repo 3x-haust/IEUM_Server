@@ -21,7 +21,7 @@ async function bootstrap(): Promise<void> {
     .setTitle('IEUM API')
     .setDescription('IEUM backend API')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addCookieAuth('ieum_auth', { type: 'apiKey', in: 'cookie' }, 'ieum_auth')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document, { jsonDocumentUrl: 'docs-json' });

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -27,7 +27,7 @@ export class ProjectsController {
   }
 
   @Get('admin/projects')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched admin projects')
@@ -36,7 +36,7 @@ export class ProjectsController {
   }
 
   @Get('admin/projects/:id')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched admin project')
@@ -45,7 +45,7 @@ export class ProjectsController {
   }
 
   @Get('student/projects')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Student, UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched student projects')
@@ -54,7 +54,7 @@ export class ProjectsController {
   }
 
   @Get('student/projects/:id')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Student, UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched student project')

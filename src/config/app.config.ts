@@ -12,6 +12,12 @@ export interface AppConfig {
   kafkaEnabled: boolean;
   kafkaBrokers: string[];
   authDevTokens: boolean;
+  jwtSecret: string;
+  authCookieName: string;
+  authCookieDomain: string;
+  authCookieSecure: string;
+  authCookieSameSite: string;
+  authCookieMaxAgeSeconds: number;
 }
 
 export function loadAppConfig(): AppConfig {
@@ -28,6 +34,12 @@ export function loadAppConfig(): AppConfig {
     redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
     kafkaEnabled: process.env.KAFKA_ENABLED === 'true',
     kafkaBrokers: (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',').map((broker) => broker.trim()).filter(Boolean),
-    authDevTokens: process.env.AUTH_DEV_TOKENS === 'true' || process.env.NODE_ENV === 'test'
+    authDevTokens: process.env.AUTH_DEV_TOKENS === 'true' || process.env.NODE_ENV === 'test',
+    jwtSecret: process.env.JWT_SECRET ?? '',
+    authCookieName: process.env.AUTH_COOKIE_NAME ?? 'ieum_auth',
+    authCookieDomain: process.env.AUTH_COOKIE_DOMAIN ?? '',
+    authCookieSecure: process.env.AUTH_COOKIE_SECURE ?? '',
+    authCookieSameSite: process.env.AUTH_COOKIE_SAMESITE ?? 'lax',
+    authCookieMaxAgeSeconds: Number(process.env.AUTH_COOKIE_MAX_AGE_SECONDS ?? 60 * 60 * 24 * 7)
   };
 }

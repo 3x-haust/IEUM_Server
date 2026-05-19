@@ -18,3 +18,10 @@ export interface VerifiedUserPayload {
   email: string;
   role: UserRole;
 }
+
+export interface JwtSessionPayload {
+  sub: string;
+  oauthId: string;
+  role: UserRole;
+  typ: 'access';
+}

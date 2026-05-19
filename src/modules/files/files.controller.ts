@@ -1,6 +1,6 @@
 import { Controller, Get, Header, Param, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { memoryStorage } from 'multer';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -22,7 +22,7 @@ export class FilesController {
   }
 
   @Post('admin/project-thumbnails')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
@@ -33,7 +33,7 @@ export class FilesController {
   }
 
   @Get('admin/private/:id')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   async getPrivate(@Param('id') id: string) {

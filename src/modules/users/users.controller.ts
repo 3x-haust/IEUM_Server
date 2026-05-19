@@ -1,5 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -9,7 +9,7 @@ import { UserListQueryDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @ApiTags('users')
-@ApiBearerAuth()
+@ApiCookieAuth('ieum_auth')
 @UseGuards(MirimAuthGuard, RolesGuard)
 @Controller('admin/users')
 export class UsersController {

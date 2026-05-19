@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -14,7 +14,7 @@ export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
   @Get('admin/dashboard')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched dashboard')
@@ -23,7 +23,7 @@ export class StatsController {
   }
 
   @Get('admin/reports')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched report')
@@ -32,7 +32,7 @@ export class StatsController {
   }
 
   @Get('admin/projects/:projectId/stats')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched project stats')
@@ -41,7 +41,7 @@ export class StatsController {
   }
 
   @Get('student/projects/:projectId/stats')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Student, UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched student project stats')

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -21,7 +21,7 @@ export class ContactsController {
   }
 
   @Get('admin/contacts')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched contacts')
@@ -30,7 +30,7 @@ export class ContactsController {
   }
 
   @Get('admin/contacts/:id')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Fetched contact')
@@ -39,7 +39,7 @@ export class ContactsController {
   }
 
   @Patch('admin/contacts/:id/status')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Updated contact status')
@@ -48,7 +48,7 @@ export class ContactsController {
   }
 
   @Patch('admin/contacts/:id/ocr')
-  @ApiBearerAuth()
+  @ApiCookieAuth('ieum_auth')
   @UseGuards(MirimAuthGuard, RolesGuard)
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Updated contact OCR')

@@ -44,8 +44,9 @@ pnpm build
 
 ## Authenticated APIs
 
-Bearer token은 프론트엔드 `mirim-oauth-react`가 보유한 Mirim OAuth access token을 사용한다. 서버는 매 요청에서 Mirim OAuth verify-token endpoint로 검증하고 내부 사용자를 생성 또는 업데이트한다.
+프론트엔드는 `POST /auth/login`에 Mirim OAuth access token을 전달한다. 서버는 Mirim OAuth verify-token endpoint로 검증한 뒤 내부 사용자를 생성 또는 업데이트하고 HttpOnly JWT 쿠키 `ieum_auth`를 발급한다. 인증 API는 `credentials: 'include'`로 쿠키를 전송해 호출한다.
 
+- `POST /auth/login`
 - `GET /auth/me`
 - `POST /auth/logout`
 - `GET /student/projects`

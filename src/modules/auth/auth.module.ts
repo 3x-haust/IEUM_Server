@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../../database/entities';
 import { CacheModule } from '../cache/cache.module';
@@ -7,7 +8,7 @@ import { AuthService } from './auth.service';
 import { MirimAuthGuard } from './mirim-auth.guard';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), CacheModule],
+  imports: [TypeOrmModule.forFeature([UserEntity]), CacheModule, JwtModule.register({})],
   controllers: [AuthController],
   providers: [AuthService, MirimAuthGuard],
   exports: [AuthService, MirimAuthGuard]

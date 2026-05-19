@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -10,7 +10,7 @@ import { BannedWordListQueryDto, CreateBannedWordDto, UpdateBannedWordDto } from
 import { BannedWordsService } from './banned-words.service';
 
 @ApiTags('banned-words')
-@ApiBearerAuth()
+@ApiCookieAuth('ieum_auth')
 @UseGuards(MirimAuthGuard, RolesGuard)
 @Roles(UserRole.Teacher, UserRole.Admin)
 @Controller('admin/banned-words')
