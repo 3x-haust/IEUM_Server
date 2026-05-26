@@ -65,7 +65,8 @@ export class AuthService {
   }
 
   getClearCookieOptions(): CookieOptions {
-    const { maxAge: _, ...options } = this.getCookieOptions();
+    const options = this.getCookieOptions();
+    delete options.maxAge;
     return options;
   }
 

@@ -14,6 +14,7 @@ import { EventsModule } from './modules/events/events.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { FilesModule } from './modules/files/files.module';
 import { HealthModule } from './modules/health/health.module';
+import { ProjectInterestsModule } from './modules/project-interests/project-interests.module';
 import { ProjectsModule } from './modules/projects/projects.module';
 import { StatsModule } from './modules/stats/stats.module';
 import { VisitorProfilesModule } from './modules/visitor-profiles/visitor-profiles.module';
@@ -35,6 +36,7 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     FilesModule,
     ProjectsModule,
+    ProjectInterestsModule,
     BannedWordsModule,
     VisitorProfilesModule,
     FeedbackModule,

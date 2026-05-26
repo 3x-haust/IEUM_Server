@@ -30,6 +30,7 @@ export class EventsService {
       [RealtimeEventType.FeedbackStatusChanged]: 'ieum.feedback.status-changed.v1',
       [RealtimeEventType.ContactCreated]: 'ieum.contact.created.v1',
       [RealtimeEventType.ContactStatusChanged]: 'ieum.contact.status-changed.v1',
+      [RealtimeEventType.ProjectInterestCreated]: 'ieum.project-interest.created.v1',
       [RealtimeEventType.VisitorProfileCreated]: 'ieum.visitor-profile.created.v1',
       [RealtimeEventType.FileUploaded]: 'ieum.file.uploaded.v1',
       [RealtimeEventType.AuditCreated]: 'ieum.audit.created.v1'

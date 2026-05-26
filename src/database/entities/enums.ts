@@ -51,6 +51,7 @@ export enum RealtimeEventType {
   FeedbackStatusChanged = 'feedback.status_changed',
   ContactCreated = 'contact.created',
   ContactStatusChanged = 'contact.status_changed',
+  ProjectInterestCreated = 'project_interest.created',
   VisitorProfileCreated = 'visitor_profile.created',
   FileUploaded = 'file.uploaded',
   AuditCreated = 'audit.created'

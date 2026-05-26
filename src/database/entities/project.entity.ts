@@ -3,6 +3,7 @@ import { FileEntity } from './file.entity';
 import { ProjectMemberEntity } from './project-member.entity';
 import { FeedbackEntity } from './feedback.entity';
 import { ContactEntity } from './contact.entity';
+import { ProjectInterestEntity } from './project-interest.entity';
 
 @Entity('projects')
 export class ProjectEntity {
@@ -51,4 +52,7 @@ export class ProjectEntity {
 
   @OneToMany(() => ContactEntity, (contact) => contact.project)
   contacts: ContactEntity[];
+
+  @OneToMany(() => ProjectInterestEntity, (interest) => interest.project)
+  interests: ProjectInterestEntity[];
 }

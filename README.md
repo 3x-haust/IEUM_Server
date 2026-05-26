@@ -53,6 +53,7 @@ pnpm build
 - `GET /student/projects/:projectId/feedback`
 - `GET /student/projects/:projectId/stats`
 - `GET /admin/projects`
+- `POST /admin/projects/:projectId/interests`
 - `GET /admin/feedback`
 - `PATCH /admin/feedback/:id/status`
 - `GET /admin/contacts`

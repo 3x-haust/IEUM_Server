@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, UserEntity } from '../../database/entities';
+import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, ProjectInterestEntity, UserEntity } from '../../database/entities';
 import { ProjectsService } from '../projects/projects.service';
 
 @Injectable()
@@ -10,29 +10,33 @@ export class StatsService {
     @InjectRepository(ProjectEntity) private readonly projects: Repository<ProjectEntity>,
     @InjectRepository(FeedbackEntity) private readonly feedback: Repository<FeedbackEntity>,
     @InjectRepository(ContactEntity) private readonly contacts: Repository<ContactEntity>,
+    @InjectRepository(ProjectInterestEntity) private readonly interests: Repository<ProjectInterestEntity>,
     private readonly projectsService: ProjectsService
   ) {}
 
   async dashboard(): Promise<unknown> {
-    const [projectCount, feedbackCount, contactCount, newContactCount, feedbackByStatus, contactsByStatus] = await Promise.all([
+    const [projectCount, feedbackCount, contactCount, newContactCount, interestCount, feedbackByStatus, contactsByStatus] = await Promise.all([
       this.projects.count({ where: { isPublished: true } }),
       this.feedback.count({ where: { status: FeedbackStatus.Public } }),
       this.contacts.count({ where: { status: Not(ContactStatus.Deleted) } }),
       this.contacts.count({ where: { status: ContactStatus.New } }),
+      this.interests.count(),
       this.countFeedbackByStatus(),
       this.countContactsByStatus()
     ]);
-    return { projectCount, feedbackCount, contactCount, newContactCount, feedbackByStatus, contactsByStatus };
+    return { projectCount, feedbackCount, contactCount, newContactCount, interestCount, feedbackByStatus, contactsByStatus };
   }
 
   async projectStats(projectId: string): Promise<unknown> {
-    const [feedbackCount, contactCount, feedbackByDate, contactsByDate] = await Promise.all([
+    const [feedbackCount, contactCount, interestCount, feedbackByDate, contactsByDate, interestsByDate] = await Promise.all([
       this.feedback.count({ where: { projectId, status: FeedbackStatus.Public } }),
       this.contacts.count({ where: { projectId, status: Not(ContactStatus.Deleted) } }),
+      this.interests.count({ where: { projectId } }),
       this.countByDate(this.feedback, 'feedback', projectId),
-      this.countByDate(this.contacts, 'contact', projectId)
+      this.countByDate(this.contacts, 'contact', projectId),
+      this.countByDate(this.interests, 'interest', projectId)
     ]);
-    return { projectId, feedbackCount, contactCount, feedbackByDate, contactsByDate };
+    return { projectId, feedbackCount, contactCount, interestCount, feedbackByDate, contactsByDate, interestsByDate };
   }
 
   async studentProjectStats(projectId: string, user: UserEntity): Promise<unknown> {
@@ -60,7 +64,7 @@ export class StatsService {
     return Object.fromEntries(rows.map((row) => [row.status, Number(row.count)]));
   }
 
-  private async countByDate(repository: Repository<FeedbackEntity> | Repository<ContactEntity>, alias: string, projectId: string): Promise<Array<{ date: string; count: number }>> {
+  private async countByDate(repository: Repository<FeedbackEntity> | Repository<ContactEntity> | Repository<ProjectInterestEntity>, alias: string, projectId: string): Promise<Array<{ date: string; count: number }>> {
     const rows = await repository.createQueryBuilder(alias).select(`DATE(${alias}.createdAt)`, 'date').addSelect('COUNT(*)', 'count').where(`${alias}.projectId = :projectId`, { projectId }).groupBy('date').orderBy('date', 'ASC').getRawMany<{ date: string; count: string }>();
     return rows.map((row) => ({ date: row.date, count: Number(row.count) }));
   }

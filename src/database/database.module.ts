@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity } from './entities';
+import { AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity } from './entities';
 
-export const databaseEntities = [AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity];
+export const databaseEntities = [AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity];
 
 @Module({
   imports: [

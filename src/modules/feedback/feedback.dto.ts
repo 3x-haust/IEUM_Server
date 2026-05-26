@@ -37,3 +37,32 @@ export class UpdateFeedbackStatusDto {
   @IsString()
   moderationReason?: string;
 }
+
+export class FeedbackResponseDto {
+  @ApiProperty({ format: 'uuid' })
+  id: string;
+
+  @ApiProperty({ format: 'uuid' })
+  projectId: string;
+
+  @ApiProperty({ example: '발표에서 기술 선택 이유를 더 듣고 싶어요.' })
+  content: string;
+
+  @ApiProperty({ enum: FeedbackStatus })
+  status: FeedbackStatus;
+
+  @ApiProperty({ nullable: true, example: null })
+  moderationReason: string | null;
+
+  @ApiProperty({ nullable: true, example: 'a5f3...' })
+  ipHash: string | null;
+
+  @ApiProperty({ nullable: true, example: 'Mozilla/5.0' })
+  userAgent: string | null;
+
+  @ApiProperty({ format: 'date-time' })
+  createdAt: Date;
+
+  @ApiProperty({ format: 'date-time' })
+  updatedAt: Date;
+}

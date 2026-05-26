@@ -5,6 +5,7 @@ export * from './enums';
 export * from './event-outbox.entity';
 export * from './feedback.entity';
 export * from './file.entity';
+export * from './project-interest.entity';
 export * from './project-member.entity';
 export * from './project.entity';
 export * from './realtime-event.entity';

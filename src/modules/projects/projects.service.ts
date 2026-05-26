@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Not, Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
 import { decodeCursor, encodeCursor } from '../../common/utils/cursor';
-import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, ProjectMemberEntity, UserEntity, UserRole } from '../../database/entities';
+import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, UserEntity, UserRole } from '../../database/entities';
 import { ProjectListQueryDto } from './projects.dto';
 
 @Injectable()
@@ -12,7 +12,8 @@ export class ProjectsService {
     @InjectRepository(ProjectEntity) private readonly projects: Repository<ProjectEntity>,
     @InjectRepository(ProjectMemberEntity) private readonly members: Repository<ProjectMemberEntity>,
     @InjectRepository(FeedbackEntity) private readonly feedback: Repository<FeedbackEntity>,
-    @InjectRepository(ContactEntity) private readonly contacts: Repository<ContactEntity>
+    @InjectRepository(ContactEntity) private readonly contacts: Repository<ContactEntity>,
+    @InjectRepository(ProjectInterestEntity) private readonly interests: Repository<ProjectInterestEntity>
   ) {}
 
   async listPublic(query: ProjectListQueryDto): Promise<CursorPage<unknown>> {
@@ -97,9 +98,10 @@ export class ProjectsService {
   }
 
   private async toSummary(project: ProjectEntity, includeHidden: boolean): Promise<unknown> {
-    const [feedbackCount, contactCount] = await Promise.all([
+    const [feedbackCount, contactCount, interestCount] = await Promise.all([
       this.feedback.count({ where: { projectId: project.id, status: FeedbackStatus.Public } }),
-      this.contacts.count({ where: { projectId: project.id, status: includeHidden ? Not(ContactStatus.Deleted) : Not(ContactStatus.Deleted) } })
+      this.contacts.count({ where: { projectId: project.id, status: includeHidden ? Not(ContactStatus.Deleted) : Not(ContactStatus.Deleted) } }),
+      this.interests.count({ where: { projectId: project.id } })
     ]);
     return {
       id: project.id,
@@ -112,6 +114,7 @@ export class ProjectsService {
       isPublished: project.isPublished,
       feedbackCount,
       contactCount,
+      ...(includeHidden ? { interestCount } : {}),
       createdAt: project.createdAt,
       updatedAt: project.updatedAt
     };
