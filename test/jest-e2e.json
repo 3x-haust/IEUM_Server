@@ -3,6 +3,14 @@
   "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "moduleNameMapper": {
+    "^bullmq$": "<rootDir>/test/e2e/external-stubs.ts",
+    "^ioredis$": "<rootDir>/test/e2e/external-stubs.ts",
+    "^tesseract.js$": "<rootDir>/test/e2e/external-stubs.ts",
+    "^typeorm$": "<rootDir>/test/e2e/typeorm-stub.ts",
+    "^uuid$": "<rootDir>/test/e2e/external-stubs.ts",
+    "^@nestjs/typeorm$": "<rootDir>/test/e2e/nest-typeorm-stub.ts"
+  },
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }

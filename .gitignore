@@ -5,7 +5,10 @@ coverage
 .env.*
 !.env.example
 uploads
+uploads-loadtest
+reports/load-test/artifacts
 *.log
 .DS_Store
 cluade.sh
 .omx
+.omo

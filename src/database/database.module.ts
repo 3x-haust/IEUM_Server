@@ -20,7 +20,12 @@ export const databaseEntities = [AuditLogEntity, BannedWordEntity, ContactEntity
         ssl: config.get<string>('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
         entities: databaseEntities,
         autoLoadEntities: true,
-        synchronize: config.get<string>('DATABASE_SYNCHRONIZE') === 'true'
+        synchronize: config.get<string>('DATABASE_SYNCHRONIZE') === 'true',
+        extra: {
+          max: Number(config.get<string>('DATABASE_POOL_MAX', '10')),
+          connectionTimeoutMillis: Number(config.get<string>('DATABASE_POOL_CONNECTION_TIMEOUT_MS', '3000')),
+          idleTimeoutMillis: Number(config.get<string>('DATABASE_POOL_IDLE_TIMEOUT_MS', '30000'))
+        }
       })
     })
   ]

@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { ProjectEntity } from './project.entity';
 import { UserEntity } from './user.entity';
+import { ProjectMemberRole } from './enums';
 
 @Entity('project_members')
 @Unique(['projectId', 'userId'])
@@ -24,6 +25,9 @@ export class ProjectMemberEntity {
 
   @Column({ name: 'display_order', type: 'int', default: 0 })
   displayOrder: number;
+
+  @Column({ name: 'roles', type: 'enum', enum: ProjectMemberRole, array: true, default: () => "'{}'::project_member_role[]" })
+  roles: ProjectMemberRole[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;

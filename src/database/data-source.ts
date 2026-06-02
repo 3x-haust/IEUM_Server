@@ -4,10 +4,12 @@ import { DataSource } from 'typeorm';
 import { AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity } from './entities';
 import { InitIeumSchema1710000000000 } from './migrations/1710000000000-init-ieum-schema';
 import { AddProjectInterests1764000000000 } from './migrations/1764000000000-add-project-interests';
+import { AddProjectMemberRoles1764800000000 } from './migrations/1764800000000-add-project-member-roles';
 
 config();
 
 const ssl = process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false;
+const poolMax = Number(process.env.DATABASE_POOL_MAX ?? '10');
 
 export default new DataSource({
   type: 'postgres',
@@ -18,6 +20,11 @@ export default new DataSource({
   database: process.env.DATABASE_NAME ?? 'ieum',
   ssl,
   entities: [AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity],
-  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000],
-  synchronize: false
+  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000, AddProjectMemberRoles1764800000000],
+  synchronize: false,
+  extra: {
+    max: poolMax,
+    connectionTimeoutMillis: Number(process.env.DATABASE_POOL_CONNECTION_TIMEOUT_MS ?? '3000'),
+    idleTimeoutMillis: Number(process.env.DATABASE_POOL_IDLE_TIMEOUT_MS ?? '30000')
+  }
 });

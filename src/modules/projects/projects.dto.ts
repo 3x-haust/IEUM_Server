@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 import { CursorPaginationDto } from '../../common/dto/pagination.dto';
+import { ProjectMemberRole } from '../../database/entities';
 
 export class ProjectListQueryDto extends CursorPaginationDto {
   @ApiPropertyOptional()
@@ -61,6 +62,9 @@ export class ProjectMemberResponseDto {
 
   @ApiProperty({ example: 0 })
   displayOrder: number;
+
+  @ApiProperty({ enum: ProjectMemberRole, isArray: true, example: [ProjectMemberRole.Backend, ProjectMemberRole.Frontend] })
+  roles: ProjectMemberRole[];
 }
 
 export class ProjectDetailResponseDto extends ProjectSummaryResponseDto {

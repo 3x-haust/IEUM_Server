@@ -1,0 +1,125 @@
+jest.mock('@nestjs/typeorm', () => ({
+  InjectRepository: () => () => undefined
+}));
+
+jest.mock('typeorm', () => {
+  const decorator = () => () => undefined;
+  return {
+    Brackets: class Brackets {
+      constructor(readonly whereFactory: unknown) {}
+    },
+    Column: decorator,
+    CreateDateColumn: decorator,
+    DeleteDateColumn: decorator,
+    Entity: decorator,
+    Index: decorator,
+    JoinColumn: decorator,
+    ManyToOne: decorator,
+    OneToMany: decorator,
+    PrimaryGeneratedColumn: decorator,
+    Unique: decorator,
+    UpdateDateColumn: decorator
+  };
+}, { virtual: true });
+
+import { ProjectsService } from '../src/modules/projects/projects.service';
+import { ProjectMemberRole } from '../src/database/entities';
+
+describe('ProjectsService', () => {
+  function queryBuilder(rows: readonly unknown[]) {
+    return {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      addOrderBy: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      addSelect: jest.fn().mockReturnThis(),
+      groupBy: jest.fn().mockReturnThis(),
+      getMany: jest.fn().mockResolvedValue(rows),
+      getRawMany: jest.fn().mockResolvedValue(rows)
+    };
+  }
+
+  it('batches project summary counts instead of counting per project', async () => {
+    const project = {
+      id: 'project-1',
+      serviceName: 'IEUM',
+      teamName: '3xhaust',
+      description: null,
+      thumbnailFile: null,
+      developmentStacks: ['NestJS'],
+      designStacks: ['Figma'],
+      isPublished: true,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-01T00:00:00.000Z')
+    };
+    const projects = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([project])) };
+    const members = {};
+    const feedback = {
+      count: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '7' }]))
+    };
+    const contacts = {
+      count: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '3' }]))
+    };
+    const interests = {
+      count: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '2' }]))
+    };
+    const service = new ProjectsService(projects as never, members as never, feedback as never, contacts as never, interests as never);
+
+    const result = await service.listPublic({ limit: 20 });
+
+    expect(feedback.count).not.toHaveBeenCalled();
+    expect(contacts.count).not.toHaveBeenCalled();
+    expect(interests.count).not.toHaveBeenCalled();
+    expect(feedback.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(contacts.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(interests.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(result.items).toEqual([
+      expect.objectContaining({ id: project.id, feedbackCount: 7, contactCount: 3 })
+    ]);
+    expect(result.items[0]).not.toHaveProperty('interestCount');
+  });
+
+  it('includes project member roles in project detail responses', async () => {
+    const project = {
+      id: 'project-1',
+      serviceName: 'IEUM',
+      teamName: '3xhaust',
+      description: null,
+      thumbnailFile: null,
+      developmentStacks: ['NestJS'],
+      designStacks: ['Figma'],
+      isPublished: true,
+      deletedAt: null,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+      members: [{
+        user: { id: 'user-1', name: '김이음' },
+        displayOrder: 1,
+        roles: [ProjectMemberRole.Backend, ProjectMemberRole.Frontend]
+      }]
+    };
+    const projects = { findOne: jest.fn().mockResolvedValue(project) };
+    const members = {};
+    const feedback = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const contacts = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const interests = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const service = new ProjectsService(projects as never, members as never, feedback as never, contacts as never, interests as never);
+
+    const result = await service.getPublic(project.id);
+
+    expect(result).toEqual(expect.objectContaining({
+      members: [{
+        id: 'user-1',
+        name: '김이음',
+        displayOrder: 1,
+        roles: [ProjectMemberRole.Backend, ProjectMemberRole.Frontend]
+      }]
+    }));
+  });
+});

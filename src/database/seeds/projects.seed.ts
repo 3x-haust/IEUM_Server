@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { ProjectEntity, ProjectMemberEntity, UserEntity, UserRole } from '../entities';
+import { ProjectEntity, ProjectMemberEntity, ProjectMemberRole, UserEntity, UserRole } from '../entities';
 
 export async function seedProjects(dataSource: DataSource): Promise<void> {
   const users = dataSource.getRepository(UserEntity);
@@ -28,6 +28,7 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
   }));
   for (const [index, user] of savedUsers.entries()) {
     const existingMember = await members.findOne({ where: { projectId: project.id, userId: user.id } });
-    await members.save(members.create({ ...(existingMember ?? {}), projectId: project.id, userId: user.id, displayOrder: index + 1 }));
+    const rolesByIndex = [[ProjectMemberRole.Backend], [ProjectMemberRole.Frontend], [ProjectMemberRole.Design]] as const;
+    await members.save(members.create({ ...(existingMember ?? {}), projectId: project.id, userId: user.id, displayOrder: index + 1, roles: [...(rolesByIndex[index] ?? [])] }));
   }
 }

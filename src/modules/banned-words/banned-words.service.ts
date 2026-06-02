@@ -12,6 +12,7 @@ import { BannedWordListQueryDto, CreateBannedWordDto, UpdateBannedWordDto } from
 @Injectable()
 export class BannedWordsService {
   private matcher: AhoCorasickMatcher | null = null;
+  private rebuildMatcherPromise: Promise<void> | null = null;
   private matcherVersion = 0;
 
   constructor(
@@ -72,9 +73,7 @@ export class BannedWordsService {
   }
 
   async findMatches(value: string): Promise<string[]> {
-    if (!this.matcher) {
-      await this.rebuildMatcher();
-    }
+    await this.ensureMatcher();
     return this.matcher?.find(value) ?? [];
   }
 
@@ -105,13 +104,37 @@ export class BannedWordsService {
     return normalizedWord;
   }
 
-  private async rebuildMatcher(): Promise<void> {
+  private async ensureMatcher(): Promise<void> {
+    if (this.matcher) {
+      return;
+    }
+    if (!this.rebuildMatcherPromise) {
+      const version = this.matcherVersion;
+      const rebuild = this.rebuildMatcher(version);
+      const tracked = rebuild.finally(() => {
+        if (this.rebuildMatcherPromise === tracked) {
+          this.rebuildMatcherPromise = null;
+        }
+      });
+      this.rebuildMatcherPromise = tracked;
+    }
+    await this.rebuildMatcherPromise;
+    if (!this.matcher) {
+      await this.ensureMatcher();
+    }
+  }
+
+  private async rebuildMatcher(version: number): Promise<void> {
     const words = await this.bannedWords.find({ where: { isActive: true } });
-    this.matcher = new AhoCorasickMatcher(words.map((word) => word.normalizedWord));
+    const matcher = new AhoCorasickMatcher(words.map((word) => word.normalizedWord));
+    if (version === this.matcherVersion) {
+      this.matcher = matcher;
+    }
   }
 
   private invalidate(): void {
     this.matcher = null;
+    this.rebuildMatcherPromise = null;
     this.matcherVersion += 1;
   }
 }

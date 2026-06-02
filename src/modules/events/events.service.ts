@@ -13,15 +13,10 @@ export class EventsService {
 
   async publish(type: RealtimeEventType, projectId: string | null, targetRole: UserRole | null, payload: Record<string, unknown>, aggregateType: string, aggregateId: string | null): Promise<void> {
     await this.realtime.record(type, projectId, targetRole, payload);
-    await this.outbox.save(this.outbox.create({
-      topic: this.topicFor(type),
-      eventKey: aggregateId,
-      eventType: type,
-      aggregateType,
-      aggregateId,
-      payload,
-      status: OutboxStatus.Pending
-    }));
+    await this.outbox.query(
+      'INSERT INTO event_outbox(topic, event_key, event_type, aggregate_type, aggregate_id, payload, status) VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7)',
+      [this.topicFor(type), aggregateId, type, aggregateType, aggregateId, JSON.stringify(payload), OutboxStatus.Pending]
+    );
   }
 
   private topicFor(type: RealtimeEventType): string {

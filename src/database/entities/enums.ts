@@ -4,6 +4,16 @@ export enum UserRole {
   Admin = 'admin'
 }
 
+export const ProjectMemberRole = {
+  Backend: 'backend',
+  Frontend: 'frontend',
+  Design: 'design',
+  ProductManager: 'pm',
+  Ai: 'ai'
+} as const;
+
+export type ProjectMemberRole = typeof ProjectMemberRole[keyof typeof ProjectMemberRole];
+
 export enum VisitorType {
   General = 'general',
   Recruiter = 'recruiter'

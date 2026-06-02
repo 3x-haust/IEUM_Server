@@ -1,10 +1,23 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Brackets, Not, Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
 import { decodeCursor, encodeCursor } from '../../common/utils/cursor';
 import { ContactEntity, ContactStatus, FeedbackEntity, FeedbackStatus, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, UserEntity, UserRole } from '../../database/entities';
 import { ProjectListQueryDto } from './projects.dto';
+
+type ProjectCounts = {
+  readonly feedbackCount: number;
+  readonly contactCount: number;
+  readonly interestCount: number;
+};
+
+type CountRow = {
+  readonly projectId: string;
+  readonly count: string;
+};
+
+const EMPTY_PROJECT_COUNTS: ProjectCounts = { feedbackCount: 0, contactCount: 0, interestCount: 0 };
 
 @Injectable()
 export class ProjectsService {
@@ -18,17 +31,21 @@ export class ProjectsService {
 
   async listPublic(query: ProjectListQueryDto): Promise<CursorPage<unknown>> {
     const page = await this.listBase(query, true);
-    return { items: await Promise.all(page.items.map((project) => this.toSummary(project, false))), nextCursor: page.nextCursor };
+    const counts = await this.countProjects(page.items.map((project) => project.id));
+    return { items: page.items.map((project) => this.toSummary(project, false, counts.get(project.id))), nextCursor: page.nextCursor };
   }
 
   async listAdmin(query: ProjectListQueryDto): Promise<CursorPage<unknown>> {
     const page = await this.listBase(query, false);
-    return { items: await Promise.all(page.items.map((project) => this.toSummary(project, true))), nextCursor: page.nextCursor };
+    const counts = await this.countProjects(page.items.map((project) => project.id));
+    return { items: page.items.map((project) => this.toSummary(project, true, counts.get(project.id))), nextCursor: page.nextCursor };
   }
 
   async listStudentProjects(user: UserEntity): Promise<unknown[]> {
     const rows = await this.members.find({ where: { userId: user.id }, relations: { project: true }, order: { displayOrder: 'ASC' } });
-    return Promise.all(rows.filter((row) => !row.project.deletedAt).map((row) => this.toSummary(row.project, false)));
+    const projects = rows.map((row) => row.project).filter((project) => !project.deletedAt);
+    const counts = await this.countProjects(projects.map((project) => project.id));
+    return projects.map((project) => this.toSummary(project, false, counts.get(project.id)));
   }
 
   async getPublic(id: string): Promise<unknown> {
@@ -97,12 +114,7 @@ export class ProjectsService {
     return { items, nextCursor: rows.length > limit && last ? encodeCursor(last.createdAt, last.id) : null };
   }
 
-  private async toSummary(project: ProjectEntity, includeHidden: boolean): Promise<unknown> {
-    const [feedbackCount, contactCount, interestCount] = await Promise.all([
-      this.feedback.count({ where: { projectId: project.id, status: FeedbackStatus.Public } }),
-      this.contacts.count({ where: { projectId: project.id, status: includeHidden ? Not(ContactStatus.Deleted) : Not(ContactStatus.Deleted) } }),
-      this.interests.count({ where: { projectId: project.id } })
-    ]);
+  private toSummary(project: ProjectEntity, includeHidden: boolean, counts: ProjectCounts = EMPTY_PROJECT_COUNTS): unknown {
     return {
       id: project.id,
       serviceName: project.serviceName,
@@ -112,17 +124,60 @@ export class ProjectsService {
       developmentStacks: project.developmentStacks,
       designStacks: project.designStacks,
       isPublished: project.isPublished,
-      feedbackCount,
-      contactCount,
-      ...(includeHidden ? { interestCount } : {}),
+      feedbackCount: counts.feedbackCount,
+      contactCount: counts.contactCount,
+      ...(includeHidden ? { interestCount: counts.interestCount } : {}),
       createdAt: project.createdAt,
       updatedAt: project.updatedAt
     };
   }
 
   private async toDetail(project: ProjectEntity, includeHidden: boolean): Promise<unknown> {
-    const summary = await this.toSummary(project, includeHidden);
-    const members = (project.members ?? []).sort((a, b) => a.displayOrder - b.displayOrder).map((member) => ({ id: member.user.id, name: member.user.name, displayOrder: member.displayOrder }));
+    const counts = await this.countProjects([project.id]);
+    const summary = this.toSummary(project, includeHidden, counts.get(project.id));
+    const members = (project.members ?? []).sort((a, b) => a.displayOrder - b.displayOrder).map((member) => ({ id: member.user.id, name: member.user.name, displayOrder: member.displayOrder, roles: member.roles }));
     return { ...summary as Record<string, unknown>, members };
+  }
+
+  private async countProjects(projectIds: string[]): Promise<Map<string, ProjectCounts>> {
+    const counts = new Map(projectIds.map((projectId) => [projectId, { ...EMPTY_PROJECT_COUNTS }]));
+    if (projectIds.length === 0) {
+      return counts;
+    }
+    const [feedbackRows, contactRows, interestRows] = await Promise.all([
+      this.feedback.createQueryBuilder('feedback')
+        .select('feedback.projectId', 'projectId')
+        .addSelect('COUNT(*)', 'count')
+        .where('feedback.projectId IN (:...projectIds)', { projectIds })
+        .andWhere('feedback.status = :status', { status: FeedbackStatus.Public })
+        .groupBy('feedback.projectId')
+        .getRawMany<CountRow>(),
+      this.contacts.createQueryBuilder('contact')
+        .select('contact.projectId', 'projectId')
+        .addSelect('COUNT(*)', 'count')
+        .where('contact.projectId IN (:...projectIds)', { projectIds })
+        .andWhere('contact.status != :status', { status: ContactStatus.Deleted })
+        .groupBy('contact.projectId')
+        .getRawMany<CountRow>(),
+      this.interests.createQueryBuilder('interest')
+        .select('interest.projectId', 'projectId')
+        .addSelect('COUNT(*)', 'count')
+        .where('interest.projectId IN (:...projectIds)', { projectIds })
+        .groupBy('interest.projectId')
+        .getRawMany<CountRow>()
+    ]);
+    for (const row of feedbackRows) {
+      const current = counts.get(row.projectId) ?? EMPTY_PROJECT_COUNTS;
+      counts.set(row.projectId, { ...current, feedbackCount: Number(row.count) });
+    }
+    for (const row of contactRows) {
+      const current = counts.get(row.projectId) ?? EMPTY_PROJECT_COUNTS;
+      counts.set(row.projectId, { ...current, contactCount: Number(row.count) });
+    }
+    for (const row of interestRows) {
+      const current = counts.get(row.projectId) ?? EMPTY_PROJECT_COUNTS;
+      counts.set(row.projectId, { ...current, interestCount: Number(row.count) });
+    }
+    return counts;
   }
 }
