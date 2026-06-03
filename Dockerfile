@@ -21,6 +21,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
+RUN chown nodejs:nodejs /usr/local/bin
 
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
