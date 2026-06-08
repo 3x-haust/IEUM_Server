@@ -5,6 +5,24 @@ import { FeedbackEntity } from './feedback.entity';
 import { ContactEntity } from './contact.entity';
 import { ProjectInterestEntity } from './project-interest.entity';
 
+export type ProjectStackCategory =
+  | 'Language'
+  | 'Framework'
+  | 'Database'
+  | 'Tools & Container'
+  | 'External API / AI';
+
+export interface ProjectStackGroup {
+  category: ProjectStackCategory;
+  color: string;
+  items: string[];
+}
+
+export interface ProjectFeatureDescription {
+  title: string;
+  description: string;
+}
+
 @Entity('projects')
 export class ProjectEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -26,11 +44,26 @@ export class ProjectEntity {
   @JoinColumn({ name: 'thumbnail_file_id' })
   thumbnailFile: FileEntity | null;
 
+  @Column({ name: 'thumbnail_path', type: 'text', nullable: true })
+  thumbnailPath: string | null;
+
+  @Column({ name: 'experience_category', type: 'varchar', length: 40, nullable: true })
+  experienceCategory: string | null;
+
+  @Column({ name: 'booth_slot', type: 'varchar', length: 20, nullable: true })
+  boothSlot: string | null;
+
   @Column({ name: 'development_stacks', type: 'text', array: true, default: () => "'{}'" })
   developmentStacks: string[];
 
   @Column({ name: 'design_stacks', type: 'text', array: true, default: () => "'{}'" })
   designStacks: string[];
+
+  @Column({ name: 'stack_groups', type: 'jsonb', default: () => "'[]'::jsonb" })
+  stackGroups: ProjectStackGroup[];
+
+  @Column({ name: 'feature_descriptions', type: 'jsonb', default: () => "'[]'::jsonb" })
+  featureDescriptions: ProjectFeatureDescription[];
 
   @Column({ name: 'is_published', default: true })
   isPublished: boolean;

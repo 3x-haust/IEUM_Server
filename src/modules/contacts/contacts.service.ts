@@ -29,7 +29,7 @@ export class ContactsService {
     if (profile.visitorType !== VisitorType.Recruiter) {
       throw new BadRequestException('Only recruiter visitor profiles can create contacts');
     }
-    if (!profile.businessCardRegistered || !profile.businessCardFileId) {
+    if (!profile.businessCardRegistered) {
       throw new BadRequestException('Recruiter visitor profile requires a business card');
     }
     const isMember = await this.projects.isProjectMember(projectId, dto.targetMemberUserId);

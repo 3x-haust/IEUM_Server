@@ -5,6 +5,7 @@ import { AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, Fee
 import { InitIeumSchema1710000000000 } from './migrations/1710000000000-init-ieum-schema';
 import { AddProjectInterests1764000000000 } from './migrations/1764000000000-add-project-interests';
 import { AddProjectMemberRoles1764800000000 } from './migrations/1764800000000-add-project-member-roles';
+import { AddProjectCatalogFields1781000000000 } from './migrations/1781000000000-add-project-catalog-fields';
 
 config();
 
@@ -20,7 +21,7 @@ export default new DataSource({
   database: process.env.DATABASE_NAME ?? 'ieum',
   ssl,
   entities: [AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity],
-  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000, AddProjectMemberRoles1764800000000],
+  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000, AddProjectMemberRoles1764800000000, AddProjectCatalogFields1781000000000],
   synchronize: false,
   extra: {
     max: poolMax,

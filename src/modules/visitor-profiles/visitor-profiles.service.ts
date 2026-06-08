@@ -17,21 +17,23 @@ export class VisitorProfilesService {
   ) {}
 
   async create(dto: CreateVisitorProfileDto, file?: UploadedFileInput): Promise<VisitorProfileEntity> {
-    if (dto.visitorType === VisitorType.Recruiter && !file) {
-      throw new BadRequestException('Business card image is required for recruiter visitor profiles');
+    const hasManualBusinessCard = [dto.ocrName, dto.ocrOrganization, dto.ocrPosition, dto.ocrEmail, dto.ocrPhone]
+      .some((value) => typeof value === 'string' && value.trim().length > 0);
+    if (dto.visitorType === VisitorType.Recruiter && !file && !hasManualBusinessCard) {
+      throw new BadRequestException('Business card image or manual business card fields are required for recruiter visitor profiles');
     }
     const businessCard = file ? await this.files.saveImage(file, FileAccessLevel.Private) : null;
     const profile = await this.profiles.save(this.profiles.create({
       ageGroup: dto.ageGroup,
       visitorType: dto.visitorType,
       businessCardFileId: businessCard?.id ?? null,
-      businessCardRegistered: Boolean(businessCard),
+      businessCardRegistered: Boolean(businessCard) || hasManualBusinessCard,
       ocrRawText: null,
-      ocrName: null,
-      ocrOrganization: null,
-      ocrPosition: null,
-      ocrEmail: null,
-      ocrPhone: null
+      ocrName: normalizeManualField(dto.ocrName),
+      ocrOrganization: normalizeManualField(dto.ocrOrganization),
+      ocrPosition: normalizeManualField(dto.ocrPosition),
+      ocrEmail: normalizeManualField(dto.ocrEmail),
+      ocrPhone: normalizeManualField(dto.ocrPhone)
     }));
     if (businessCard) {
       await this.ocrQueue.enqueueVisitorProfile(profile.id, businessCard.storageKey);
@@ -47,4 +49,9 @@ export class VisitorProfilesService {
     }
     return profile;
   }
+}
+
+function normalizeManualField(value: string | undefined): string | null {
+  const normalized = value?.trim();
+  return normalized ? normalized : null;
 }

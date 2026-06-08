@@ -1,0 +1,2169 @@
+[
+  {
+    "catalogId": 1,
+    "serviceName": "MALO",
+    "boothSlot": "A1",
+    "experienceCategory": "ai",
+    "description": "디지털 취약계층을 위하여 음성 안내와 AI대화 기능으로 쉽고 편리한 주문을 돕는 지능형 키오스크 서비스",
+    "features": [
+      {
+        "title": "일반 모드",
+        "description": "표준적인 UI 디자인과 배치로 빠른 주문과 결제가 가능한 기본 화면 제공"
+      },
+      {
+        "title": "쉬운 모드",
+        "description": "고령자나 디지털 취약계층을 위해 UI를 더 크게 구성하여 누구나 쉽게 주문할 수 있는 화면 제공"
+      },
+      {
+        "title": "음성 주문",
+        "description": "쉬운 모드에서 AI 음성 인식을 통해 말 한마디로 간편하게 주문할 수 있는 기능 제공"
+      },
+      {
+        "title": "주문 보조",
+        "description": "AI와의 대화를 통해 개인별 메뉴를 추천받고 주문 전 과정을 실시간으로 도움받는 기능 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Supabase",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "임채이",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "조현서",
+        "roleText": "Front, DB"
+      },
+      {
+        "name": "임소영",
+        "roleText": "Front"
+      },
+      {
+        "name": "정수민",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/1.png"
+  },
+  {
+    "catalogId": 2,
+    "serviceName": "무브잇",
+    "boothSlot": "A2",
+    "experienceCategory": "ai",
+    "description": "챌린지의 춤 연습이 필요한 사람들 위해 AI가 영상을 분석해서 피드백을 해주는 서비스",
+    "features": [
+      {
+        "title": "챌린지 검색",
+        "description": "챌린지를 장르나 이름, 아티스트 이름으로 검색"
+      },
+      {
+        "title": "챌린지 추천",
+        "description": "올해의 챌린지나, 이번달 챌린지를 추천"
+      },
+      {
+        "title": "연습하기",
+        "description": "촬영 영상을 보내면 댄서의 영상과 비교하여 피드백"
+      },
+      {
+        "title": "마이페이지",
+        "description": "자신이 연습한 챌린지를 다시 확인"
+      }
+    ],
+    "stacks": [
+      "NestJS",
+      "React",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "김민재",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "이서영",
+        "roleText": "Front"
+      },
+      {
+        "name": "곽자경",
+        "roleText": "Back"
+      },
+      {
+        "name": "윤시웅",
+        "roleText": "Front"
+      },
+      {
+        "name": "김설애",
+        "roleText": "Design"
+      },
+      {
+        "name": "이서현",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/2.png"
+  },
+  {
+    "catalogId": 3,
+    "serviceName": "Reco",
+    "boothSlot": "A3",
+    "experienceCategory": "ai",
+    "description": "누구나 쉽고 정확하게 분리배출할 수 있도록 AI가 재질을 분석하고 배출 방법을 안내하는 서비스",
+    "features": [
+      {
+        "title": "AI 분석",
+        "description": "쓰레기 이미지를 분석해 재질과 재활용 여부를 판별"
+      },
+      {
+        "title": "분리배출 안내",
+        "description": "재질별 올바른 분리배출 방법 및 주의사항 제공"
+      },
+      {
+        "title": "챗봇",
+        "description": "재활용 관련 질문과 오염 제거 방법 안내 제공"
+      },
+      {
+        "title": "기록 및 분석",
+        "description": "분석 결과와 재활용 기록 저장 및 확인"
+      },
+      {
+        "title": "수거함 지도",
+        "description": "주변 분리수거함 및 재활용 수거 위치 정보 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Spring Boot",
+      "Python",
+      "JavaScript",
+      "PostgreSQL",
+      "VSCode",
+      "IntelliJ"
+    ],
+    "members": [
+      {
+        "name": "조현지",
+        "roleText": "Back"
+      },
+      {
+        "name": "임하정",
+        "roleText": "Front"
+      },
+      {
+        "name": "지수민",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "최소영",
+        "roleText": "Front"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/3.png"
+  },
+  {
+    "catalogId": 4,
+    "serviceName": "오모",
+    "boothSlot": "A4",
+    "experienceCategory": "ai",
+    "description": "외출 전 코디 고민을 덜어주는 AI기반 OOTD 추천 서비스",
+    "features": [
+      {
+        "title": "AI 챗봇",
+        "description": "자연어로 입력한 상황과 취향을 분석해 맞춤 코디 추천"
+      },
+      {
+        "title": "피드",
+        "description": "팔로잉 / 트렌드 피드를 통해 다양한 코디 게시글 확인"
+      },
+      {
+        "title": "업로드",
+        "description": "본인 계정에 코디 이미지와 설명을 등록하여 게시글 작성"
+      },
+      {
+        "title": "마이페이지",
+        "description": "팔로워·팔로잉 목록, 내 게시글, 저장한 코디 확인"
+      }
+    ],
+    "stacks": [
+      "React Native",
+      "NestJS",
+      "MySQL"
+    ],
+    "members": [
+      {
+        "name": "우지영",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "박홍준",
+        "roleText": "Back"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/4.png"
+  },
+  {
+    "catalogId": 5,
+    "serviceName": "Mony",
+    "boothSlot": "A5",
+    "experienceCategory": "ai",
+    "description": "자동 지출 분석으로 소비 패턴을 한눈에 확인하고, AI와 함께 목표 예산을 관리하는 서비스",
+    "features": [
+      {
+        "title": "자동 연동",
+        "description": "카드·계좌 데이터를 손쉽게 관리"
+      },
+      {
+        "title": "패턴 분석",
+        "description": "소비 습관을 한눈에 파악"
+      },
+      {
+        "title": "목표 관리",
+        "description": "예산 대비 지출 현황을 시각화"
+      },
+      {
+        "title": "맞춤 피드백",
+        "description": "AI가 소비 흐름을 분석해 조언"
+      },
+      {
+        "title": "대화형 코칭",
+        "description": "질문형 피드백으로 부담 없이 개선"
+      },
+      {
+        "title": "생활 습관 형성",
+        "description": "지속 가능한 절약을 지원"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Express",
+      "Supabase",
+      "ESLint",
+      "GitHub",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "이상연",
+        "roleText": "Back"
+      },
+      {
+        "name": "김이레",
+        "roleText": "Front"
+      },
+      {
+        "name": "정예서",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "장윤아",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/5.png"
+  },
+  {
+    "catalogId": 6,
+    "serviceName": "Tone-Z",
+    "boothSlot": "A6",
+    "experienceCategory": "ai",
+    "description": "실시간 카메라로 퍼스널 컬러를 진단하는 서비스입니다. 맞춤형 뷰티 정보와 챗봇, 인생네컷 기능까지 제공합니다.",
+    "features": [
+      {
+        "title": "진단",
+        "description": "실시간 카메라로 퍼스널 컬러 분석"
+      },
+      {
+        "title": "추천",
+        "description": "어울리는 색상과 화장품 추천"
+      },
+      {
+        "title": "챗봇",
+        "description": "퍼스널 컬러 관련 궁금증 즉시 답변"
+      },
+      {
+        "title": "네컷",
+        "description": "다양한 프레임으로 인생네컷 촬영 가능"
+      },
+      {
+        "title": "공유",
+        "description": "진단 결과를 이메일로 전송 가능"
+      },
+      {
+        "title": "재진단",
+        "description": "언제든지 다시 진단 가능"
+      }
+    ],
+    "stacks": [
+      "Python",
+      "React",
+      "Node.js",
+      "Next.js",
+      "MySQL"
+    ],
+    "members": [
+      {
+        "name": "최소영",
+        "roleText": "Back"
+      },
+      {
+        "name": "최주희",
+        "roleText": "Front, DB"
+      },
+      {
+        "name": "김나영",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/6.png"
+  },
+  {
+    "catalogId": 7,
+    "serviceName": "Naru",
+    "boothSlot": "B1",
+    "experienceCategory": "human",
+    "description": "외국인들이 한국에서 쉽게 배달 음식을 시켜 먹을 수 있게 하는 서비스",
+    "features": [
+      {
+        "title": "배달",
+        "description": "한국 음식을 영어로 쉽게 주문 가능"
+      },
+      {
+        "title": "번역",
+        "description": "메뉴판을 자동으로 번역해서 보여줌"
+      },
+      {
+        "title": "추천",
+        "description": "AI가 인기 메뉴와 맛집을 추천"
+      },
+      {
+        "title": "결제",
+        "description": "해외 카드로 간편하게 결제 가능"
+      },
+      {
+        "title": "추적",
+        "description": "실시간으로 배달 현황 확인 가능"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "TypeScript",
+      "Supabase",
+      "GitHub",
+      "Ubuntu",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "이민준",
+        "roleText": "Front"
+      },
+      {
+        "name": "김이레",
+        "roleText": "Front"
+      },
+      {
+        "name": "육준성",
+        "roleText": "Back"
+      },
+      {
+        "name": "이상연",
+        "roleText": "Back"
+      },
+      {
+        "name": "전누리",
+        "roleText": "Desing"
+      },
+      {
+        "name": "장윤아",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/7.png"
+  },
+  {
+    "catalogId": 8,
+    "serviceName": "Dear Me;Dear You",
+    "boothSlot": "B2",
+    "experienceCategory": "human",
+    "description": "오늘의 마음을 글, 그림, 영상으로 남기고 정해진 날 미래의 나 또는 소중한 사람에게 전하는 서비스",
+    "features": [
+      {
+        "title": "질문 제공",
+        "description": "미래의 나에게 건넬 말을 떠올릴 수 있는 질문 제공"
+      },
+      {
+        "title": "텍스트 편지",
+        "description": "글, 사진, 서명을 담은 편지 작성"
+      },
+      {
+        "title": "그림 편지",
+        "description": "직접 그린 그림으로 마음 기록"
+      },
+      {
+        "title": "영상 편지",
+        "description": "목소리와 표정을 담은 영상 편지 작성"
+      },
+      {
+        "title": "예약 발송",
+        "description": "정해진 개봉일에 이메일 자동"
+      },
+      {
+        "title": "편지 보관함",
+        "description": "개봉일과 편지 상태 확인, 개봉 전 삭제 가능"
+      },
+      {
+        "title": "선생님 응원 편지",
+        "description": "선생님의 응원 메시지를 랜덤 전달"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Cloudflare R2",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "이제희",
+        "roleText": "Front"
+      },
+      {
+        "name": "장세은",
+        "roleText": "DB, Back"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/8.png"
+  },
+  {
+    "catalogId": 9,
+    "serviceName": "SafeShield",
+    "boothSlot": "B3",
+    "experienceCategory": "human",
+    "description": "학교폭력 피해 학생이 자신의 상황을 입력하면 AI가 유형과 대응 방향을 안내하는 비공개 법률 지원 서비스",
+    "features": [
+      {
+        "title": "AI 상황 분석",
+        "description": "사용자가 입력한 경험을 바탕으로 학교폭력 유형과 심각도를 분석"
+      },
+      {
+        "title": "유형 분류",
+        "description": "언어폭력, 신체폭력, 사이버폭력 등으로 상황 분류"
+      },
+      {
+        "title": "법률 기반 판단",
+        "description": "관련 법률과 기준을 바탕으로 조치 가능성과 대응 방향 안내"
+      },
+      {
+        "title": "증거 수집 가이드",
+        "description": "녹음, 캡처, 목격자 등 상황에 맞는 증거 확보 방법 제공"
+      },
+      {
+        "title": "대응 방법 안내",
+        "description": "상담이나 신고 전 준비해야 할 내용을 정리"
+      },
+      {
+        "title": "비공개 기록",
+        "description": "사용자가 부담 없이 자신의 상황을 정리할 수 있도록 지원"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Spring Boot",
+      "SQLite",
+      "IntelliJ",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "장세은",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤서우",
+        "roleText": "Back, DB"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/9.png"
+  },
+  {
+    "catalogId": 10,
+    "serviceName": "MAKO",
+    "boothSlot": "B4",
+    "experienceCategory": "human",
+    "description": "제품 자료는 있지만 홍보 콘텐츠로 바꾸기 어려운 업체를 위해 AI로 마케팅 실행을 돕는 플랫폼",
+    "features": [
+      {
+        "title": "자료 관리",
+        "description": "브랜드별 문서, 제품 자료, 레퍼런스를 통합 저장"
+      },
+      {
+        "title": "콘텐츠 생성",
+        "description": "카드뉴스, 블로그, 랜딩페이지 등 홍보 콘텐츠 제작"
+      },
+      {
+        "title": "브랜드 유지",
+        "description": "RAG와 온톨로지로 브랜드 톤과 제품 정보를 반영"
+      },
+      {
+        "title": "운영 지원",
+        "description": "캠페인별 콘텐츠를 정리하고 발행 흐름을 관리"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "React",
+      "NestJS",
+      "PostgresSQL",
+      "RAG",
+      "Ontology",
+      "Playwright"
+    ],
+    "members": [
+      {
+        "name": "박준원",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "유성윤",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "박태윤",
+        "roleText": "Front"
+      },
+      {
+        "name": "김서준",
+        "roleText": "Front"
+      },
+      {
+        "name": "김지성",
+        "roleText": "Front"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/10.png"
+  },
+  {
+    "catalogId": 11,
+    "serviceName": "이음",
+    "boothSlot": "C1",
+    "experienceCategory": "network",
+    "description": "NFC 태그를 통해 2026 IT SHOW 작품을 소개하고 피드백 및 채용의사를 남길 수 있는 전시 안내 서비스",
+    "features": [
+      {
+        "title": "전시작 소개",
+        "description": "NFC 태그를 통해 2026 IT Show 전시작 상세 안내 제공"
+      },
+      {
+        "title": "명함 글자 인식",
+        "description": "촬영을 통해 명함 속 글자를 읽어 정보 자동 입력"
+      },
+      {
+        "title": "컨택 기능",
+        "description": "명함을 등록한 회사 관계자만 특정 팀원을 지정해 컨택 가능"
+      },
+      {
+        "title": "피드백 기능",
+        "description": "익명으로 피드백을 작성할 수 있으며, 해당 팀원만 열람 가능"
+      },
+      {
+        "title": "금칙어 검수",
+        "description": "욕설 및 금칙어를 자동으로 검수하는 기능 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "TypeScript",
+      "NestJS",
+      "PostgreSQL",
+      "Ubuntu",
+      "Docker"
+    ],
+    "members": [
+      {
+        "name": "전유림",
+        "roleText": "Front"
+      },
+      {
+        "name": "지수민",
+        "roleText": "Front"
+      },
+      {
+        "name": "유성윤",
+        "roleText": "Back"
+      },
+      {
+        "name": "민정원",
+        "roleText": "Back"
+      },
+      {
+        "name": "정지영",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/11.png"
+  },
+  {
+    "catalogId": 12,
+    "serviceName": "Survly",
+    "boothSlot": "C2",
+    "experienceCategory": "network",
+    "description": "설문 생성부터 실시간 결과 그래프 확인, 자유로운 댓글 소통까지 가능한 설문 웹사이트",
+    "features": [
+      {
+        "title": "설문 생성",
+        "description": "공개/비공개 및 임베드 기능으로 글과 미디어가 담긴 설문지 제작 가능"
+      },
+      {
+        "title": "설문 참여",
+        "description": "누구나 쉽게 투표에 참여하고 결과를 실시간 그래프로 즉시 확인"
+      },
+      {
+        "title": "설문 탐색",
+        "description": "인기 및 최신 설문 탭을 통해 웹 내의 다양한 트렌드 주제를 탐색"
+      },
+      {
+        "title": "의견 작성",
+        "description": "자유로운 댓글 소통 기능을 통해 설문 결과에 대한 깊이 있는 의견 공유"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "MongoDB",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "조현서",
+        "roleText": "Full Stack"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/12.png"
+  },
+  {
+    "catalogId": 13,
+    "serviceName": "AdMatch",
+    "boothSlot": "C3",
+    "experienceCategory": "network",
+    "description": "브랜드와 모델을 연결하는 광고 캠페인 매칭 플랫폼\n캠페인 등록부터 채팅·리뷰까지 협업을 한곳에서",
+    "features": [
+      {
+        "title": "광고&모델 등록",
+        "description": "광고 캠페인 정보와 모델 프로필을 등록해 매칭의 기반을 구성"
+      },
+      {
+        "title": "모델 지원",
+        "description": "모델이 원하는 광고를 탐색해 직접 지원하며 커리어를 주도적으로 설계"
+      },
+      {
+        "title": "구인 제안",
+        "description": "광고주가 적합한 모델을 발굴해 맞춤 제안을 보내는 역방향 캐스팅 기능"
+      },
+      {
+        "title": "채팅",
+        "description": "광고주와 모델이 매칭 후 협의를 플랫폼 내에서 직접 소통하며 조율"
+      }
+    ],
+    "stacks": [
+      "NestJS",
+      "NextJS",
+      "Docker",
+      "PostgreSQL",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "김효일",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "윤정후",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "임동혁",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "강재호",
+        "roleText": "Full Stack, Design"
+      },
+      {
+        "name": "정다운",
+        "roleText": "Back, DB"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/13.png"
+  },
+  {
+    "catalogId": 14,
+    "serviceName": "정명",
+    "boothSlot": "C4",
+    "experienceCategory": "network",
+    "description": "모호한 표현을 합의로 정리하고 토론의 기준 정의로 남기는 서비스",
+    "features": [
+      {
+        "title": "대상 선택",
+        "description": "단어, 문장, 주장 일부 선택"
+      },
+      {
+        "title": "합의안 생성",
+        "description": "선택한 표현의 정의 제안"
+      },
+      {
+        "title": "하위 토론",
+        "description": "세부 쟁점을 별도 토론으로 분리"
+      },
+      {
+        "title": "합의 진행",
+        "description": "제안된 정의에 대해 의견 교환"
+      },
+      {
+        "title": "기준 정의",
+        "description": "합의된 정의를 토론 기준으로 적용"
+      }
+    ],
+    "stacks": [
+      "NestJS",
+      "React",
+      "TypeScript",
+      "Supabase"
+    ],
+    "members": [
+      {
+        "name": "이현우",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "박진우",
+        "roleText": "Back"
+      },
+      {
+        "name": "한정훈",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/14.png"
+  },
+  {
+    "catalogId": 15,
+    "serviceName": "Star Spot",
+    "boothSlot": "C5",
+    "experienceCategory": "network",
+    "description": "좋아하는 아이돌을 선택해 아이돌이 다녀간 장소를 확인하고 해당 장소에서 아이돌과 함께 사진을 찍을 수 있는 웹서비스",
+    "features": [
+      {
+        "title": "장소 탐색",
+        "description": "아이돌별 방문 장소를 지도에서 확인하고, 클릭하면 상세 정보(홈/메뉴/리뷰/정보)를 제공"
+      },
+      {
+        "title": "코스 기능",
+        "description": "여러 장소를 묶어 나만의 코스를 생성"
+      },
+      {
+        "title": "즐겨찾기",
+        "description": "가고 싶은 장소를 저장하고 관련도순·거리순으로 정렬하여 방문 관리"
+      },
+      {
+        "title": "경로 안내",
+        "description": "현재 위치 기반으로 선택한 장소까지의 이동 경로를 제공"
+      },
+      {
+        "title": "리뷰",
+        "description": "같은 장소를 다녀온 팬들의 사진과 후기를 공유하며 커뮤니티 형성"
+      },
+      {
+        "title": "포토 프레임",
+        "description": "특정 장소 방문 시 아이돌 테마 프레임으로 사진 촬영 가능"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "VSCode",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "송민채",
+        "roleText": "Back"
+      },
+      {
+        "name": "기태연",
+        "roleText": "Front"
+      },
+      {
+        "name": "이세현",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "이상희",
+        "roleText": "Front"
+      },
+      {
+        "name": "이함한해",
+        "roleText": "Front, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/15.png"
+  },
+  {
+    "catalogId": 16,
+    "serviceName": "OVLY",
+    "boothSlot": "C6",
+    "experienceCategory": "network",
+    "description": "K-POP 팬들이 아티스트 관련 일정과 추억을 기록하고 \r\n공유할 수 있는 커뮤니티 기반 덕질 기록 웹서비스",
+    "features": [
+      {
+        "title": "일정 관리",
+        "description": "날짜를 선택하여 컴백, 콘서트, 팬미팅 등 덕질 일정을 직접 기록하고 관리"
+      },
+      {
+        "title": "기록 공유",
+        "description": "덕질 일기와 추억을 작성하여 다른 팬들과 공유하고 좋아요와 댓글로 소통"
+      },
+      {
+        "title": "팬 추천",
+        "description": "같은 아이돌을 좋아하는 팬들의 프로필을 추천하여 더욱 쉽게 친구를 만들고 소통"
+      },
+      {
+        "title": "기사 제공",
+        "description": "좋아하는 아이돌 관련 기사와 최근 K-POP 뉴스를 한눈에 확인"
+      },
+      {
+        "title": "미션 기능",
+        "description": "고정된 5가지 미션 시스템을 통해 꾸준하고 재미있는 덕질 활동을 유도"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "TypeScript",
+      "Express.js",
+      "MySQL",
+      "VSCode",
+      "Figma",
+      "Git",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "김주람",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "곽자경",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "조연주",
+        "roleText": "Front, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/16.png"
+  },
+  {
+    "catalogId": 17,
+    "serviceName": "모먼트인",
+    "boothSlot": "D1",
+    "experienceCategory": "personal",
+    "description": "신랑·신부가 직접 웨딩 페이지를 만들고, \r\n하객들과 사진·정보·추억을 공유할 수 있는 \n맞춤형 웨딩 이벤트 플랫폼입니다.",
+    "features": [
+      {
+        "title": "QR 접속",
+        "description": "하객이 별도 앱 설치 없이 QR 링크로 간편하게 참여"
+      },
+      {
+        "title": "페이지 커스텀",
+        "description": "일정, 안내 을 직접 꾸미고 관리 가능"
+      },
+      {
+        "title": "사진 업로드",
+        "description": "하객이 촬영한 결혼식 현장 사진을 실시간 공유"
+      },
+      {
+        "title": "방명록 작성",
+        "description": "카카오 인증을 통한 신랑·신부에게 축하 메시지 전달"
+      },
+      {
+        "title": "주변 정보 안내",
+        "description": "카페·편의시설 등 주변 시설 정보 제공"
+      },
+      {
+        "title": "라이브 스크린",
+        "description": "업로드된 사진을 예식장 화면에 실시간 송출"
+      },
+      {
+        "title": "좋아요 랭킹",
+        "description": "인기 사진 순위를 통해 하객 참여와 재미 요소 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "TypeScript",
+      "NestJS",
+      "PostgreSQL",
+      "Prisma",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "신채은",
+        "roleText": "Full Stack, Design"
+      },
+      {
+        "name": "전희진",
+        "roleText": "Back"
+      },
+      {
+        "name": "박재영",
+        "roleText": "Back"
+      },
+      {
+        "name": "이세현",
+        "roleText": "Front, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/17.png"
+  },
+  {
+    "catalogId": 18,
+    "serviceName": "더그아웃",
+    "boothSlot": "D2",
+    "experienceCategory": "personal",
+    "description": "응원은 열정적인데 기록·보상이 이어지지 않을 때 더그아웃이 출정·퀘스트·예측으로 팬 활동을 모읍니다.",
+    "features": [
+      {
+        "title": "출정",
+        "description": "경기일 응원 준비 완료, 하루 한 번 참여 인증"
+      },
+      {
+        "title": "퀘스트",
+        "description": "일일·경기일 미션 수행으로 포인트 적립"
+      },
+      {
+        "title": "예측",
+        "description": "승부·키플레이어 예측 참여와 결과 정산"
+      },
+      {
+        "title": "직관 체크인",
+        "description": "현장 방문 인증으로 추가 포인트 획득"
+      },
+      {
+        "title": "리워드",
+        "description": "적립 포인트로 기프티콘·굿즈 등 교환"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "NestJS",
+      "PostgreSQL",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "김효일",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤태민",
+        "roleText": "Back"
+      },
+      {
+        "name": "윤정후",
+        "roleText": "Back"
+      },
+      {
+        "name": "장시후",
+        "roleText": "Back"
+      },
+      {
+        "name": "박준원",
+        "roleText": "Full Stack"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/18.png"
+  },
+  {
+    "catalogId": 19,
+    "serviceName": "애인 사주오!",
+    "boothSlot": "D3",
+    "experienceCategory": "personal",
+    "description": "단순히 사주와 관상만 보는 서비스가 아닌 \n가상캐릭터와 네컷사진을 통해 재미를 선사해주는 서비스",
+    "features": [
+      {
+        "title": "정보 입력",
+        "description": "이름, 사주 정보(생년월일, 태어난 시간 및 도시)와 성별을 입력하는 기능"
+      },
+      {
+        "title": "얼굴 분석",
+        "description": "촬영한 사용자 얼굴 이미지를 기반으로 AI 관상 분석 결과 제공"
+      },
+      {
+        "title": "성격 분석",
+        "description": "간단한 3문항의 성격 테스트를 통해 사용자의 연애 성향 데이터 생성"
+      },
+      {
+        "title": "연인 매칭",
+        "description": "사용자 사주 및 성향을 기반으로 최적의 가상 애인(캐릭터) 프로필 생성"
+      },
+      {
+        "title": "종합 궁합",
+        "description": "연인과의 종합 점수, 연애 스타일, 사주 및 관상 궁합 등 상세 해석 출력"
+      },
+      {
+        "title": "프레임 촬영",
+        "description": "생성된 AI 연인 캐릭터 프레임과 함께 인생네컷 스타일 사진 촬영 기능"
+      },
+      {
+        "title": "결과 전송",
+        "description": "최종 분석 리포트와 네컷사진 결과물을 사용자 이메일로 발송하는 기능"
+      }
+    ],
+    "stacks": [
+      "React",
+      "NestJS",
+      "TypeScript",
+      "Node.js",
+      "MySQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "김민재",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "임소영",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤태민",
+        "roleText": "Back"
+      },
+      {
+        "name": "임채이",
+        "roleText": "Front"
+      },
+      {
+        "name": "김예인",
+        "roleText": "Design"
+      },
+      {
+        "name": "이서현",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/19.png"
+  },
+  {
+    "catalogId": 20,
+    "serviceName": "Ribumi",
+    "boothSlot": "D4",
+    "experienceCategory": "personal",
+    "description": "도서와 영화·드라마·연극 등의 \r\n원작 및 관련 작품 정보를 연결하고\r\n감상 기록과 리뷰 작성을 돕는 서비스",
+    "features": [
+      {
+        "title": "통합 검색",
+        "description": "도서·영화·드라마·연극 제목 검색으로 관련 작품 정보 제공"
+      },
+      {
+        "title": "감상 기록",
+        "description": "작품별 리뷰와 감상평을 작성하고 나만의 기록 저장"
+      },
+      {
+        "title": "추천 기능",
+        "description": "찜한 작품과 감상 기록 기반으로 관련 작품 추천"
+      },
+      {
+        "title": "상세 정보",
+        "description": "줄거리·저자·출판 정보와 콘텐츠화 여부 확인 가능"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Supabase",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "이서영",
+        "roleText": "Front"
+      },
+      {
+        "name": "강서현",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "김설애",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/20.png"
+  },
+  {
+    "catalogId": 21,
+    "serviceName": "Mikura",
+    "boothSlot": "D5",
+    "experienceCategory": "personal",
+    "description": "일본 프리쿠라 스타일의 사진을 촬영하고\r\n다양한 꾸미기 기능으로 완성하는 포토 서비스",
+    "features": [
+      {
+        "title": "프리쿠라 촬영",
+        "description": "일본 프리쿠라 스타일의 사진 촬영 및 프레임 적용 기능 제공"
+      },
+      {
+        "title": "자유 꾸미기",
+        "description": "스티커와 펜 기능으로 사진을 자유롭게 꾸밀 수 있는 기능 제공"
+      },
+      {
+        "title": "QR 다운로드",
+        "description": "완성된 사진을 QR로 간편하게 저장 및 다운로드 가능"
+      },
+      {
+        "title": "포토북 전시",
+        "description": "촬영한 사진을 모아 포토북 형태로 기록 및 전시 가능"
+      }
+    ],
+    "stacks": [
+      "React",
+      "NestJS",
+      "TypeScript",
+      "MySQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "신채은",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "조현진",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "전누리",
+        "roleText": "Design"
+      },
+      {
+        "name": "정수민",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/21.png"
+  },
+  {
+    "catalogId": 22,
+    "serviceName": "이상형.zip",
+    "boothSlot": "D6",
+    "experienceCategory": "personal",
+    "description": "제스처 기반 이상형 월드컵 서비스",
+    "features": [
+      {
+        "title": "제스처 투표",
+        "description": "손을 좌우로 흔들어 클릭 없이 아이돌 선택"
+      },
+      {
+        "title": "조건 필터",
+        "description": "키·성별·나이 등 5가지 조건으로 맞춤 대진표 구성"
+      },
+      {
+        "title": "QR 공유",
+        "description": "결과 페이지 QR 코드로 즉시 저장 및 공유"
+      },
+      {
+        "title": "방명록",
+        "description": "닉네임과 한 줄 메시지로 결과를 다른 팬과 공유"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Vite",
+      "MediaPipe Hands",
+      "Node.js",
+      "Supabase",
+      "Python",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "이상희",
+        "roleText": "Full Stack"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/22.png"
+  },
+  {
+    "catalogId": 23,
+    "serviceName": "쁘이",
+    "boothSlot": "E1",
+    "experienceCategory": "creative",
+    "description": "랜덤 이모지를 따라하고 추억을 남기는 표정 게임 서비스",
+    "features": [
+      {
+        "title": "솔로 모드",
+        "description": "제한 시간 안에 랜덤으로 등장하는 표정을 따라하며 기록에 도전하는 타임어택 모드"
+      },
+      {
+        "title": "멀티 모드",
+        "description": "사용자 간 실시간으로 표정을 따라 하며 점수를 경쟁하는 대전 모드"
+      },
+      {
+        "title": "망한샷 및 인생네컷",
+        "description": "게임 중 재미있는 순간을 자동 캡처하여 인생네컷 형태의 결과 사진 제공"
+      },
+      {
+        "title": "AR 필터 및 공유",
+        "description": "다양한 AR 필터를 적용한 사진 촬영 및 QR·SNS 공유 기능 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Flask",
+      "SQLite",
+      "MediaPipe Face Landmarker"
+    ],
+    "members": [
+      {
+        "name": "정희진",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤건",
+        "roleText": "Back"
+      },
+      {
+        "name": "우지영",
+        "roleText": "Front"
+      },
+      {
+        "name": "박홍준",
+        "roleText": "Back, AI"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/23.png"
+  },
+  {
+    "catalogId": 24,
+    "serviceName": "Feed or Protect",
+    "boothSlot": "E2",
+    "experienceCategory": "creative",
+    "description": "인간에게 패배해 밀려난 뱀파이어 사회를 배경으로, 길 잃은 인간 아이와 뱀파이어의 동행을 담은 스토리 게임.",
+    "features": [
+      {
+        "title": "스토리 진행",
+        "description": "선택에 따라 이야기가 변화"
+      },
+      {
+        "title": "멀티 엔딩",
+        "description": "배드엔딩과 최종엔딩 제공"
+      },
+      {
+        "title": "대화형 플레이",
+        "description": "캐릭터 중심 스토리 진행"
+      },
+      {
+        "title": "세계관 연출",
+        "description": "음지 속 뱀파이어 사회 구현"
+      },
+      {
+        "title": "감성 서사",
+        "description": "인간과 뱀파이어의 관계 표현"
+      }
+    ],
+    "stacks": [
+      "Node.js",
+      "React",
+      "Github",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "위은서",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "조연주",
+        "roleText": "Back, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/24.png"
+  },
+  {
+    "catalogId": 25,
+    "serviceName": "세바스찬",
+    "boothSlot": "E3",
+    "experienceCategory": "creative",
+    "description": "관람객이 직접 그린 물고기로 하나의 바다를 만드는 전시 서비스",
+    "features": [
+      {
+        "title": "드로잉",
+        "description": "아이패드에서 직접 물고기를 그리고 이름과 함께 물고기 생성"
+      },
+      {
+        "title": "전시",
+        "description": "생성된 물고기가 전시 화면 속 바다에 등장"
+      }
+    ],
+    "stacks": [
+      "React",
+      "TypeScript",
+      "Express.js",
+      "Node.js",
+      "MongoDB",
+      "VSCode",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "정희진",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤성연",
+        "roleText": "Front"
+      },
+      {
+        "name": "정예서",
+        "roleText": "Back"
+      },
+      {
+        "name": "윤건",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "한지연",
+        "roleText": "Front, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/25.png"
+  },
+  {
+    "catalogId": 26,
+    "serviceName": "Who is criminal?",
+    "boothSlot": "E4",
+    "experienceCategory": "creative",
+    "description": "제공된 단서를 조합해보며 미림마이스터고에서 일어난 사건의 범인이 누군지 추리하는 게임",
+    "features": [
+      {
+        "title": "증거 확인",
+        "description": "사건 현장 증거와 피해자와 용의자 4명 중 한명을 선택해 증거를 확인"
+      },
+      {
+        "title": "용의자 심문",
+        "description": "용의자 중 한명을 선택해 질문 하나를 선택해 심문"
+      },
+      {
+        "title": "최종 선택",
+        "description": "제공된 모든 단서를 조합해 최종적으로 범인 같은 사람 한명을 선택"
+      },
+      {
+        "title": "랭킹",
+        "description": "가장 빨리 정답을 맞힌 탐정 순서대로 랭킹에 기재"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "기태연",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "김이레",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "송민채",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "이함한해",
+        "roleText": "Back, DB"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/26.png"
+  },
+  {
+    "catalogId": 27,
+    "serviceName": "404 Not Found",
+    "boothSlot": "E5",
+    "experienceCategory": "creative",
+    "description": "사건 현장의 증거를 찾아 치밀한 추리를 바탕으로 단 한 명의 진범을 검거하는 게임",
+    "features": [
+      {
+        "title": "오브젝트 탐색",
+        "description": "화면 속 물건을 클릭하며 단서 수집"
+      },
+      {
+        "title": "엔딩 연출",
+        "description": "범인 추리 성공 시 엔딩 영상 및 결과 제공"
+      },
+      {
+        "title": "랭킹 시스템",
+        "description": "클리어 기록과 순위를 저장 및 확인"
+      },
+      {
+        "title": "실시간 타이머",
+        "description": "제한 시간 안에 탈출 도전 가능"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "NestJS",
+      "MySQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "장시후",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "한지연",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "강서현",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "박재영",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "김민재",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "전유림",
+        "roleText": "Back"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/27.png"
+  },
+  {
+    "catalogId": 28,
+    "serviceName": "NewbieQuest",
+    "boothSlot": "E6",
+    "experienceCategory": "creative",
+    "description": "현실 직장 상황을 게임으로 체험하는 오피스 시뮬레이션 게임",
+    "features": [
+      {
+        "title": "AI 상사",
+        "description": "플레이어에게 랜덤 업무를 지시하고, 대화를 통해 상황 판단 선택지를 제공"
+      },
+      {
+        "title": "상황 대처 선택",
+        "description": "상사와의 대화 속에서 숨은 의도를 파악하고 적절한 답변 선택"
+      },
+      {
+        "title": "평가 및 결과",
+        "description": "업무 수행도와 선택 결과를 종합하여 단계별 평가 제공"
+      }
+    ],
+    "stacks": [
+      "Java",
+      "C#",
+      "Spring Boot",
+      "Unity",
+      "MySQL",
+      "IntelliJ",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "전희진",
+        "roleText": "Front, Design"
+      },
+      {
+        "name": "임지유",
+        "roleText": "Full Stack, Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/28.png"
+  },
+  {
+    "catalogId": 29,
+    "serviceName": "WIP",
+    "boothSlot": "F1",
+    "experienceCategory": "journey",
+    "description": "코드를 둘러싼 대화와 작업 과정을 중심으로 한 채팅 기반 협업 서비스",
+    "features": [
+      {
+        "title": "AI 상사",
+        "description": "플레이어에게 랜덤 업무를 지시하고, 대화를 통해 상황 판단 선택지를 제공"
+      },
+      {
+        "title": "상황 대처 선택",
+        "description": "상사와의 대화 속에서 숨은 의도를 파악하고 적절한 답변 선택"
+      },
+      {
+        "title": "평가 및 결과",
+        "description": "업무 수행도와 선택 결과를 종합하여 단계별 평가 제공"
+      }
+    ],
+    "stacks": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "JavaScript",
+      "GitHub",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "김승주",
+        "roleText": "Design"
+      },
+      {
+        "name": "조원빈",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤다경",
+        "roleText": "Back, DB"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/29.png"
+  },
+  {
+    "catalogId": 30,
+    "serviceName": "시장여지도",
+    "boothSlot": "F2",
+    "experienceCategory": "journey",
+    "description": "전통 시간 내부(구역,점포,품목)을 디지털화하고, 실시간 마감 특가를 예약, 픽업 거래로 연결하는 하이퍼로컬 커머스 플랫폼",
+    "features": [
+      {
+        "title": "위치 기반 탐색",
+        "description": "사용자 위치를 중심으로 전통시장 지도, 점포 목록 및 판매 상품 상세 정보를 직관적으로 제공"
+      },
+      {
+        "title": "간편 정보 등록",
+        "description": "음성 인식 입력과 등록 대행 서비스를 도입하여 디지털 소외 상인들도 쉽게 점포 및 상품 정보를 업로드"
+      },
+      {
+        "title": "스마트 예약/배달",
+        "description": "노쇼 방지 보증금 결제 기반의 예약 시스템과 ESG 관점의 전통시장 연계형 배달 서비스를 구축"
+      },
+      {
+        "title": "단골 및 소통 관리",
+        "description": "고객 참여형 정보 업데이트 시스템과 상인들의 리텐션(재방문율) 강화를 위한 단골 고객 관리 기능 제공"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "NestJS",
+      "PostgreSQL",
+      "VSCode",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "박준원",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "이민준",
+        "roleText": "Front"
+      },
+      {
+        "name": "육준성",
+        "roleText": "Front"
+      },
+      {
+        "name": "강재호",
+        "roleText": "Back"
+      },
+      {
+        "name": "임동혁",
+        "roleText": "Back"
+      },
+      {
+        "name": "정다운",
+        "roleText": "Back"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/30.png"
+  },
+  {
+    "catalogId": 31,
+    "serviceName": "Artifact",
+    "boothSlot": "F3",
+    "experienceCategory": "journey",
+    "description": "Artifact는 개발자와 디자이너가 자신의 작품을 전시하고 공유하는 포트폴리오 웹 플랫폼",
+    "features": [
+      {
+        "title": "포트폴리오 등록",
+        "description": "메인 이미지, 개발 기간, 팀원, 기술 스택 등 프로젝트의 정보를 한 번에 등록"
+      },
+      {
+        "title": "카테고리 탐색",
+        "description": "카테고리별로 필터링하여 원하는 포트폴리오를 빠르게 탐색"
+      },
+      {
+        "title": "서비스 실행",
+        "description": "웹 접속, 앱 스토어 이동, 게임 파일 다운로드 등 카테고리에 맞게 실행"
+      },
+      {
+        "title": "마이페이지 관리",
+        "description": "내 포트폴리오를 한곳에서 조회, 수정, 삭제까지 간편하게 관리"
+      }
+    ],
+    "stacks": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "PostgreSQL",
+      "Supabase",
+      "Vite"
+    ],
+    "members": [
+      {
+        "name": "장경준",
+        "roleText": "Front"
+      },
+      {
+        "name": "김태환",
+        "roleText": "Full Stack, Design"
+      },
+      {
+        "name": "김태현",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/31.png"
+  },
+  {
+    "catalogId": 32,
+    "serviceName": "체크잇",
+    "boothSlot": "F4",
+    "experienceCategory": "journey",
+    "description": "학교 분실물을 사진으로 미리 확인할 수 있는 웹서비스. 불필요한 교무실 방문없이 온라인으로 분실물을 조회합니다",
+    "features": [
+      {
+        "title": "사진 조회",
+        "description": "분실물 사진을 통해 센터 방문 전 온라인으로 미리 확인"
+      },
+      {
+        "title": "상태 필터",
+        "description": "보관 중 / 수령 완료 상태를 필터링하여 불필요한 탐색 제거"
+      },
+      {
+        "title": "학교 검색",
+        "description": "학교 이름으로 해당 학교의 분실물 목록만 빠르게 조회"
+      },
+      {
+        "title": "게시물 관리",
+        "description": "관리자가 사진·발견 장소·특징을 등록하여 게시물 생성"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Express",
+      "Figma",
+      "Git",
+      "GitHub"
+    ],
+    "members": [
+      {
+        "name": "김주람",
+        "roleText": "Back, Design"
+      },
+      {
+        "name": "윤서우",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "조원빈",
+        "roleText": "Front"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/32.png"
+  },
+  {
+    "catalogId": 33,
+    "serviceName": "Plank",
+    "boothSlot": "F5",
+    "experienceCategory": "journey",
+    "description": "팀 혹은 프로젝트 단위로 일정과 할 일을 쉽게 관리하는 웹 서비스",
+    "features": [
+      {
+        "title": "프로젝트 생성",
+        "description": "일정을 관리할 프로젝트를 생성하고, 팀원을 초대하여 협업 환경을 구성"
+      },
+      {
+        "title": "프로젝트 관리",
+        "description": "현재 진행 중인 프로젝트 목록을 한눈에 확인하고, 각 프로젝트의 진행 상황을 손쉽게 파악"
+      },
+      {
+        "title": "채팅",
+        "description": "프로젝트 팀원 혹은 친구 추가한 사용자와 실시간 소통"
+      },
+      {
+        "title": "일정",
+        "description": "프로젝트별 일정을 달력 형태로 한눈에 확인하고, 체계적으로 관리"
+      },
+      {
+        "title": "피드백",
+        "description": "일정과 팀별 할 일에 피드백을 남기고, 팀원과 빠르게 의견 교환"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Oracle",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "윤건",
+        "roleText": "Front"
+      },
+      {
+        "name": "장시후",
+        "roleText": "Front"
+      },
+      {
+        "name": "박재영",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "윤다경",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "박미주",
+        "roleText": "Design"
+      },
+      {
+        "name": "이민지",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/33.png"
+  },
+  {
+    "catalogId": 34,
+    "serviceName": "Mirim OAuth",
+    "boothSlot": "F6",
+    "experienceCategory": "journey",
+    "description": "미림마이스터고 OAuth는 교내 서비스에서 계정 인증과 사용자 정보 연동을 지원하는 서비스입니다.",
+    "features": [
+      {
+        "title": "로그인 인증",
+        "description": "미림 계정으로 교내 서비스에 간편 로그인"
+      },
+      {
+        "title": "권한 동의",
+        "description": "서비스가 요청한 정보 제공 범위를 확인 후 승인"
+      },
+      {
+        "title": "정보 연동",
+        "description": "이메일, 이름, 전공, 학년 등 사용자 정보 제공"
+      },
+      {
+        "title": "토큰 검증",
+        "description": "발급된 토큰으로 안전하게 사용자 인증 확인"
+      }
+    ],
+    "stacks": [
+      "React",
+      "NestJS",
+      "PostgreSQL",
+      "Elasticsearch",
+      "Redis",
+      "TypeScript",
+      "Kubernetes",
+      "Ubuntu",
+      "Docker"
+    ],
+    "members": [
+      {
+        "name": "유성윤",
+        "roleText": "Full Stack"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/34.png"
+  },
+  {
+    "catalogId": 35,
+    "serviceName": "Growvy",
+    "boothSlot": "G1",
+    "experienceCategory": "global",
+    "description": "호주 Gap Year 청년들이 다양한 경험을 통해 자신의 적성을 발견하고 기록하는 구인구직 서비스",
+    "features": [],
+    "stacks": [
+      "Flutter",
+      "Spring",
+      "PostgreSQL",
+      "Firebase",
+      "Ubuntu",
+      "Docker"
+    ],
+    "members": [
+      {
+        "name": "전유림",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "지수민",
+        "roleText": "Front"
+      },
+      {
+        "name": "문지우",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/35.png"
+  },
+  {
+    "catalogId": 36,
+    "serviceName": "Trustay",
+    "boothSlot": "G2",
+    "experienceCategory": "global",
+    "description": "호주 생활을 시작하는 유학생 및 워킹홀리데이 청년들을 위한 신뢰 중심 쉐어하우스 통합 서비스",
+    "features": [
+      {
+        "title": "매물 탐색",
+        "description": "지도 검색과 후기 및 평점 기반 매물 조회"
+      },
+      {
+        "title": "안전 계약",
+        "description": "계약서 OCR 인식 및 PDF 변환·암호화 저장 지원"
+      },
+      {
+        "title": "하우스 커뮤니티",
+        "description": "공지 공유와 입주자 간 소통 기능 지원"
+      },
+      {
+        "title": "소셜 커뮤니티",
+        "description": "관심사 기반 자유 게시글 및 정보 공유"
+      },
+      {
+        "title": "금전 관리",
+        "description": "공과금·월세 자동이체 및 더치페이 지원"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "Spring Boot",
+      "GitHub",
+      "JPA",
+      "MySQL",
+      "Ubuntu",
+      "Docker"
+    ],
+    "members": [
+      {
+        "name": "윤성연",
+        "roleText": "Front"
+      },
+      {
+        "name": "민정원",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "김예인",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/36.png"
+  },
+  {
+    "catalogId": 37,
+    "serviceName": "WorkIt",
+    "boothSlot": "G3",
+    "experienceCategory": "global",
+    "description": "호주 현지 고용주와 워킹홀리데이 참가자를 연결하는 신뢰 기반 구인구직 및 급여 관리 플랫폼",
+    "features": [
+      {
+        "title": "채용 관리",
+        "description": "공고 등록과 지원자 정보를 효율적으로 관리 지원"
+      },
+      {
+        "title": "맞춤 추천",
+        "description": "사용자 조건에 맞는 적합한 일자리를 추천 제공"
+      },
+      {
+        "title": "이력서 작성",
+        "description": "필요한 정보를 입력해 빠르게 이력서 작성"
+      },
+      {
+        "title": "급여 관리",
+        "description": "급여 기록과 지급일 정보를 손쉽게 확인"
+      },
+      {
+        "title": "환율 확인",
+        "description": "실시간 환율 정보와 변동 내용을 빠르게 제공"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "Spring Boot",
+      "MySQL",
+      "Ubuntu",
+      "Docker",
+      "VSCode",
+      "IntelliJ"
+    ],
+    "members": [
+      {
+        "name": "이상연",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "이효은",
+        "roleText": "Front"
+      },
+      {
+        "name": "박미주",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/37.png"
+  },
+  {
+    "catalogId": 38,
+    "serviceName": "RooT",
+    "boothSlot": "G4",
+    "experienceCategory": "global",
+    "description": "중고거래와 개러지 세일을 지원 및 커뮤니티 기능을 통해 지역 기반의 문화 연결 서비스",
+    "features": [
+      {
+        "title": "위치 기반 조회",
+        "description": "사용자 위치 기반의 직관적 주변 개러지 세일 및 중고 거래 검색"
+      },
+      {
+        "title": "상품 미리보기 및 예약",
+        "description": "주최자가 게시한 상품을 미리보고 예약 및 1대1 메시지"
+      },
+      {
+        "title": "이웃 커뮤니티",
+        "description": "카테고리에 대한 모임, 일상 공유를 통한 문화 교류, 소통"
+      },
+      {
+        "title": "신뢰도 시스템",
+        "description": "모든 사용자의 신뢰도를 리뷰로 남겨서 안전한 거래 촉진"
+      }
+    ],
+    "stacks": [
+      "Flutter",
+      "Spring",
+      "PostgreSQL",
+      "Elasticsearch",
+      "Redis",
+      "Ubuntu",
+      "Docker",
+      "kubernetes",
+      "Github",
+      "VSCode",
+      "IntelliJ"
+    ],
+    "members": [
+      {
+        "name": "유성윤",
+        "roleText": "Full Stack"
+      },
+      {
+        "name": "곽자경",
+        "roleText": "Back"
+      },
+      {
+        "name": "신인서",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/38.png"
+  },
+  {
+    "catalogId": 39,
+    "serviceName": "토모랑",
+    "boothSlot": "G5",
+    "experienceCategory": "global",
+    "description": "일본의 소도시로의 여행을 계획하는 사람들을 위한 가이드 매칭 여행 플랫폼",
+    "features": [
+      {
+        "title": "여행 확인",
+        "description": "가이드가 등록한 코스 정보를 확인 및 예약"
+      },
+      {
+        "title": "실시간 채팅",
+        "description": "예약이 확정된 가이드와 채팅을 통한 정보공유"
+      },
+      {
+        "title": "지도",
+        "description": "현재 위치를 중심으로 장소별 투어 확인"
+      },
+      {
+        "title": "카테고리별 분류",
+        "description": "카테고리별 추천 코스 확인"
+      },
+      {
+        "title": "활동 기록",
+        "description": "마이페이지를 통한 설정,관심코스,활동내역 확인"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Spring Boot",
+      "MySQL",
+      "GitHub",
+      "VSCode",
+      "IntelliJ"
+    ],
+    "members": [
+      {
+        "name": "한지연",
+        "roleText": "Front"
+      },
+      {
+        "name": "윤시웅",
+        "roleText": "Front"
+      },
+      {
+        "name": "임동혁",
+        "roleText": "Back"
+      },
+      {
+        "name": "주다인",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/39.png"
+  },
+  {
+    "catalogId": 40,
+    "serviceName": "PuranPuran",
+    "boothSlot": "G6",
+    "experienceCategory": "global",
+    "description": "여행 계획이 힘들고 가계부 작성이 어려운 사람을 위해 개인화된 AI가 계획과 소비 내역을 뚝딱 계산해주는 서비스",
+    "features": [
+      {
+        "title": "여행 관리",
+        "description": "사용자가 여행을 시작하고 기록하여 관리"
+      },
+      {
+        "title": "플래너 생성",
+        "description": "AI가 사용자가 원하는 방식의 계획 생성"
+      },
+      {
+        "title": "영수증 인식",
+        "description": "영수증을 촬영하여 자동으로 소비 내역 작성"
+      },
+      {
+        "title": "소비 분석",
+        "description": "카메라로 영수증을 분석하여 소비 내역 관리"
+      },
+      {
+        "title": "환율 정보",
+        "description": "현재 환율과, 전날의 환율을 비교하여 출력"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "NestJS",
+      "TypeScript",
+      "MySQL",
+      "VSCode"
+    ],
+    "members": [
+      {
+        "name": "김민재",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "신채은",
+        "roleText": "Front"
+      },
+      {
+        "name": "전누리",
+        "roleText": "Design"
+      },
+      {
+        "name": "정수민",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/40.png"
+  },
+  {
+    "catalogId": 41,
+    "serviceName": "Mytsuri",
+    "boothSlot": "G7",
+    "experienceCategory": "global",
+    "description": "일본 여행·축제 정보가 많아 무엇을 골라야 할지 막막한 사람을 위해\r설문 기반 추천과 지도·검색으로 축제를 찾고 리스트로 정리해 주는 서비스",
+    "features": [
+      {
+        "title": "축제 탐색",
+        "description": "카테고리·도시·검색·지도 필터로 원하는 축제 발견"
+      },
+      {
+        "title": "맞춤 추천",
+        "description": "온보딩 설문을 반영한 축제 추천과 인기·리뷰 정보 제공"
+      },
+      {
+        "title": "리스트 관리",
+        "description": "나만의 리스트 생성·편집, 축제 추가·북마크·공개 설정"
+      },
+      {
+        "title": "함께 정리",
+        "description": "리스트 협업 초대, 알림으로 수락·거절 및 공동 편집"
+      },
+      {
+        "title": "리뷰·상세",
+        "description": "축제 상세 정보 확인, 별점·후기 작성·조회·리뷰 수정"
+      }
+    ],
+    "stacks": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB"
+    ],
+    "members": [
+      {
+        "name": "김효일",
+        "roleText": "Front"
+      },
+      {
+        "name": "조현서",
+        "roleText": "Back, DB"
+      },
+      {
+        "name": "송지아",
+        "roleText": "Design"
+      },
+      {
+        "name": "송채린",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/projects/41.png"
+  }
+]

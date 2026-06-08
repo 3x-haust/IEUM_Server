@@ -13,6 +13,30 @@ export class ProjectListQueryDto extends CursorPaginationDto {
   @IsOptional()
   @IsString()
   stack?: string;
+
+  @ApiPropertyOptional({ example: 'global' })
+  @IsOptional()
+  @IsString()
+  category?: string;
+}
+
+export class ProjectStackGroupResponseDto {
+  @ApiProperty({ example: 'Language' })
+  category: string;
+
+  @ApiProperty({ example: '#5B8DEF' })
+  color: string;
+
+  @ApiProperty({ type: [String], example: ['TypeScript', 'JavaScript'] })
+  items: string[];
+}
+
+export class ProjectFeatureDescriptionResponseDto {
+  @ApiProperty({ example: '프리쿠라 촬영' })
+  title: string;
+
+  @ApiProperty({ example: '일본 프리쿠라 스타일의 사진 촬영 및 프레임 적용 기능 제공' })
+  description: string;
 }
 
 export class ProjectSummaryResponseDto {
@@ -31,11 +55,26 @@ export class ProjectSummaryResponseDto {
   @ApiProperty({ nullable: true, example: 'https://cdn.example.com/project.png' })
   thumbnailUrl: string | null;
 
+  @ApiProperty({ nullable: true, example: '/assets/projects/35.png' })
+  thumbnailPath: string | null;
+
+  @ApiProperty({ nullable: true, example: 'global' })
+  experienceCategory: string | null;
+
+  @ApiProperty({ nullable: true, example: 'G1' })
+  boothSlot: string | null;
+
   @ApiProperty({ type: [String], example: ['NestJS', 'PostgreSQL'] })
   developmentStacks: string[];
 
   @ApiProperty({ type: [String], example: ['Figma'] })
   designStacks: string[];
+
+  @ApiProperty({ type: [ProjectStackGroupResponseDto] })
+  stackGroups: ProjectStackGroupResponseDto[];
+
+  @ApiProperty({ type: [ProjectFeatureDescriptionResponseDto] })
+  featureDescriptions: ProjectFeatureDescriptionResponseDto[];
 
   @ApiProperty({ example: true })
   isPublished: boolean;

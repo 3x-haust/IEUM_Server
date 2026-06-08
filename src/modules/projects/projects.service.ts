@@ -99,8 +99,11 @@ export class ProjectsService {
     }
     if (query.search) {
       qb.andWhere(new Brackets((nested) => {
-        nested.where('project.serviceName ILIKE :search', { search: `%${query.search}%` }).orWhere('project.teamName ILIKE :search', { search: `%${query.search}%` }).orWhere('project.description ILIKE :search', { search: `%${query.search}%` });
+        nested.where('project.serviceName ILIKE :search', { search: `%${query.search}%` }).orWhere('project.teamName ILIKE :search', { search: `%${query.search}%` }).orWhere('project.description ILIKE :search', { search: `%${query.search}%` }).orWhere('project.boothSlot ILIKE :search', { search: `%${query.search}%` });
       }));
+    }
+    if (query.category) {
+      qb.andWhere('project.experienceCategory = :category', { category: query.category });
     }
     if (query.stack) {
       qb.andWhere('(:stack = ANY(project.developmentStacks) OR :stack = ANY(project.designStacks))', { stack: query.stack });
@@ -120,9 +123,14 @@ export class ProjectsService {
       serviceName: project.serviceName,
       teamName: project.teamName,
       description: project.description,
-      thumbnailUrl: project.thumbnailFile?.publicUrl ?? null,
+      thumbnailUrl: project.thumbnailFile?.publicUrl ?? project.thumbnailPath,
+      thumbnailPath: project.thumbnailPath,
+      experienceCategory: project.experienceCategory,
+      boothSlot: project.boothSlot,
       developmentStacks: project.developmentStacks,
       designStacks: project.designStacks,
+      stackGroups: project.stackGroups,
+      featureDescriptions: project.featureDescriptions,
       isPublished: project.isPublished,
       feedbackCount: counts.feedbackCount,
       contactCount: counts.contactCount,

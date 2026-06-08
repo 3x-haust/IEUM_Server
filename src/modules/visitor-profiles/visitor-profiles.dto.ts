@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEmail, IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
 import { AgeGroup, VisitorType } from '../../database/entities';
 
 export class CreateVisitorProfileDto {
@@ -10,6 +10,34 @@ export class CreateVisitorProfileDto {
   @ApiProperty({ enum: VisitorType })
   @IsEnum(VisitorType)
   visitorType: VisitorType;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @Length(1, 100)
+  ocrName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @Length(1, 150)
+  ocrOrganization?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @Length(1, 100)
+  ocrPosition?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEmail()
+  ocrEmail?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Matches(/^[0-9+\-\s()]{8,20}$/)
+  ocrPhone?: string;
 }
 
 export class VisitorProfileResponseDto {
