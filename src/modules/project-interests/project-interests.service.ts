@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
 import { hashIp } from '../../common/utils/ip-hash';
@@ -28,7 +28,14 @@ export class ProjectInterestsService {
     await this.projects.findProject(projectId, true);
     const ipHash = hashIp(ip);
     if (ipHash) {
-      await this.rateLimit.enforce(`ratelimit:project-interest:${ipHash}`, 30, 60);
+      try {
+        await this.rateLimit.enforce(`ratelimit:project-interest:${ipHash}`, 30, 60);
+      } catch (error) {
+        if (error instanceof HttpException) {
+          throw error;
+        }
+        this.logger.warn(`Project interest rate limit check failed for ${projectId}: ${readErrorMessage(error)}`);
+      }
       const existing = await this.interests.findOne({ where: { projectId, ipHash } });
       if (existing) {
         return this.toResult(projectId, true);
@@ -62,10 +69,24 @@ export class ProjectInterestsService {
   }
 
   private isUniqueViolation(error: unknown): boolean {
-    return error instanceof QueryFailedError && (error.driverError as { code?: string } | undefined)?.code === '23505';
+    return getDriverErrorCode(error) === '23505';
   }
 }
 
 function readErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Unknown error';
+}
+
+function getDriverErrorCode(error: unknown): string | undefined {
+  if (error instanceof QueryFailedError) {
+    return (error.driverError as { code?: string } | undefined)?.code;
+  }
+  if (typeof error !== 'object' || error === null || !('driverError' in error)) {
+    return undefined;
+  }
+  const driverError = (error as { driverError?: unknown }).driverError;
+  if (typeof driverError !== 'object' || driverError === null || !('code' in driverError)) {
+    return undefined;
+  }
+  return typeof driverError.code === 'string' ? driverError.code : undefined;
 }

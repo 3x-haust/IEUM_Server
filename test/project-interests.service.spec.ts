@@ -65,4 +65,28 @@ describe('ProjectInterestsService', () => {
     expect(events.publish).not.toHaveBeenCalled();
     expect(result).toEqual({ projectId, interestCount: 1, alreadyInterested: true });
   });
+
+  it('continues creating an interest when rate limit storage is unavailable', async () => {
+    const { service, interests, rateLimit } = createService();
+    rateLimit.enforce.mockRejectedValue(new Error('redis unavailable'));
+    interests.findOne.mockResolvedValue(null);
+    interests.save.mockResolvedValue({ id: 'interest-id', projectId });
+    interests.count.mockResolvedValue(1);
+
+    const result = await service.create(projectId, '127.0.0.1', 'Mozilla/5.0');
+
+    expect(interests.save).toHaveBeenCalled();
+    expect(result).toEqual({ projectId, interestCount: 1, alreadyInterested: false });
+  });
+
+  it('treats database duplicate errors as an existing interest', async () => {
+    const { service, interests } = createService();
+    interests.findOne.mockResolvedValue(null);
+    interests.save.mockRejectedValue({ driverError: { code: '23505' } });
+    interests.count.mockResolvedValue(1);
+
+    const result = await service.create(projectId, '127.0.0.1', 'Mozilla/5.0');
+
+    expect(result).toEqual({ projectId, interestCount: 1, alreadyInterested: true });
+  });
 });
