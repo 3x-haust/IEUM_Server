@@ -5,6 +5,8 @@ export interface MirimUserPayload {
   email: string;
   nickname?: string;
   name?: string;
+  profileImageUrl?: string;
+  profile_image_url?: string;
   role?: string;
   major?: string;
   grade?: string | number;
@@ -17,6 +19,7 @@ export interface VerifiedUserPayload {
   oauthId: string;
   name: string;
   email: string;
+  profileImageUrl: string | null;
   role: UserRole;
   grade: number | null;
 }

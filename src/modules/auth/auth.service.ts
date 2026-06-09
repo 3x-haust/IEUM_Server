@@ -99,6 +99,7 @@ export class AuthService {
       oauthId: payload.oauthId,
       name: payload.name,
       email: payload.email,
+      profileImageUrl: payload.profileImageUrl,
       role: payload.role
     });
     return this.users.save(user);
@@ -159,6 +160,7 @@ export class AuthService {
       oauthId,
       name: mirimUser.nickname ?? mirimUser.name ?? mirimUser.email,
       email: mirimUser.email,
+      profileImageUrl: mirimUser.profileImageUrl ?? mirimUser.profile_image_url ?? null,
       role,
       grade
     };
@@ -210,7 +212,7 @@ export class AuthService {
       return null;
     }
     const resolvedRole = Object.values(UserRole).includes(role as UserRole) ? role as UserRole : UserRole.Student;
-    return { oauthId, name, email, role: resolvedRole, grade: 3 };
+    return { oauthId, name, email, profileImageUrl: null, role: resolvedRole, grade: 3 };
   }
 
   private extractMirimUser(body: unknown): MirimUserPayload | null {

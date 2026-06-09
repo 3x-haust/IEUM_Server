@@ -45,6 +45,7 @@ describe('AuthService', () => {
       id: 'student-3',
       email: 'student3@e-mirim.hs.kr',
       nickname: '삼학년',
+      profileImageUrl: 'https://cdn.example.com/student-3.png',
       role: 'student',
       grade: 3,
     });
@@ -53,6 +54,7 @@ describe('AuthService', () => {
 
     expect(user).toEqual(expect.objectContaining({
       oauthId: 'student-3',
+      profileImageUrl: 'https://cdn.example.com/student-3.png',
       role: UserRole.Student,
     }));
   });

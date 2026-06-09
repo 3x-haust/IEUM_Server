@@ -20,6 +20,9 @@ export class UserEntity {
   @Column({ length: 255 })
   email: string;
 
+  @Column({ name: 'profile_image_url', type: 'text', nullable: true })
+  profileImageUrl: string | null;
+
   @Column({ type: 'enum', enum: UserRole, default: UserRole.Student })
   role: UserRole;
 
