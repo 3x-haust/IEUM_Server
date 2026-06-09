@@ -20,6 +20,8 @@ interface ProviderHttpResponse {
   data: unknown;
 }
 
+const ITSHOW_SEED_USER_PREFIX = 'seed-itshow-';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -90,8 +92,9 @@ export class AuthService {
 
   private async syncUser(payload: VerifiedUserPayload): Promise<UserEntity> {
     const existing = await this.users.findOne({ where: { oauthId: payload.oauthId } });
+    const target = existing ?? await this.findClaimableSeedUser(payload);
     const user = this.users.create({
-      ...(existing ?? {}),
+      ...(target ?? {}),
       oauthProvider: 'mirim_oauth',
       oauthId: payload.oauthId,
       name: payload.name,
@@ -99,6 +102,26 @@ export class AuthService {
       role: payload.role
     });
     return this.users.save(user);
+  }
+
+  private async findClaimableSeedUser(payload: VerifiedUserPayload): Promise<UserEntity | null> {
+    if (payload.role !== UserRole.Student) {
+      return null;
+    }
+    if (typeof this.users.find !== 'function') {
+      return null;
+    }
+    const normalizedName = this.normalizeStudentName(payload.name);
+    const users = await this.users.find();
+    const matches = users.filter((user) => (
+      user.oauthId.startsWith(ITSHOW_SEED_USER_PREFIX) &&
+      this.normalizeStudentName(user.name) === normalizedName
+    ));
+    return matches.length === 1 ? matches[0] : null;
+  }
+
+  private normalizeStudentName(name: string): string {
+    return name.replace(/^\s*\d{4}\s+/, '').trim();
   }
 
   private async verifyProviderToken(token: string): Promise<VerifiedUserPayload> {

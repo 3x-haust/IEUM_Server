@@ -29,21 +29,25 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
 
     for (const [index, seedMember] of seedProject.members.entries()) {
       const oauthId = `seed-itshow-${seedProject.catalogId}-${index + 1}`;
-      const existingUser = await users.findOne({ where: { oauthId } });
-      const user = await users.save(users.create({
-        ...(existingUser ?? {}),
+      const displayOrder = index + 1;
+      const existingSlot = await members.findOne({
+        where: { projectId: project.id, displayOrder },
+        relations: { user: true }
+      });
+      const user = existingSlot?.user ?? await users.save(users.create({
+        ...(await users.findOne({ where: { oauthId } }) ?? {}),
         oauthProvider: 'mirim_oauth',
         oauthId,
         name: seedMember.name,
         email: `${oauthId}@ieum.local`,
         role: UserRole.Student
       }));
-      const existingMember = await members.findOne({ where: { projectId: project.id, userId: user.id } });
+      const existingMember = existingSlot ?? await members.findOne({ where: { projectId: project.id, userId: user.id } });
       await members.save(members.create({
         ...(existingMember ?? {}),
         projectId: project.id,
         userId: user.id,
-        displayOrder: index + 1,
+        displayOrder,
         roles: rolesFromText(seedMember.roleText)
       }));
     }

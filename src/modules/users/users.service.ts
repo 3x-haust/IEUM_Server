@@ -6,6 +6,8 @@ import { decodeCursor, encodeCursor } from '../../common/utils/cursor';
 import { UserEntity } from '../../database/entities';
 import { UserListQueryDto } from './users.dto';
 
+const ITSHOW_SEED_USER_PREFIX = 'seed-itshow-';
+
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(UserEntity) private readonly users: Repository<UserEntity>) {}
@@ -13,7 +15,11 @@ export class UsersService {
   async list(query: UserListQueryDto): Promise<CursorPage<UserEntity>> {
     const limit = query.limit ?? 20;
     const cursor = decodeCursor(query.cursor);
-    const qb = this.users.createQueryBuilder('user').orderBy('user.createdAt', 'DESC').addOrderBy('user.id', 'DESC').take(limit + 1);
+    const qb = this.users.createQueryBuilder('user')
+      .where('user.oauthId NOT LIKE :seedPrefix', { seedPrefix: `${ITSHOW_SEED_USER_PREFIX}%` })
+      .orderBy('user.createdAt', 'DESC')
+      .addOrderBy('user.id', 'DESC')
+      .take(limit + 1);
     if (query.search) {
       qb.andWhere(new Brackets((nested) => {
         nested.where('user.name ILIKE :search', { search: `%${query.search}%` }).orWhere('user.email ILIKE :search', { search: `%${query.search}%` });
