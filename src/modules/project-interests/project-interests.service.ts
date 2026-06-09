@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
 import { hashIp } from '../../common/utils/ip-hash';
@@ -15,6 +15,8 @@ export interface ProjectInterestResult {
 
 @Injectable()
 export class ProjectInterestsService {
+  private readonly logger = new Logger(ProjectInterestsService.name);
+
   constructor(
     @InjectRepository(ProjectInterestEntity) private readonly interests: Repository<ProjectInterestEntity>,
     private readonly projects: ProjectsService,
@@ -43,7 +45,11 @@ export class ProjectInterestsService {
       throw error;
     }
 
-    await this.events.publish(RealtimeEventType.ProjectInterestCreated, projectId, UserRole.Teacher, { interestId: created.id }, 'project_interest', created.id);
+    try {
+      await this.events.publish(RealtimeEventType.ProjectInterestCreated, projectId, UserRole.Teacher, { interestId: created.id }, 'project_interest', created.id);
+    } catch (error) {
+      this.logger.warn(`Failed to publish project interest event for ${projectId}: ${readErrorMessage(error)}`);
+    }
     return this.toResult(projectId, false);
   }
 
@@ -58,4 +64,8 @@ export class ProjectInterestsService {
   private isUniqueViolation(error: unknown): boolean {
     return error instanceof QueryFailedError && (error.driverError as { code?: string } | undefined)?.code === '23505';
   }
+}
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : 'Unknown error';
 }

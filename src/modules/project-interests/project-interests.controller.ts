@@ -1,4 +1,4 @@
-import { Controller, Headers, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Headers, Ip, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
 import { ApiWrappedResponse } from '../../common/dto/api-response.dto';
@@ -20,14 +20,29 @@ export class ProjectInterestsController {
   @Roles(UserRole.Teacher, UserRole.Admin)
   @SuccessMessage('Marked project interest')
   @ApiWrappedResponse({ model: ProjectInterestResponseDto, description: 'Project interest marker result', status: 'created' })
-  create(@Param('projectId') projectId: string, @Headers('x-forwarded-for') forwardedFor?: string, @Headers('user-agent') userAgent?: string) {
-    return this.projectInterestsService.create(projectId, forwardedFor?.split(',')[0]?.trim(), userAgent);
+  create(
+    @Param('projectId') projectId: string,
+    @Headers('x-forwarded-for') forwardedFor?: string,
+    @Headers('user-agent') userAgent?: string,
+    @Ip() ip?: string,
+  ) {
+    return this.projectInterestsService.create(projectId, resolveRequestIp(forwardedFor, ip), userAgent);
   }
 
   @Post('projects/:projectId/interests')
   @SuccessMessage('Marked project interest')
   @ApiWrappedResponse({ model: ProjectInterestResponseDto, description: 'Public project interest marker result', status: 'created' })
-  createPublic(@Param('projectId') projectId: string, @Headers('x-forwarded-for') forwardedFor?: string, @Headers('user-agent') userAgent?: string) {
-    return this.projectInterestsService.create(projectId, forwardedFor?.split(',')[0]?.trim(), userAgent);
+  createPublic(
+    @Param('projectId') projectId: string,
+    @Headers('x-forwarded-for') forwardedFor?: string,
+    @Headers('user-agent') userAgent?: string,
+    @Ip() ip?: string,
+  ) {
+    return this.projectInterestsService.create(projectId, resolveRequestIp(forwardedFor, ip), userAgent);
   }
+}
+
+function resolveRequestIp(forwardedFor: string | undefined, ip: string | undefined): string | undefined {
+  const forwardedIp = forwardedFor?.split(',')[0]?.trim();
+  return forwardedIp || ip;
 }
