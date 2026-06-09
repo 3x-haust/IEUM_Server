@@ -88,6 +88,38 @@ describe('ProjectsService', () => {
     expect(result.items[0]).not.toHaveProperty('interestCount');
   });
 
+  it('skips public project summary counts when includeCounts is false', async () => {
+    const project = {
+      id: 'project-1',
+      serviceName: 'IEUM',
+      teamName: '3xhaust',
+      description: null,
+      thumbnailFile: null,
+      boothSlot: 'G7',
+      developmentStacks: ['NestJS'],
+      designStacks: ['Figma'],
+      acceptsFeedback: true,
+      isPublished: true,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-01T00:00:00.000Z')
+    };
+    const projects = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([project])) };
+    const members = {};
+    const feedback = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '7' }])) };
+    const contacts = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '3' }])) };
+    const interests = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([{ projectId: project.id, count: '2' }])) };
+    const service = new ProjectsService(projects as never, members as never, feedback as never, contacts as never, interests as never);
+
+    const result = await service.listPublic({ limit: 20, includeCounts: false });
+
+    expect(feedback.createQueryBuilder).not.toHaveBeenCalled();
+    expect(contacts.createQueryBuilder).not.toHaveBeenCalled();
+    expect(interests.createQueryBuilder).not.toHaveBeenCalled();
+    expect(result.items).toEqual([
+      expect.objectContaining({ id: project.id, feedbackCount: 0, contactCount: 0 })
+    ]);
+  });
+
   it('includes project member roles in project detail responses', async () => {
     const project = {
       id: 'project-1',

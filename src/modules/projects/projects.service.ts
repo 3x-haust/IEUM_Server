@@ -31,7 +31,10 @@ export class ProjectsService {
 
   async listPublic(query: ProjectListQueryDto): Promise<CursorPage<unknown>> {
     const page = await this.listBase(query, true);
-    const counts = await this.countProjects(page.items.map((project) => project.id));
+    const counts =
+      query.includeCounts !== false
+        ? await this.countProjects(page.items.map((project) => project.id))
+        : new Map<string, ProjectCounts>();
     return { items: page.items.map((project) => this.toSummary(project, false, counts.get(project.id))), nextCursor: page.nextCursor };
   }
 

@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { CursorPaginationDto } from '../../common/dto/pagination.dto';
 import { ProjectMemberRole } from '../../database/entities';
 
@@ -18,6 +19,15 @@ export class ProjectListQueryDto extends CursorPaginationDto {
   @IsOptional()
   @IsString()
   category?: string;
+
+  @ApiPropertyOptional({
+    default: true,
+    description: 'Set false to skip aggregate counts for faster public lists.',
+  })
+  @IsOptional()
+  @Transform(({ value }) => value !== 'false' && value !== false)
+  @IsBoolean()
+  includeCounts?: boolean = true;
 }
 
 export class ProjectStackGroupResponseDto {
