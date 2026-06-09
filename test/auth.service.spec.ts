@@ -87,6 +87,24 @@ describe('AuthService', () => {
     }));
   });
 
+  it('promotes configured numeric Mirim OAuth ids to admin', async () => {
+    const service = createService({ adminMirimOauthIds: '12' });
+    mockMirimVerifyToken({
+      id: 12,
+      email: 's2424@e-mirim.hs.kr',
+      nickname: '3xhaust',
+      role: 'student',
+      grade: 3,
+    });
+
+    const user = await service.verifyBearerToken('provider-token');
+
+    expect(user).toEqual(expect.objectContaining({
+      oauthId: '12',
+      role: UserRole.Admin,
+    }));
+  });
+
   it('loads Mirim user info when token verification only confirms validity', async () => {
     const service = createService();
     httpPost.mockResolvedValue({
@@ -130,7 +148,7 @@ describe('AuthService', () => {
   });
 });
 
-function createService(): AuthService {
+function createService(options: { readonly adminMirimOauthIds?: string } = {}): AuthService {
   httpPost = jest.fn();
   httpGet = jest.fn();
   const users = {
@@ -145,7 +163,7 @@ function createService(): AuthService {
         NODE_ENV: 'development',
         MIRIM_OAUTH_BASE_URL: 'https://api-auth.mmhs.app',
         TOKEN_CACHE_TTL_SECONDS: '300',
-        ADMIN_MIRIM_OAUTH_IDS: '',
+        ADMIN_MIRIM_OAUTH_IDS: options.adminMirimOauthIds ?? '',
       };
       return values[key] ?? fallback;
     }),

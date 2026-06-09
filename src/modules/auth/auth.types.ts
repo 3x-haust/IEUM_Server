@@ -1,7 +1,7 @@
 import { UserRole } from '../../database/entities';
 
 export interface MirimUserPayload {
-  id: string;
+  id: string | number;
   email: string;
   nickname?: string;
   name?: string;

@@ -128,11 +128,12 @@ export class AuthService {
     if (!mirimUser?.id || !mirimUser.email) {
       throw new UnauthorizedException('Invalid access token payload');
     }
-    const role = this.resolveRole(mirimUser.id, mirimUser.role);
+    const oauthId = String(mirimUser.id);
+    const role = this.resolveRole(oauthId, mirimUser.role);
     const grade = this.readGrade(mirimUser.grade);
     this.assertGraduationExhibitionAccess(role, grade);
     return {
-      oauthId: mirimUser.id,
+      oauthId,
       name: mirimUser.nickname ?? mirimUser.name ?? mirimUser.email,
       email: mirimUser.email,
       role,
