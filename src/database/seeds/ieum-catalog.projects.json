@@ -48,7 +48,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/1.png",
+    "thumbnailPath": "/assets/projects/1.webp",
     "acceptsFeedback": true
   },
   {
@@ -109,7 +109,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/2.png",
+    "thumbnailPath": "/assets/projects/2.webp",
     "acceptsFeedback": true
   },
   {
@@ -167,7 +167,7 @@
         "roleText": "Front"
       }
     ],
-    "thumbnailPath": "/assets/projects/3.png",
+    "thumbnailPath": "/assets/projects/3.webp",
     "acceptsFeedback": true
   },
   {
@@ -209,7 +209,7 @@
         "roleText": "Back"
       }
     ],
-    "thumbnailPath": "/assets/projects/4.png",
+    "thumbnailPath": "/assets/projects/4.webp",
     "acceptsFeedback": true
   },
   {
@@ -272,7 +272,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/5.png",
+    "thumbnailPath": "/assets/projects/5.webp",
     "acceptsFeedback": true
   },
   {
@@ -328,7 +328,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/6.png",
+    "thumbnailPath": "/assets/projects/6.webp",
     "acceptsFeedback": false
   },
   {
@@ -393,7 +393,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/7.png",
+    "thumbnailPath": "/assets/projects/7.webp",
     "acceptsFeedback": true
   },
   {
@@ -449,7 +449,7 @@
         "roleText": "DB, Back"
       }
     ],
-    "thumbnailPath": "/assets/projects/8.png",
+    "thumbnailPath": "/assets/projects/8.webp",
     "acceptsFeedback": true
   },
   {
@@ -501,7 +501,7 @@
         "roleText": "Back, DB"
       }
     ],
-    "thumbnailPath": "/assets/projects/9.png",
+    "thumbnailPath": "/assets/projects/9.webp",
     "acceptsFeedback": false
   },
   {
@@ -559,7 +559,7 @@
         "roleText": "Front"
       }
     ],
-    "thumbnailPath": "/assets/projects/10.png",
+    "thumbnailPath": "/assets/projects/10.webp",
     "acceptsFeedback": true
   },
   {
@@ -620,7 +620,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/11.png",
+    "thumbnailPath": "/assets/projects/11.webp",
     "acceptsFeedback": true
   },
   {
@@ -660,7 +660,7 @@
         "roleText": "Full Stack"
       }
     ],
-    "thumbnailPath": "/assets/projects/12.png",
+    "thumbnailPath": "/assets/projects/12.webp",
     "acceptsFeedback": true
   },
   {
@@ -716,7 +716,7 @@
         "roleText": "Back, DB"
       }
     ],
-    "thumbnailPath": "/assets/projects/13.png",
+    "thumbnailPath": "/assets/projects/13.webp",
     "acceptsFeedback": true
   },
   {
@@ -767,7 +767,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/14.png",
+    "thumbnailPath": "/assets/projects/14.webp",
     "acceptsFeedback": true
   },
   {
@@ -831,7 +831,7 @@
         "roleText": "Front, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/15.png",
+    "thumbnailPath": "/assets/projects/15.webp",
     "acceptsFeedback": false
   },
   {
@@ -887,7 +887,7 @@
         "roleText": "Front, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/16.png",
+    "thumbnailPath": "/assets/projects/16.webp",
     "acceptsFeedback": true
   },
   {
@@ -952,7 +952,7 @@
         "roleText": "Front, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/17.png",
+    "thumbnailPath": "/assets/projects/17.webp",
     "acceptsFeedback": true
   },
   {
@@ -1011,7 +1011,7 @@
         "roleText": "Full Stack"
       }
     ],
-    "thumbnailPath": "/assets/projects/18.png",
+    "thumbnailPath": "/assets/projects/18.webp",
     "acceptsFeedback": true
   },
   {
@@ -1084,7 +1084,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/19.png",
+    "thumbnailPath": "/assets/projects/19.webp",
     "acceptsFeedback": true
   },
   {
@@ -1131,7 +1131,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/20.png",
+    "thumbnailPath": "/assets/projects/20.webp",
     "acceptsFeedback": true
   },
   {
@@ -1183,7 +1183,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/21.png",
+    "thumbnailPath": "/assets/projects/21.webp",
     "acceptsFeedback": false
   },
   {
@@ -1225,7 +1225,7 @@
         "roleText": "Full Stack"
       }
     ],
-    "thumbnailPath": "/assets/projects/22.png",
+    "thumbnailPath": "/assets/projects/22.webp",
     "acceptsFeedback": false
   },
   {
@@ -1276,7 +1276,7 @@
         "roleText": "Back, AI"
       }
     ],
-    "thumbnailPath": "/assets/projects/23.png",
+    "thumbnailPath": "/assets/projects/23.webp",
     "acceptsFeedback": true
   },
   {
@@ -1323,7 +1323,7 @@
         "roleText": "Back, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/24.png",
+    "thumbnailPath": "/assets/projects/24.webp",
     "acceptsFeedback": false
   },
   {
@@ -1373,7 +1373,7 @@
         "roleText": "Front, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/25.png",
+    "thumbnailPath": "/assets/projects/25.webp",
     "acceptsFeedback": true
   },
   {
@@ -1424,7 +1424,7 @@
         "roleText": "Back, DB"
       }
     ],
-    "thumbnailPath": "/assets/projects/26.png",
+    "thumbnailPath": "/assets/projects/26.webp",
     "acceptsFeedback": true
   },
   {
@@ -1484,7 +1484,7 @@
         "roleText": "Back"
       }
     ],
-    "thumbnailPath": "/assets/projects/27.png",
+    "thumbnailPath": "/assets/projects/27.webp",
     "acceptsFeedback": true
   },
   {
@@ -1526,7 +1526,7 @@
         "roleText": "Full Stack, Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/28.png",
+    "thumbnailPath": "/assets/projects/28.webp",
     "acceptsFeedback": true
   },
   {
@@ -1571,7 +1571,7 @@
         "roleText": "Back, DB"
       }
     ],
-    "thumbnailPath": "/assets/projects/29.png",
+    "thumbnailPath": "/assets/projects/29.webp",
     "acceptsFeedback": true
   },
   {
@@ -1631,7 +1631,7 @@
         "roleText": "Back"
       }
     ],
-    "thumbnailPath": "/assets/projects/30.png",
+    "thumbnailPath": "/assets/projects/30.webp",
     "acceptsFeedback": true
   },
   {
@@ -1681,7 +1681,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/31.png",
+    "thumbnailPath": "/assets/projects/31.webp",
     "acceptsFeedback": true
   },
   {
@@ -1731,7 +1731,7 @@
         "roleText": "Front"
       }
     ],
-    "thumbnailPath": "/assets/projects/32.png",
+    "thumbnailPath": "/assets/projects/32.webp",
     "acceptsFeedback": true
   },
   {
@@ -1795,7 +1795,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/33.png",
+    "thumbnailPath": "/assets/projects/33.webp",
     "acceptsFeedback": true
   },
   {
@@ -1839,7 +1839,7 @@
         "roleText": "Full Stack"
       }
     ],
-    "thumbnailPath": "/assets/projects/34.png",
+    "thumbnailPath": "/assets/projects/34.webp",
     "acceptsFeedback": true
   },
   {
@@ -1871,7 +1871,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/35.png",
+    "thumbnailPath": "/assets/projects/35.webp",
     "acceptsFeedback": true
   },
   {
@@ -1925,7 +1925,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/36.png",
+    "thumbnailPath": "/assets/projects/36.webp",
     "acceptsFeedback": true
   },
   {
@@ -1979,7 +1979,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/37.png",
+    "thumbnailPath": "/assets/projects/37.webp",
     "acceptsFeedback": true
   },
   {
@@ -2033,7 +2033,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/38.png",
+    "thumbnailPath": "/assets/projects/38.webp",
     "acceptsFeedback": true
   },
   {
@@ -2091,7 +2091,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/39.png",
+    "thumbnailPath": "/assets/projects/39.webp",
     "acceptsFeedback": true
   },
   {
@@ -2148,7 +2148,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/40.png",
+    "thumbnailPath": "/assets/projects/40.webp",
     "acceptsFeedback": true
   },
   {
@@ -2204,7 +2204,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/projects/41.png",
+    "thumbnailPath": "/assets/projects/41.webp",
     "acceptsFeedback": true
   }
 ]

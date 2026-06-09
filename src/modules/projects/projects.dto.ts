@@ -65,7 +65,7 @@ export class ProjectSummaryResponseDto {
   @ApiProperty({ nullable: true, example: 'https://cdn.example.com/project.png' })
   thumbnailUrl: string | null;
 
-  @ApiProperty({ nullable: true, example: '/assets/projects/35.png' })
+  @ApiProperty({ nullable: true, example: '/assets/projects/35.webp' })
   thumbnailPath: string | null;
 
   @ApiProperty({ nullable: true, example: 'global' })
