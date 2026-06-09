@@ -212,6 +212,10 @@ export class AuthService {
     if (admins.includes(oauthId)) {
       return UserRole.Admin;
     }
+    const teachers = this.config.get<string>('TEACHER_MIRIM_OAUTH_IDS', '').split(',').map((id) => id.trim()).filter(Boolean);
+    if (teachers.includes(oauthId)) {
+      return UserRole.Teacher;
+    }
     if (providerRole && ['teacher', '교사', '선생님', 'staff', 'admin_teacher'].includes(providerRole.toLowerCase())) {
       return UserRole.Teacher;
     }

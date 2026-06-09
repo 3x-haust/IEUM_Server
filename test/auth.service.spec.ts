@@ -87,6 +87,24 @@ describe('AuthService', () => {
     }));
   });
 
+  it('promotes configured Mirim OAuth ids to teacher', async () => {
+    const service = createService({ teacherMirimOauthIds: 'teacher-env-id' });
+    mockMirimVerifyToken({
+      id: 'teacher-env-id',
+      email: 'teacher-env@e-mirim.hs.kr',
+      nickname: '환경선생님',
+      role: 'student',
+      grade: 1,
+    });
+
+    const user = await service.verifyBearerToken('provider-token');
+
+    expect(user).toEqual(expect.objectContaining({
+      oauthId: 'teacher-env-id',
+      role: UserRole.Teacher,
+    }));
+  });
+
   it('promotes configured numeric Mirim OAuth ids to admin', async () => {
     const service = createService({ adminMirimOauthIds: '12' });
     mockMirimVerifyToken({
@@ -148,7 +166,7 @@ describe('AuthService', () => {
   });
 });
 
-function createService(options: { readonly adminMirimOauthIds?: string } = {}): AuthService {
+function createService(options: { readonly adminMirimOauthIds?: string; readonly teacherMirimOauthIds?: string } = {}): AuthService {
   httpPost = jest.fn();
   httpGet = jest.fn();
   const users = {
@@ -164,6 +182,7 @@ function createService(options: { readonly adminMirimOauthIds?: string } = {}): 
         MIRIM_OAUTH_BASE_URL: 'https://api-auth.mmhs.app',
         TOKEN_CACHE_TTL_SECONDS: '300',
         ADMIN_MIRIM_OAUTH_IDS: options.adminMirimOauthIds ?? '',
+        TEACHER_MIRIM_OAUTH_IDS: options.teacherMirimOauthIds ?? '',
       };
       return values[key] ?? fallback;
     }),
