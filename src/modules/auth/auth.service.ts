@@ -124,8 +124,7 @@ export class AuthService {
     if (response.status < 200 || response.status >= 300) {
       throw new UnauthorizedException('Invalid access token');
     }
-    const body = response.data as { data?: unknown; user?: unknown } | MirimUserPayload;
-    const mirimUser = this.extractMirimUser(body);
+    const mirimUser = this.extractMirimUser(response.data) ?? await this.fetchMirimUserInfo(baseUrl, token);
     if (!mirimUser?.id || !mirimUser.email) {
       throw new UnauthorizedException('Invalid access token payload');
     }
@@ -156,6 +155,28 @@ export class AuthService {
     }
   }
 
+  private async fetchMirimUserInfo(baseUrl: string, token: string): Promise<MirimUserPayload | null> {
+    const response = await this.requestMirimUserInfo(baseUrl, token);
+    if (response.status < 200 || response.status >= 300) {
+      throw new UnauthorizedException('Invalid access token');
+    }
+    return this.extractMirimUser(response.data);
+  }
+
+  private async requestMirimUserInfo(baseUrl: string, token: string): Promise<ProviderHttpResponse> {
+    try {
+      return await this.http.axiosRef.get<unknown>(
+        `${baseUrl}/api/v1/user`,
+        {
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          validateStatus: () => true
+        }
+      );
+    } catch {
+      throw new UnauthorizedException('Invalid access token');
+    }
+  }
+
   private parseDevToken(token: string): VerifiedUserPayload | null {
     if (!token.startsWith('dev:')) {
       return null;
@@ -168,14 +189,21 @@ export class AuthService {
     return { oauthId, name, email, role: resolvedRole, grade: 3 };
   }
 
-  private extractMirimUser(body: { data?: unknown; user?: unknown } | MirimUserPayload): MirimUserPayload | null {
-    const candidates = [body, 'data' in body ? body.data : null, 'user' in body ? body.user : null];
+  private extractMirimUser(body: unknown): MirimUserPayload | null {
+    const candidates = [body, this.readRecordField(body, 'data'), this.readRecordField(body, 'user')];
     for (const candidate of candidates) {
       if (candidate && typeof candidate === 'object' && 'id' in candidate) {
         return candidate as MirimUserPayload;
       }
     }
     return null;
+  }
+
+  private readRecordField(value: unknown, key: string): unknown {
+    if (!value || typeof value !== 'object' || !(key in value)) {
+      return null;
+    }
+    return (value as Record<string, unknown>)[key];
   }
 
   private resolveRole(oauthId: string, providerRole?: string): UserRole {
