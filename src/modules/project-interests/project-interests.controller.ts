@@ -23,4 +23,11 @@ export class ProjectInterestsController {
   create(@Param('projectId') projectId: string, @Headers('x-forwarded-for') forwardedFor?: string, @Headers('user-agent') userAgent?: string) {
     return this.projectInterestsService.create(projectId, forwardedFor?.split(',')[0]?.trim(), userAgent);
   }
+
+  @Post('projects/:projectId/interests')
+  @SuccessMessage('Marked project interest')
+  @ApiWrappedResponse({ model: ProjectInterestResponseDto, description: 'Public project interest marker result', status: 'created' })
+  createPublic(@Param('projectId') projectId: string, @Headers('x-forwarded-for') forwardedFor?: string, @Headers('user-agent') userAgent?: string) {
+    return this.projectInterestsService.create(projectId, forwardedFor?.split(',')[0]?.trim(), userAgent);
+  }
 }

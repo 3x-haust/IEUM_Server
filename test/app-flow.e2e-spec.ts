@@ -111,8 +111,11 @@ describe('IEUM e2e app flow', () => {
     const bannedWords = await request(server).get('/admin/banned-words').set('Cookie', adminCookie).expect(200);
     expect(body<Page<{ readonly word: string }>>(bannedWords).data.items[0].word).toBe('blocked');
 
+    const publicInterest = await request(server).post(`/projects/${project.id}/interests`).expect(201);
+    expect(body<{ readonly interestCount: number }>(publicInterest).data.interestCount).toBe(1);
+
     const interest = await request(server).post(`/admin/projects/${project.id}/interests`).set('Cookie', adminCookie).expect(201);
-    expect(body<{ readonly interestCount: number }>(interest).data.interestCount).toBe(1);
+    expect(body<{ readonly interestCount: number }>(interest).data.interestCount).toBe(2);
 
     const recent = await request(server).get('/realtime/events/recent').set('Cookie', adminCookie).expect(200);
     expect(body<readonly { readonly projectId: string | null }[]>(recent).data.some((event) => event.projectId === project.id)).toBe(true);
