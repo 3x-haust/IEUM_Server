@@ -20,6 +20,13 @@ export class VisitorProfileEntity {
   @JoinColumn({ name: 'business_card_file_id' })
   businessCardFile: FileEntity | null;
 
+  @Column({ name: 'business_card_back_file_id', type: 'uuid', nullable: true })
+  businessCardBackFileId: string | null;
+
+  @ManyToOne(() => FileEntity, { nullable: true })
+  @JoinColumn({ name: 'business_card_back_file_id' })
+  businessCardBackFile: FileEntity | null;
+
   @Column({ name: 'business_card_registered', default: false })
   businessCardRegistered: boolean;
 

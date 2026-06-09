@@ -147,6 +147,9 @@ export class ContactResponseDto {
   @ApiProperty({ format: 'uuid', nullable: true })
   businessCardFileId: string | null;
 
+  @ApiProperty({ format: 'uuid', nullable: true })
+  businessCardBackFileId: string | null;
+
   @ApiProperty({ nullable: true })
   ocrRawText: string | null;
 

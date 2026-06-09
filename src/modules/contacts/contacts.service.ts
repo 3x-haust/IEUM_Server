@@ -53,6 +53,7 @@ export class ContactsService {
       phone: dto.phone ?? profile.ocrPhone,
       memo: dto.memo ?? null,
       businessCardFileId: profile.businessCardFileId,
+      businessCardBackFileId: profile.businessCardBackFileId,
       ocrRawText: profile.ocrRawText,
       ocrName: profile.ocrName,
       ocrOrganization: profile.ocrOrganization,
@@ -98,7 +99,15 @@ export class ContactsService {
   }
 
   async getDetail(id: string, actor: UserEntity): Promise<ContactEntity> {
-    const contact = await this.contacts.findOne({ where: { id, status: Not(ContactStatus.Deleted) }, relations: { targetMemberUser: true, project: true, businessCardFile: true } });
+    const contact = await this.contacts.findOne({
+      where: { id, status: Not(ContactStatus.Deleted) },
+      relations: {
+        targetMemberUser: true,
+        project: true,
+        businessCardFile: true,
+        businessCardBackFile: true
+      }
+    });
     if (!contact) {
       throw new NotFoundException('Contact not found');
     }
