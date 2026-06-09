@@ -1,3 +1,4 @@
+import { ForbiddenException } from '@nestjs/common';
 import { ContactStatus, FeedbackStatus, RealtimeEventType, UserRole, VisitorType } from '../../src/database/entities';
 import { Contact, E2eStore, Feedback, ids, page, VisitorProfile } from './fixtures';
 
@@ -42,6 +43,10 @@ export class FakeFeedbackService {
   constructor(private readonly store: E2eStore) {}
 
   create(projectId: string, dto: { readonly content: string }, ipHash?: string, userAgent?: string): Feedback {
+    const project = this.store.projects.find((candidate) => candidate.id === projectId);
+    if (project && !project.acceptsFeedback) {
+      throw new ForbiddenException('Feedback is disabled for this project');
+    }
     const feedback: Feedback = {
       id: `feedback-${this.store.feedback.length + 1}`,
       projectId,

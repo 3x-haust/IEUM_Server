@@ -20,6 +20,7 @@ export type Project = {
   readonly thumbnailUrl: string | null;
   readonly developmentStacks: readonly string[];
   readonly designStacks: readonly string[];
+  readonly acceptsFeedback: boolean;
   readonly isPublished: boolean;
   readonly feedbackCount: number;
   readonly contactCount: number;
@@ -129,7 +130,7 @@ export function createUser(id: string, oauthId: string, name: string, role: User
   });
 }
 
-export function createStore(): E2eStore {
+export function createStore(options: { readonly acceptsFeedback?: boolean } = {}): E2eStore {
   const student = createUser(ids.student, 'student', 'Student User', UserRole.Student);
   const admin = createUser(ids.admin, 'admin', 'Admin User', UserRole.Admin);
   return {
@@ -142,6 +143,7 @@ export function createStore(): E2eStore {
       thumbnailUrl: null,
       developmentStacks: ['NestJS', 'PostgreSQL'],
       designStacks: ['Figma'],
+      acceptsFeedback: options.acceptsFeedback ?? true,
       isPublished: true,
       feedbackCount: 0,
       contactCount: 0,

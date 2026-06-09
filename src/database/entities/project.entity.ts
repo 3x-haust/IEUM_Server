@@ -65,6 +65,9 @@ export class ProjectEntity {
   @Column({ name: 'feature_descriptions', type: 'jsonb', default: () => "'[]'::jsonb" })
   featureDescriptions: ProjectFeatureDescription[];
 
+  @Column({ name: 'accepts_feedback', default: true })
+  acceptsFeedback: boolean;
+
   @Column({ name: 'is_published', default: true })
   isPublished: boolean;
 

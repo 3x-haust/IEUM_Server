@@ -20,20 +20,40 @@ export interface AppConfig {
   authCookieMaxAgeSeconds: number;
 }
 
+const defaultCorsOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5174',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://ieum.mmhs.app',
+  'https://ieum-admin.mmhs.app',
+  'https://ieum-test.mmhs.app',
+] as const;
+
+function readCommaSeparated(value: string | undefined): string[] {
+  return (value ?? '').split(',').map((entry) => entry.trim()).filter(Boolean);
+}
+
+function uniqueStrings(values: readonly string[]): string[] {
+  return [...new Set(values)];
+}
+
 export function loadAppConfig(): AppConfig {
   return {
     nodeEnv: process.env.NODE_ENV ?? 'development',
     port: Number(process.env.PORT ?? 3000),
-    corsOrigins: (process.env.CORS_ORIGINS ?? '').split(',').map((origin) => origin.trim()).filter(Boolean),
+    corsOrigins: uniqueStrings([...readCommaSeparated(process.env.CORS_ORIGINS), ...defaultCorsOrigins]),
     uploadDir: process.env.UPLOAD_DIR ?? 'uploads',
     publicFileBaseUrl: process.env.PUBLIC_FILE_BASE_URL ?? 'http://localhost:3000/files/public',
-    adminMirimOauthIds: (process.env.ADMIN_MIRIM_OAUTH_IDS ?? '').split(',').map((id) => id.trim()).filter(Boolean),
+    adminMirimOauthIds: readCommaSeparated(process.env.ADMIN_MIRIM_OAUTH_IDS),
     mirimOauthBaseUrl: process.env.MIRIM_OAUTH_BASE_URL ?? 'https://api-auth.mmhs.app',
     tokenCacheTtlSeconds: Number(process.env.TOKEN_CACHE_TTL_SECONDS ?? 300),
     redisEnabled: process.env.REDIS_ENABLED === 'true',
     redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
     kafkaEnabled: process.env.KAFKA_ENABLED === 'true',
-    kafkaBrokers: (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',').map((broker) => broker.trim()).filter(Boolean),
+    kafkaBrokers: readCommaSeparated(process.env.KAFKA_BROKERS ?? 'localhost:9092'),
     authDevTokens: process.env.AUTH_DEV_TOKENS === 'true' || process.env.NODE_ENV === 'test',
     jwtSecret: process.env.JWT_SECRET ?? '',
     authCookieName: process.env.AUTH_COOKIE_NAME ?? 'ieum_auth',

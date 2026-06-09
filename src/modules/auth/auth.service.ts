@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -14,12 +15,18 @@ interface AuthSession {
   user: UserEntity;
 }
 
+interface ProviderHttpResponse {
+  status: number;
+  data: unknown;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private readonly users: Repository<UserEntity>,
     private readonly config: ConfigService,
     private readonly cache: CacheService,
+    private readonly http: HttpService,
     private readonly jwt: JwtService
   ) {}
 
@@ -113,25 +120,40 @@ export class AuthService {
       }
     }
     const baseUrl = this.config.get<string>('MIRIM_OAUTH_BASE_URL', 'https://api-auth.mmhs.app').replace(/\/$/, '');
-    const response = await fetch(`${baseUrl}/api/v1/oauth/verify-token`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
-    });
-    if (!response.ok) {
+    const response = await this.requestMirimTokenVerification(baseUrl, token);
+    if (response.status < 200 || response.status >= 300) {
       throw new UnauthorizedException('Invalid access token');
     }
-    const body = await response.json() as { data?: unknown; user?: unknown } | MirimUserPayload;
+    const body = response.data as { data?: unknown; user?: unknown } | MirimUserPayload;
     const mirimUser = this.extractMirimUser(body);
     if (!mirimUser?.id || !mirimUser.email) {
       throw new UnauthorizedException('Invalid access token payload');
     }
+    const role = this.resolveRole(mirimUser.id, mirimUser.role);
+    const grade = this.readGrade(mirimUser.grade);
+    this.assertGraduationExhibitionAccess(role, grade);
     return {
       oauthId: mirimUser.id,
       name: mirimUser.nickname ?? mirimUser.name ?? mirimUser.email,
       email: mirimUser.email,
-      role: this.resolveRole(mirimUser.id, mirimUser.role)
+      role,
+      grade
     };
+  }
+
+  private async requestMirimTokenVerification(baseUrl: string, token: string): Promise<ProviderHttpResponse> {
+    try {
+      return await this.http.axiosRef.post<unknown>(
+        `${baseUrl}/api/v1/oauth/verify-token`,
+        { token },
+        {
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          validateStatus: () => true
+        }
+      );
+    } catch {
+      throw new UnauthorizedException('Invalid access token');
+    }
   }
 
   private parseDevToken(token: string): VerifiedUserPayload | null {
@@ -143,7 +165,7 @@ export class AuthService {
       return null;
     }
     const resolvedRole = Object.values(UserRole).includes(role as UserRole) ? role as UserRole : UserRole.Student;
-    return { oauthId, name, email, role: resolvedRole };
+    return { oauthId, name, email, role: resolvedRole, grade: 3 };
   }
 
   private extractMirimUser(body: { data?: unknown; user?: unknown } | MirimUserPayload): MirimUserPayload | null {
@@ -165,6 +187,31 @@ export class AuthService {
       return UserRole.Teacher;
     }
     return UserRole.Student;
+  }
+
+  private readGrade(value: string | number | undefined): number | null {
+    if (typeof value === 'number' && Number.isInteger(value)) {
+      return value;
+    }
+    if (typeof value !== 'string') {
+      return null;
+    }
+    const match = value.match(/\d+/);
+    if (!match) {
+      return null;
+    }
+    const parsed = Number(match[0]);
+    return Number.isInteger(parsed) ? parsed : null;
+  }
+
+  private assertGraduationExhibitionAccess(role: UserRole, grade: number | null): void {
+    if (role !== UserRole.Student) {
+      return;
+    }
+    if (grade === 3) {
+      return;
+    }
+    throw new UnauthorizedException('Graduation exhibition access is limited to third-grade students');
   }
 
   private tokenCacheKey(token: string): string {

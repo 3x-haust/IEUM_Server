@@ -7,6 +7,7 @@ export interface MirimUserPayload {
   name?: string;
   role?: string;
   major?: string;
+  grade?: string | number;
   isGraduated?: boolean;
   admission?: string | number;
   generation?: string | number;
@@ -17,6 +18,7 @@ export interface VerifiedUserPayload {
   name: string;
   email: string;
   role: UserRole;
+  grade: number | null;
 }
 
 export interface JwtSessionPayload {

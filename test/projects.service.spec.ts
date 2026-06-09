@@ -24,6 +24,7 @@ jest.mock('typeorm', () => {
 
 import { ProjectsService } from '../src/modules/projects/projects.service';
 import { ProjectMemberRole } from '../src/database/entities';
+import { loadIeumCatalogProjects } from '../src/database/seeds/ieum-catalog.seed-data';
 
 describe('ProjectsService', () => {
   function queryBuilder(rows: readonly unknown[]) {
@@ -49,8 +50,10 @@ describe('ProjectsService', () => {
       teamName: '3xhaust',
       description: null,
       thumbnailFile: null,
+      boothSlot: 'G7',
       developmentStacks: ['NestJS'],
       designStacks: ['Figma'],
+      acceptsFeedback: false,
       isPublished: true,
       createdAt: new Date('2026-01-01T00:00:00.000Z'),
       updatedAt: new Date('2026-01-01T00:00:00.000Z')
@@ -80,7 +83,7 @@ describe('ProjectsService', () => {
     expect(contacts.createQueryBuilder).toHaveBeenCalledTimes(1);
     expect(interests.createQueryBuilder).toHaveBeenCalledTimes(1);
     expect(result.items).toEqual([
-      expect.objectContaining({ id: project.id, feedbackCount: 7, contactCount: 3 })
+      expect.objectContaining({ id: project.id, boothSlot: 'G7', zone: 'G7', acceptsFeedback: false, feedbackCount: 7, contactCount: 3 })
     ]);
     expect(result.items[0]).not.toHaveProperty('interestCount');
   });
@@ -92,8 +95,10 @@ describe('ProjectsService', () => {
       teamName: '3xhaust',
       description: null,
       thumbnailFile: null,
+      boothSlot: 'G7',
       developmentStacks: ['NestJS'],
       designStacks: ['Figma'],
+      acceptsFeedback: true,
       isPublished: true,
       deletedAt: null,
       createdAt: new Date('2026-01-01T00:00:00.000Z'),
@@ -114,12 +119,26 @@ describe('ProjectsService', () => {
     const result = await service.getPublic(project.id);
 
     expect(result).toEqual(expect.objectContaining({
+      boothSlot: 'G7',
+      zone: 'G7',
       members: [{
         id: 'user-1',
         name: '김이음',
         displayOrder: 1,
         roles: [ProjectMemberRole.Backend, ProjectMemberRole.Frontend]
       }]
+    }));
+  });
+
+  it('loads the G7 booth zone from the IEUM catalog seed data', () => {
+    const projects = loadIeumCatalogProjects();
+
+    const mytsuri = projects.find((project) => project.catalogId === 41);
+
+    expect(mytsuri).toEqual(expect.objectContaining({
+      serviceName: 'Mytsuri',
+      boothSlot: 'G7',
+      experienceCategory: 'global'
     }));
   });
 });

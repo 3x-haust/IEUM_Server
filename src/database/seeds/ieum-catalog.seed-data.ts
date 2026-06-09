@@ -17,6 +17,7 @@ export interface SeedProject {
   stacks: string[];
   members: SeedMember[];
   thumbnailPath: string;
+  acceptsFeedback: boolean;
 }
 
 const STACK_GROUPS: readonly { category: ProjectStackCategory; color: string; items: readonly string[] }[] = [
@@ -116,7 +117,8 @@ function parseSeedProject(value: unknown, index: number): SeedProject {
     features: expectArray(record.features, `project[${index}].features`).map(parseFeature),
     stacks: expectArray(record.stacks, `project[${index}].stacks`).map((stack, stackIndex) => expectString(stack, `project[${index}].stacks[${stackIndex}]`)),
     members: expectArray(record.members, `project[${index}].members`).map(parseMember),
-    thumbnailPath: expectString(record.thumbnailPath, `project[${index}].thumbnailPath`)
+    thumbnailPath: expectString(record.thumbnailPath, `project[${index}].thumbnailPath`),
+    acceptsFeedback: record.acceptsFeedback === undefined ? true : expectBoolean(record.acceptsFeedback, `project[${index}].acceptsFeedback`)
   };
 }
 
@@ -164,6 +166,13 @@ function expectString(value: unknown, label: string): string {
 function expectNumber(value: unknown, label: string): number {
   if (typeof value !== 'number') {
     throw new Error(`${label} must be a number`);
+  }
+  return value;
+}
+
+function expectBoolean(value: unknown, label: string): boolean {
+  if (typeof value !== 'boolean') {
+    throw new Error(`${label} must be a boolean`);
   }
   return value;
 }

@@ -18,6 +18,7 @@ type Page<T> = {
 type ProjectBody = {
   readonly id: string;
   readonly serviceName: string;
+  readonly acceptsFeedback: boolean;
   readonly members: readonly { readonly id: string; readonly roles: readonly ProjectMemberRole[] }[];
 };
 
@@ -56,6 +57,7 @@ describe('IEUM e2e app flow', () => {
     expect(project.serviceName).toBe('IEUM');
 
     const detail = await request(server).get(`/projects/${project.id}`).expect(200);
+    expect(body<ProjectBody>(detail).data.acceptsFeedback).toBe(true);
     expect(body<ProjectBody>(detail).data.members[0].id).toBe(ids.student);
     expect(body<ProjectBody>(detail).data.members[0].roles).toEqual([ProjectMemberRole.Backend, ProjectMemberRole.Frontend]);
 
@@ -145,6 +147,20 @@ describe('IEUM e2e app flow', () => {
     await request(server).post(`/projects/${ids.project}/feedback`).send({ content: 'x' }).expect(400);
     const studentLogin = await request(server).post('/auth/login').send({ accessToken: 'student-token' }).expect(201);
     await request(server).get('/admin/dashboard').set('Cookie', studentLogin.headers['set-cookie']).expect(403);
+  });
+
+  it('rejects visitor feedback when the CSV disables feedback for a project', async () => {
+    app = await createE2eApp({ acceptsFeedback: false });
+    const server = httpServer(app);
+
+    const projects = await request(server).get('/projects').expect(200);
+    const project = body<Page<ProjectBody>>(projects).data.items[0];
+    expect(project.acceptsFeedback).toBe(false);
+
+    await request(server)
+      .post(`/projects/${project.id}/feedback`)
+      .send({ content: '발표에서 기술 선택 이유를 더 듣고 싶어요.' })
+      .expect(403);
   });
 
   it('does not read local database or redis environment for the e2e harness', async () => {

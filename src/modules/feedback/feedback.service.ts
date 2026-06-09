@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
@@ -25,7 +25,10 @@ export class FeedbackService {
   ) {}
 
   async create(projectId: string, dto: CreateFeedbackDto, ip: string | undefined, userAgent: string | undefined): Promise<FeedbackEntity> {
-    await this.projects.findProject(projectId, true);
+    const project = await this.projects.findProject(projectId, true);
+    if (!project.acceptsFeedback) {
+      throw new ForbiddenException('Feedback is disabled for this project');
+    }
     const ipHash = hashIp(ip);
     if (ipHash) {
       await this.rateLimit.enforce(`ratelimit:feedback:${ipHash}`, 10, 60);

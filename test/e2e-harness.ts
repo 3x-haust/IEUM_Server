@@ -27,8 +27,8 @@ import { VisitorProfilesService } from '../src/modules/visitor-profiles/visitor-
 import { createStore } from './e2e/fixtures';
 import { FakeAuthService, FakeBannedWordsService, FakeContactsService, FakeFeedbackService, FakeProjectInterestsService, FakeProjectsService, FakeRealtimeService, FakeStatsService, FakeUsersService, FakeVisitorProfilesService } from './e2e/fake-services';
 
-export async function createE2eApp() {
-  const store = createStore();
+export async function createE2eApp(options: { readonly acceptsFeedback?: boolean } = {}) {
+  const store = createStore(options);
   const moduleRef = await Test.createTestingModule({
     controllers: [
       AuthController,

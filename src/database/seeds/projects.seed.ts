@@ -23,6 +23,7 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
       designStacks: [],
       stackGroups,
       featureDescriptions: seedProject.features,
+      acceptsFeedback: seedProject.acceptsFeedback,
       isPublished: true
     }));
 

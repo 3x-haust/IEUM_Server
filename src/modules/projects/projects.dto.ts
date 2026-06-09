@@ -64,6 +64,9 @@ export class ProjectSummaryResponseDto {
   @ApiProperty({ nullable: true, example: 'G1' })
   boothSlot: string | null;
 
+  @ApiProperty({ nullable: true, example: 'G1', description: '부스 구역 코드. boothSlot과 동일한 값입니다.' })
+  zone: string | null;
+
   @ApiProperty({ type: [String], example: ['NestJS', 'PostgreSQL'] })
   developmentStacks: string[];
 
@@ -75,6 +78,9 @@ export class ProjectSummaryResponseDto {
 
   @ApiProperty({ type: [ProjectFeatureDescriptionResponseDto] })
   featureDescriptions: ProjectFeatureDescriptionResponseDto[];
+
+  @ApiProperty({ example: true, description: '방문자 피드백 작성 가능 여부' })
+  acceptsFeedback: boolean;
 
   @ApiProperty({ example: true })
   isPublished: boolean;
