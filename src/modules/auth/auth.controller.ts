@@ -8,6 +8,11 @@ import { LoginWithMirimTokenDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { MirimAuthGuard } from './mirim-auth.guard';
 
+interface LoginResponse {
+  readonly user: UserEntity;
+  readonly token: string;
+}
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -16,10 +21,10 @@ export class AuthController {
   @Post('login')
   @SuccessMessage('Logged in')
   @ApiOkResponse({ description: 'Authenticated user' })
-  async login(@Body() body: LoginWithMirimTokenDto, @Res({ passthrough: true }) response: Response): Promise<UserEntity> {
+  async login(@Body() body: LoginWithMirimTokenDto, @Res({ passthrough: true }) response: Response): Promise<LoginResponse> {
     const session = await this.authService.loginWithMirimToken(body.accessToken);
     response.cookie(this.authService.cookieName, session.token, this.authService.getCookieOptions());
-    return session.user;
+    return session;
   }
 
   @Get('me')

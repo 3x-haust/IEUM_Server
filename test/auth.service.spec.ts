@@ -166,13 +166,36 @@ describe('AuthService', () => {
 
     await expect(service.verifyBearerToken('provider-token')).rejects.toBeInstanceOf(UnauthorizedException);
   });
+
+  it('accepts an IEUM session JWT as a bearer token', async () => {
+    const sessionUser = createUser({
+      id: 'session-user-id',
+      oauthId: 'session-oauth-id',
+      role: UserRole.Admin,
+    });
+    const service = createService({ sessionUser });
+
+    const user = await service.verifyBearerToken('ieum-session-token');
+
+    expect(user).toEqual(sessionUser);
+    expect(httpPost).not.toHaveBeenCalled();
+  });
 });
 
-function createService(options: { readonly adminMirimOauthIds?: string; readonly teacherMirimOauthIds?: string } = {}): AuthService {
+function createService(options: {
+  readonly adminMirimOauthIds?: string;
+  readonly teacherMirimOauthIds?: string;
+  readonly sessionUser?: UserEntity;
+} = {}): AuthService {
   httpPost = jest.fn();
   httpGet = jest.fn();
   const users = {
-    findOne: jest.fn().mockResolvedValue(null),
+    findOne: jest.fn().mockImplementation(({ where }: { readonly where: { readonly id?: string } }) => {
+      if (options.sessionUser && where.id === options.sessionUser.id) {
+        return Promise.resolve(options.sessionUser);
+      }
+      return Promise.resolve(null);
+    }),
     create: jest.fn((user: Partial<UserEntity>) => ({ id: 'user-id', ...user })),
     save: jest.fn(async (user: UserEntity) => user),
   } as unknown as Repository<UserEntity>;
@@ -201,10 +224,30 @@ function createService(options: { readonly adminMirimOauthIds?: string; readonly
   } as unknown as HttpService;
   const jwt = {
     signAsync: jest.fn(),
-    verifyAsync: jest.fn(),
+    verifyAsync: jest.fn().mockResolvedValue({
+      sub: options.sessionUser?.id ?? 'missing-session-user',
+      oauthId: options.sessionUser?.oauthId ?? 'missing-oauth-id',
+      role: options.sessionUser?.role ?? UserRole.Student,
+      typ: 'access',
+    }),
   } as unknown as JwtService;
 
   return new AuthService(users, config, cache, http, jwt);
+}
+
+function createUser(overrides: Partial<UserEntity>): UserEntity {
+  return {
+    id: 'user-id',
+    oauthProvider: 'mirim_oauth',
+    oauthId: 'oauth-id',
+    name: '테스트',
+    email: 'test@e-mirim.hs.kr',
+    profileImageUrl: null,
+    role: UserRole.Student,
+    createdAt: new Date('2026-06-10T00:00:00.000Z'),
+    updatedAt: new Date('2026-06-10T00:00:00.000Z'),
+    ...overrides,
+  } as UserEntity;
 }
 
 function mockMirimVerifyToken(user: Record<string, unknown>): void {

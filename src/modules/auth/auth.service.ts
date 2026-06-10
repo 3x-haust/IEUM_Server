@@ -55,6 +55,10 @@ export class AuthService {
   }
 
   async verifyBearerToken(token: string): Promise<UserEntity> {
+    const sessionUser = await this.tryVerifySessionToken(token);
+    if (sessionUser) {
+      return sessionUser;
+    }
     const payload = await this.verifyProviderToken(token);
     return this.syncUser(payload);
   }
@@ -81,6 +85,17 @@ export class AuthService {
 
   async logout(): Promise<{ status: string }> {
     return { status: 'ok' };
+  }
+
+  private async tryVerifySessionToken(token: string): Promise<UserEntity | null> {
+    try {
+      return await this.verifySessionToken(token);
+    } catch (error) {
+      if (error instanceof Error) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   private async signSessionToken(user: UserEntity): Promise<string> {
