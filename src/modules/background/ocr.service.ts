@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { randomUUID } from 'crypto';
+import { mkdtemp, rm } from 'fs/promises';
+import { tmpdir } from 'os';
 import { join } from 'path';
-import { recognize } from 'tesseract.js';
+import sharp from 'sharp';
+import { createWorker, PSM } from 'tesseract.js';
 
 export interface OcrResult {
   rawText: string | null;
@@ -22,10 +26,37 @@ export class OcrService {
     }
     try {
       const uploadRoot = this.config.get<string>('UPLOAD_DIR', 'uploads');
-      const result = await recognize(join(process.cwd(), uploadRoot, storageKey), 'eng+kor');
-      return this.parse(result.data.text);
+      const imagePath = join(process.cwd(), uploadRoot, storageKey);
+      const rawText = await this.recognizeBusinessCardVariants(imagePath);
+      return this.parse(rawText);
     } catch {
       return this.empty();
+    }
+  }
+
+  private async recognizeBusinessCardVariants(imagePath: string): Promise<string> {
+    const tempDir = await mkdtemp(join(tmpdir(), 'ieum-ocr-'));
+    const variantPaths = [imagePath];
+    try {
+      variantPaths.push(...await createOcrImageVariants(imagePath, tempDir));
+      const worker = await createWorker('eng+kor');
+      try {
+        await worker.setParameters({
+          tessedit_pageseg_mode: PSM.SPARSE_TEXT,
+          preserve_interword_spaces: '1',
+          user_defined_dpi: '300'
+        });
+        const texts: string[] = [];
+        for (const variantPath of variantPaths) {
+          const result = await worker.recognize(variantPath);
+          texts.push(result.data.text);
+        }
+        return mergeRawTexts(texts);
+      } finally {
+        await worker.terminate();
+      }
+    } finally {
+      await rm(tempDir, { force: true, recursive: true });
     }
   }
 
@@ -48,6 +79,44 @@ export class OcrService {
   private empty(): OcrResult {
     return { rawText: null, name: null, organization: null, position: null, email: null, phone: null };
   }
+}
+
+async function createOcrImageVariants(imagePath: string, tempDir: string): Promise<string[]> {
+  const metadata = await sharp(imagePath, { failOn: 'none' }).metadata();
+  const sourceWidth = metadata.width ?? 0;
+  const resizeWidth = Math.min(Math.max(sourceWidth * 2, 1600), 2600);
+  const base = () =>
+    sharp(imagePath, { failOn: 'none' })
+      .rotate()
+      .resize({ width: resizeWidth, withoutEnlargement: false })
+      .grayscale()
+      .normalize()
+      .sharpen({ sigma: 1.1, m1: 1.4, m2: 2.2 });
+
+  const enhancedPath = join(tempDir, `${randomUUID()}-enhanced.png`);
+  const binaryPath = join(tempDir, `${randomUUID()}-binary.png`);
+  const invertedPath = join(tempDir, `${randomUUID()}-inverted.png`);
+
+  await Promise.all([
+    base().png().toFile(enhancedPath),
+    base().threshold(168).png().toFile(binaryPath),
+    base().negate().threshold(168).png().toFile(invertedPath)
+  ]);
+  return [enhancedPath, binaryPath, invertedPath];
+}
+
+function mergeRawTexts(texts: readonly string[]): string {
+  const seen = new Set<string>();
+  const lines: string[] = [];
+  for (const text of texts) {
+    for (const line of text.split(/\r?\n/)) {
+      const normalized = line.trim();
+      if (!normalized || seen.has(normalized)) continue;
+      seen.add(normalized);
+      lines.push(normalized);
+    }
+  }
+  return lines.join('\n');
 }
 
 const ORGANIZATION_PATTERN = /(주식회사|회사|학교|기관|corp|inc|ltd|company|studio|labs?|group|hyphen)/i;
