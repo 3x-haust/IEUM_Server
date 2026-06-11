@@ -4,7 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, Worker } from 'bullmq';
 import { Repository } from 'typeorm';
 import { ContactEntity, VisitorProfileEntity } from '../../database/entities';
-import { OcrResult, OcrService } from './ocr.service';
+import { OcrService } from './ocr.service';
+import type { OcrResult } from './ocr.types';
 
 type OcrJob = { visitorProfileId: string; storageKeys: readonly string[] };
 
