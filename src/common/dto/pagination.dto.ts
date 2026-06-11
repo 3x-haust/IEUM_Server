@@ -8,16 +8,19 @@ export class CursorPaginationDto {
   @IsString()
   cursor?: string;
 
-  @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 20 })
+  @ApiPropertyOptional({ minimum: 1, maximum: 300, default: 20 })
   @IsOptional()
   @Transform(({ value }) => Number(value))
   @IsInt()
   @Min(1)
-  @Max(100)
+  @Max(300)
   limit = 20;
 }
 
 export interface CursorPage<T> {
   items: T[];
   nextCursor: string | null;
+  total?: number;
+  activeTotal?: number;
+  inactiveTotal?: number;
 }

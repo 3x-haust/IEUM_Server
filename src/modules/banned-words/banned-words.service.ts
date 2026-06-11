@@ -2,7 +2,6 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
-import { decodeCursor, encodeCursor } from '../../common/utils/cursor';
 import { normalizeText } from '../../common/utils/text-normalizer';
 import { AuditAction, BannedWordEntity, UserEntity } from '../../database/entities';
 import { AuditService } from '../audit/audit.service';
@@ -22,18 +21,24 @@ export class BannedWordsService {
 
   async list(query: BannedWordListQueryDto): Promise<CursorPage<BannedWordEntity>> {
     const limit = query.limit ?? 20;
-    const cursor = decodeCursor(query.cursor);
-    const qb = this.bannedWords.createQueryBuilder('word').orderBy('word.createdAt', 'DESC').addOrderBy('word.id', 'DESC').take(limit + 1);
+    const offset = query.page ? (query.page - 1) * limit : decodeOffsetCursor(query.cursor);
+    const qb = this.bannedWords.createQueryBuilder('word');
     if (query.search) {
       qb.andWhere('word.word ILIKE :search', { search: `%${query.search}%` });
     }
-    if (cursor) {
-      qb.andWhere('(word.createdAt, word.id) < (:date, :id)', { date: cursor.date, id: cursor.id });
-    }
-    const rows = await qb.getMany();
+    const [total, activeTotal] = await Promise.all([
+      qb.clone().getCount(),
+      qb.clone().andWhere('word.isActive = :isActive', { isActive: true }).getCount()
+    ]);
+    const rows = await qb.orderBy('word.word', 'ASC').addOrderBy('word.id', 'ASC').skip(offset).take(limit + 1).getMany();
     const items = rows.slice(0, limit);
-    const last = items.at(-1);
-    return { items, nextCursor: rows.length > limit && last ? encodeCursor(last.createdAt, last.id) : null };
+    return {
+      items,
+      nextCursor: rows.length > limit ? encodeOffsetCursor(offset + limit) : null,
+      total,
+      activeTotal,
+      inactiveTotal: total - activeTotal
+    };
   }
 
   async create(dto: CreateBannedWordDto, actor: UserEntity): Promise<BannedWordEntity> {
@@ -136,5 +141,24 @@ export class BannedWordsService {
     this.matcher = null;
     this.rebuildMatcherPromise = null;
     this.matcherVersion += 1;
+  }
+}
+
+function encodeOffsetCursor(offset: number): string {
+  return Buffer.from(JSON.stringify({ offset }), 'utf8').toString('base64url');
+}
+
+function decodeOffsetCursor(cursor?: string): number {
+  if (!cursor) {
+    return 0;
+  }
+  try {
+    const parsed = JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8')) as { offset?: unknown };
+    if (typeof parsed.offset !== 'number' || !Number.isInteger(parsed.offset) || parsed.offset < 1) {
+      return 0;
+    }
+    return parsed.offset;
+  } catch {
+    return 0;
   }
 }

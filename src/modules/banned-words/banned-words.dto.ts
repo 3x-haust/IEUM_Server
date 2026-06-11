@@ -1,8 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString, Length } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsInt, IsOptional, IsString, Length, Min } from 'class-validator';
 import { CursorPaginationDto } from '../../common/dto/pagination.dto';
 
 export class BannedWordListQueryDto extends CursorPaginationDto {
+  @ApiPropertyOptional({ minimum: 1, default: 1 })
+  @IsOptional()
+  @Transform(({ value }) => Number(value))
+  @IsInt()
+  @Min(1)
+  page?: number;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
