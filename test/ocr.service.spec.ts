@@ -11,4 +11,11 @@ describe('OcrService', () => {
     expect(parsed.email).toBe('hello@example.com');
     expect(parsed.phone).toBe('010-1234-5678');
   });
+
+  it('recovers a latin name and organization from noisy business card OCR', () => {
+    const service = new OcrService(new ConfigService({ OCR_ENABLED: 'false' }));
+    const parsed = service.parse('| Lyu A\n\nSungyun\n\nrE\n\n15 개 Hyphen\nFF 개\n\nHyphen\nA 4 개\n');
+    expect(parsed.name).toBe('Lyu Sungyun');
+    expect(parsed.organization).toBe('Hyphen');
+  });
 });

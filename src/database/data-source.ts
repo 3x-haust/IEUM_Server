@@ -7,6 +7,7 @@ import { AddProjectInterests1764000000000 } from './migrations/1764000000000-add
 import { AddProjectMemberRoles1764800000000 } from './migrations/1764800000000-add-project-member-roles';
 import { AddProjectCatalogFields1781000000000 } from './migrations/1781000000000-add-project-catalog-fields';
 import { AddProjectFeedbackFlag1781100000000 } from './migrations/1781100000000-add-project-feedback-flag';
+import { AddUserProfileImageUrl1781200000000 } from './migrations/1781200000000-add-user-profile-image-url';
 import { AddBusinessCardBackFiles1781300000000 } from './migrations/1781300000000-add-business-card-back-files';
 
 config();
@@ -23,7 +24,7 @@ export default new DataSource({
   database: process.env.DATABASE_NAME ?? 'ieum',
   ssl,
   entities: [AuditLogEntity, BannedWordEntity, ContactEntity, EventOutboxEntity, FeedbackEntity, FileEntity, ProjectEntity, ProjectInterestEntity, ProjectMemberEntity, RealtimeEventEntity, UserEntity, VisitorProfileEntity],
-  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000, AddProjectMemberRoles1764800000000, AddProjectCatalogFields1781000000000, AddProjectFeedbackFlag1781100000000, AddBusinessCardBackFiles1781300000000],
+  migrations: [InitIeumSchema1710000000000, AddProjectInterests1764000000000, AddProjectMemberRoles1764800000000, AddProjectCatalogFields1781000000000, AddProjectFeedbackFlag1781100000000, AddUserProfileImageUrl1781200000000, AddBusinessCardBackFiles1781300000000],
   synchronize: false,
   extra: {
     max: poolMax,

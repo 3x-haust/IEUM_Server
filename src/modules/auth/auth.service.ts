@@ -55,6 +55,10 @@ export class AuthService {
   }
 
   async verifyBearerToken(token: string): Promise<UserEntity> {
+    const sessionUser = await this.tryVerifySessionToken(token);
+    if (sessionUser) {
+      return sessionUser;
+    }
     const payload = await this.verifyProviderToken(token);
     return this.syncUser(payload);
   }
@@ -81,6 +85,17 @@ export class AuthService {
 
   async logout(): Promise<{ status: string }> {
     return { status: 'ok' };
+  }
+
+  private async tryVerifySessionToken(token: string): Promise<UserEntity | null> {
+    try {
+      return await this.verifySessionToken(token);
+    } catch (error) {
+      if (error instanceof Error) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   private async signSessionToken(user: UserEntity): Promise<string> {
@@ -148,7 +163,10 @@ export class AuthService {
     if (response.status < 200 || response.status >= 300) {
       throw new UnauthorizedException('Invalid access token');
     }
-    const mirimUser = this.extractMirimUser(response.data) ?? await this.fetchMirimUserInfo(baseUrl, token);
+    const verifiedUser = this.extractMirimUser(response.data);
+    const mirimUser = verifiedUser
+      ? await this.completeMirimUserInfo(baseUrl, token, verifiedUser)
+      : await this.fetchMirimUserInfo(baseUrl, token);
     if (!mirimUser?.id || !mirimUser.email) {
       throw new UnauthorizedException('Invalid access token payload');
     }
@@ -160,7 +178,7 @@ export class AuthService {
       oauthId,
       name: mirimUser.nickname ?? mirimUser.name ?? mirimUser.email,
       email: mirimUser.email,
-      profileImageUrl: mirimUser.profileImageUrl ?? mirimUser.profile_image_url ?? null,
+      profileImageUrl: this.readProfileImageUrl(mirimUser),
       role,
       grade
     };
@@ -187,6 +205,26 @@ export class AuthService {
       throw new UnauthorizedException('Invalid access token');
     }
     return this.extractMirimUser(response.data);
+  }
+
+  private async completeMirimUserInfo(baseUrl: string, token: string, verifiedUser: MirimUserPayload): Promise<MirimUserPayload> {
+    if (this.readProfileImageUrl(verifiedUser)) {
+      return verifiedUser;
+    }
+    const userInfo = await this.fetchMirimUserInfo(baseUrl, token).catch((error: unknown) => {
+      if (error instanceof Error) {
+        return null;
+      }
+      throw error;
+    });
+    if (!userInfo) {
+      return verifiedUser;
+    }
+    return {
+      ...userInfo,
+      ...verifiedUser,
+      profileImageUrl: this.readProfileImageUrl(verifiedUser) ?? this.readProfileImageUrl(userInfo) ?? undefined
+    };
   }
 
   private async requestMirimUserInfo(baseUrl: string, token: string): Promise<ProviderHttpResponse> {
@@ -223,6 +261,10 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  private readProfileImageUrl(user: MirimUserPayload): string | null {
+    return user.profileImageUrl ?? user.profile_image_url ?? null;
   }
 
   private readRecordField(value: unknown, key: string): unknown {
