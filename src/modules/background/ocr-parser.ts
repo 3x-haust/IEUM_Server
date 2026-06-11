@@ -88,18 +88,22 @@ function findName(
   email: string | null,
   phone: string | null,
 ): string | null {
-  const candidates = lines
+  const candidates = uniqueStrings(lines
     .filter((line) => line !== organization && line !== position)
     .filter((line) => line !== email && line !== phone)
     .filter((line) => !ORGANIZATION_PATTERN.test(line))
     .map((line) => sanitizeNameCandidate(line))
     .filter((line): line is string => Boolean(line))
-    .filter((line) => looksLikePersonName(line));
+    .filter((line) => looksLikePersonName(line)));
 
   if (candidates.length >= 2 && isLatinName(candidates[0]) && isLatinName(candidates[1])) {
     return `${candidates[0]} ${candidates[1]}`;
   }
   return candidates[0] ?? null;
+}
+
+function uniqueStrings(values: readonly string[]): readonly string[] {
+  return [...new Set(values)];
 }
 
 function sanitizeNameCandidate(line: string): string | null {
