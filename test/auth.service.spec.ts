@@ -160,6 +160,44 @@ describe('AuthService', () => {
     }));
   });
 
+  it('loads profile image from Mirim user info when token verification omits it', async () => {
+    const service = createService();
+    mockMirimVerifyToken({
+      id: 'teacher-with-profile',
+      email: 'teacher-profile@e-mirim.hs.kr',
+      nickname: '프로필선생님',
+      role: 'teacher',
+    });
+    httpGet.mockResolvedValue({
+      status: 200,
+      data: {
+        status: 200,
+        data: {
+          id: 'teacher-with-profile',
+          email: 'teacher-profile@e-mirim.hs.kr',
+          nickname: '프로필선생님',
+          profileImageUrl: 'https://cdn.example.com/teacher-profile.png',
+          role: 'teacher',
+        },
+      },
+    });
+
+    const user = await service.verifyBearerToken('provider-token');
+
+    expect(httpGet).toHaveBeenCalledWith(
+      'https://api-auth.mmhs.app/api/v1/user',
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: 'Bearer provider-token' }),
+        validateStatus: expect.any(Function),
+      })
+    );
+    expect(user).toEqual(expect.objectContaining({
+      oauthId: 'teacher-with-profile',
+      profileImageUrl: 'https://cdn.example.com/teacher-profile.png',
+      role: UserRole.Teacher,
+    }));
+  });
+
   it('maps Mirim OAuth transport failures to an authentication failure', async () => {
     const service = createService();
     httpPost.mockRejectedValue(new TypeError('fetch failed'));
