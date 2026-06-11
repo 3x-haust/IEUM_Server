@@ -11,4 +11,9 @@ describe('AhoCorasickMatcher', () => {
     const matcher = new AhoCorasickMatcher(['aba', 'bab']);
     expect(matcher.find('ababa').sort()).toEqual(['aba', 'bab']);
   });
+
+  it('finds Korean insult stems inside polite endings', () => {
+    const matcher = new AhoCorasickMatcher(['구려']);
+    expect(matcher.find('개구려요')).toContain('구려');
+  });
 });
