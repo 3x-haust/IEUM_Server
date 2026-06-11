@@ -4,9 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, Worker } from 'bullmq';
 import { Repository } from 'typeorm';
 import { ContactEntity, VisitorProfileEntity } from '../../database/entities';
-import { OcrService } from './ocr.service';
+import { OcrResult, OcrService } from './ocr.service';
 
-type OcrJob = { visitorProfileId: string; storageKey: string };
+type OcrJob = { visitorProfileId: string; storageKeys: readonly string[] };
 
 @Injectable()
 export class OcrQueueService implements OnModuleInit, OnModuleDestroy {
@@ -34,33 +34,52 @@ export class OcrQueueService implements OnModuleInit, OnModuleDestroy {
     await this.queue?.close();
   }
 
-  async enqueueVisitorProfile(visitorProfileId: string, storageKey: string): Promise<void> {
+  async enqueueVisitorProfile(visitorProfileId: string, storageKeys: readonly string[]): Promise<void> {
+    if (storageKeys.length === 0) return;
     if (this.queue) {
-      await this.queue.add('visitor-profile', { visitorProfileId, storageKey }, { attempts: 3, backoff: { type: 'exponential', delay: 5000 } });
+      await this.queue.add('visitor-profile', { visitorProfileId, storageKeys }, { attempts: 3, backoff: { type: 'exponential', delay: 5000 } });
       return;
     }
     setImmediate(() => {
-      void this.processVisitorProfile({ visitorProfileId, storageKey });
+      void this.processVisitorProfile({ visitorProfileId, storageKeys });
     });
   }
 
   private async processVisitorProfile(job: OcrJob): Promise<void> {
-    const result = await this.ocr.extract(job.storageKey);
+    const results = await Promise.all(job.storageKeys.map((storageKey) => this.ocr.extract(storageKey)));
+    const result = mergeOcrResults(results);
+    const profile = await this.profiles.findOne({ where: { id: job.visitorProfileId } });
+    const rawText = [profile?.ocrRawText, result.rawText].filter((value): value is string => Boolean(value)).join('\n');
     await this.profiles.update(job.visitorProfileId, {
-      ocrRawText: result.rawText,
-      ocrName: result.name,
-      ocrOrganization: result.organization,
-      ocrPosition: result.position,
-      ocrEmail: result.email,
-      ocrPhone: result.phone
+      ocrRawText: rawText || null,
+      ocrName: profile?.ocrName ?? result.name,
+      ocrOrganization: profile?.ocrOrganization ?? result.organization,
+      ocrPosition: profile?.ocrPosition ?? result.position,
+      ocrEmail: profile?.ocrEmail ?? result.email,
+      ocrPhone: profile?.ocrPhone ?? result.phone
     });
-    await this.contacts.update({ visitorProfileId: job.visitorProfileId }, {
-      ocrRawText: result.rawText,
-      ocrName: result.name,
-      ocrOrganization: result.organization,
-      ocrPosition: result.position,
-      ocrEmail: result.email,
-      ocrPhone: result.phone
-    });
+    const contacts = await this.contacts.find({ where: { visitorProfileId: job.visitorProfileId } });
+    await Promise.all(contacts.map((contact) => this.contacts.update(contact.id, {
+      ocrRawText: [contact.ocrRawText, result.rawText].filter((value): value is string => Boolean(value)).join('\n') || null,
+      ocrName: contact.ocrName ?? result.name,
+      ocrOrganization: contact.ocrOrganization ?? result.organization,
+      ocrPosition: contact.ocrPosition ?? result.position,
+      ocrEmail: contact.ocrEmail ?? result.email,
+      ocrPhone: contact.ocrPhone ?? result.phone
+    })));
   }
+}
+
+function mergeOcrResults(results: readonly OcrResult[]): OcrResult {
+  const rawText = results.map((result) => result.rawText).filter((value): value is string => Boolean(value)).join('\n');
+  const firstValue = (field: keyof OcrResult) =>
+    results.map((result) => result[field]).find((value): value is string => typeof value === 'string' && value.length > 0) ?? null;
+  return {
+    rawText: rawText || null,
+    name: firstValue('name'),
+    organization: firstValue('organization'),
+    position: firstValue('position'),
+    email: firstValue('email'),
+    phone: firstValue('phone')
+  };
 }
