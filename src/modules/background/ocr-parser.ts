@@ -37,6 +37,11 @@ function normalizeOcrLine(line: string): string | null {
     .trim();
   if (!stripped) return null;
 
+  const withoutLeadingIndex = stripped.replace(/^\d+[.)]?\s+/, '').trim();
+  if (withoutLeadingIndex && looksLikePersonName(withoutLeadingIndex)) {
+    return withoutLeadingIndex;
+  }
+
   const trailingBrand = stripped.match(/(?:^| )([A-Z][A-Za-z][A-Za-z-]*(?:\s+[A-Z][A-Za-z][A-Za-z-]*)?)$/);
   if (trailingBrand?.[1] && stripped !== trailingBrand[1] && !looksLikePersonName(stripped)) {
     return trailingBrand[1];
@@ -58,13 +63,14 @@ function findOrganization(lines: readonly string[]): string | null {
 
   const counts = new Map<string, number>();
   for (const line of lines) {
+    if (isPositionLine(line)) continue;
     if (!looksLikeBrandName(line)) continue;
     counts.set(line, (counts.get(line) ?? 0) + 1);
   }
   const repeated = [...counts.entries()].find(([, count]) => count > 1)?.[0];
   if (repeated) return repeated;
 
-  return lines.find((line) => looksLikeBrandName(line) && !looksLikePersonName(line)) ?? null;
+  return lines.find((line) => !isPositionLine(line) && looksLikeBrandName(line) && !looksLikePersonName(line)) ?? null;
 }
 
 function stripOrganizationNoise(line: string): string {
@@ -121,7 +127,8 @@ function looksLikePersonName(line: string): boolean {
 
 function isLatinName(line: string | undefined): line is string {
   if (!line) return false;
-  const tokens = line.split(/\s+/);
+  const tokens = line.split(/\s+/).map((token) => token.replace(/\.$/, ''));
   if (tokens.length > 3) return false;
-  return tokens.every((token) => /^[A-Z][a-zA-Z'-]{1,}$/.test(token));
+  if (tokens.length === 1 && /^[A-Z]{2,}$/.test(tokens[0])) return false;
+  return tokens.every((token) => /^[A-Z][a-zA-Z'-]{1,}$/.test(token) || /^[A-Z]$/.test(token));
 }

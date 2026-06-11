@@ -70,7 +70,7 @@ export class HyphenVisionOcrService {
   }
 
   private async normalizeResult(apiKey: string, result: OcrResult): Promise<OcrResult> {
-    if (this.config.get<string>('HYPHEN_LLM_NORMALIZE_ENABLED', 'true') === 'false') {
+    if (this.config.get<string>('HYPHEN_LLM_NORMALIZE_ENABLED', 'false') !== 'true') {
       return result;
     }
     const model = this.config.get<string>('HYPHEN_LLM_MODEL', 'qwen3.6-35b');
@@ -115,7 +115,7 @@ function readVisionResult(body: unknown): OcrResult | null {
   const content = readMessageContent(body);
   if (!content) return null;
   const parsed = parseJsonObject(extractJsonText(content));
-  if (!parsed) return parseBusinessCardText(content);
+  if (!parsed) return parseBusinessCardText(readJsonLikeRawText(content) ?? content);
   return {
     rawText: readNullableString(parsed, 'rawText'),
     name: readNullableString(parsed, 'name'),
@@ -124,6 +124,25 @@ function readVisionResult(body: unknown): OcrResult | null {
     email: readNullableString(parsed, 'email'),
     phone: readNullableString(parsed, 'phone')
   };
+}
+
+function readJsonLikeRawText(content: string): string | null {
+  const rawTextStart = content.match(/"rawText"\s*:\s*"/);
+  if (!rawTextStart?.index) return null;
+  const start = rawTextStart.index + rawTextStart[0].length;
+  const tail = content.slice(start);
+  const nextField = tail.search(/",\s*"(name|organization|position|email|phone)"\s*:/);
+  const rawText = nextField >= 0 ? tail.slice(0, nextField) : tail;
+  return unescapeJsonStringFragment(rawText).trim() || null;
+}
+
+function unescapeJsonStringFragment(value: string): string {
+  return value
+    .replace(/\\n/g, '\n')
+    .replace(/\\r/g, '\r')
+    .replace(/\\t/g, '\t')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\');
 }
 
 function readMessageContent(body: unknown): string | null {
