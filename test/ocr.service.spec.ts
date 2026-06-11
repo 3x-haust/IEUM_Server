@@ -80,29 +80,54 @@ describe('OcrService', () => {
     const uploadRoot = await mkdtemp(join(tmpdir(), 'ieum-ocr-test-'));
     try {
       await writeBlankImage(join(uploadRoot, 'card.png'));
-      const postMock = jest.fn().mockResolvedValue({
+      const postMock = jest.fn()
+        .mockResolvedValueOnce({
         status: 200,
         data: {
           choices: [{
             message: {
               content: JSON.stringify({
-                rawText: 'Lyu Sungyun\nTechnology Lead\nHyphen\n010-5913-4010\nsungyun@hyphen.it.com',
-                name: 'Lyu Sungyun',
-                organization: 'Hyphen',
+                rawText: 'Lyu Sunggyun\nTechnolo.gy Lead\nHyphynphen\n010-5913-4010\nsunqgyun@hyphen.it.com',
+                name: 'Lyu Sunggyun',
+                organization: 'Hyphynphen',
                 position: 'Technology Lead',
-                email: 'sungyun@hyphen.it.com',
+                email: 'sunqgyun@hyphen.it.com',
                 phone: '010-5913-4010'
               })
             }
           }]
         }
-      });
+      })
+        .mockResolvedValueOnce({
+          status: 200,
+          data: {
+            choices: [{
+              message: {
+                content: JSON.stringify({
+                  rawText: 'Lyu Sungyun\nTechnology Lead\nHyphen\n010-5913-4010\nsungyun@hyphen.it.com',
+                  name: 'Lyu Sungyun',
+                  organization: 'Hyphen',
+                  position: 'Technology Lead',
+                  email: 'sungyun@hyphen.it.com',
+                  phone: '010-5913-4010'
+                })
+              }
+            }]
+          }
+        });
       const service = createOcrService({ HYPHEN_VISION_API_KEY: 'test-key', UPLOAD_DIR: uploadRoot }, postMock);
       const parsed = await service.extract('card.png');
 
-      expect(postMock).toHaveBeenCalledWith(
+      expect(postMock).toHaveBeenNthCalledWith(
+        1,
         'https://ai.hyphen.it.com/v1/chat/completions',
         expect.objectContaining({ model: 'hyphen-vision' }),
+        expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer test-key' }) })
+      );
+      expect(postMock).toHaveBeenNthCalledWith(
+        2,
+        'https://ai.hyphen.it.com/v1/chat/completions',
+        expect.objectContaining({ model: 'qwen3.6-35b' }),
         expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer test-key' }) })
       );
       expect(recognizeMock).not.toHaveBeenCalled();

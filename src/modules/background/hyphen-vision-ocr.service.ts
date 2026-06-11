@@ -12,9 +12,21 @@ interface VisionHttpResponse {
 }
 
 const OCR_PROMPT = [
-  'Read this business card image and return only compact JSON.',
+  'Read all visible text from this business card image and return only compact JSON.',
   'Schema: {"rawText": string|null, "name": string|null, "organization": string|null, "position": string|null, "email": string|null, "phone": string|null}.',
-  'Use null for unknown fields. Preserve Korean and English text exactly when readable.'
+  'Use null for unknown fields. Preserve Korean and English text exactly when readable.',
+  'Do not guess missing characters. Include every readable text line in rawText.'
+].join('\n');
+
+const NORMALIZE_PROMPT = [
+  'You normalize OCR output from a business card into reliable contact fields.',
+  'Return only compact JSON with this schema: {"rawText": string|null, "name": string|null, "organization": string|null, "position": string|null, "email": string|null, "phone": string|null}.',
+  'Rules:',
+  '- Correct obvious OCR duplication such as Sunggyun -> Sungyun, Technolo.gy -> Technology, Hyphynphen/Hyphphen -> Hyphen.',
+  '- Prefer valid emails and phone numbers that match common formats. Keep null when unreadable.',
+  '- A card back or logo-only image usually has organization but no person name.',
+  '- Do not invent fields that are not supported by the OCR text.',
+  '- Preserve Korean names when present, but use the clearly printed Latin name when that is the main name.'
 ].join('\n');
 
 @Injectable()
@@ -34,7 +46,9 @@ export class HyphenVisionOcrService {
     if (response.status < 200 || response.status >= 300) {
       return null;
     }
-    return readVisionResult(response.data);
+    const visionResult = readVisionResult(response.data);
+    if (!visionResult) return null;
+    return await this.normalizeResult(apiKey, visionResult);
   }
 
   private async createDataUrl(imagePath: string): Promise<string> {
@@ -43,19 +57,40 @@ export class HyphenVisionOcrService {
   }
 
   private async requestVision(apiKey: string, imageUrl: string): Promise<VisionHttpResponse> {
-    const baseUrl = this.config.get<string>('HYPHEN_VISION_BASE_URL', 'https://ai.hyphen.it.com/v1').replace(/\/$/, '');
     const model = this.config.get<string>('HYPHEN_VISION_MODEL', 'hyphen-vision');
+    return this.requestChatCompletion(apiKey, model, [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: OCR_PROMPT },
+          { type: 'image_url', image_url: { url: imageUrl } }
+        ]
+      }
+    ]);
+  }
+
+  private async normalizeResult(apiKey: string, result: OcrResult): Promise<OcrResult> {
+    if (this.config.get<string>('HYPHEN_LLM_NORMALIZE_ENABLED', 'true') === 'false') {
+      return result;
+    }
+    const model = this.config.get<string>('HYPHEN_LLM_MODEL', 'qwen3.6-35b');
+    const response = await this.requestChatCompletion(apiKey, model, [
+      { role: 'system', content: NORMALIZE_PROMPT },
+      { role: 'user', content: JSON.stringify(result) }
+    ]);
+    if (response.status < 200 || response.status >= 300) {
+      return result;
+    }
+    return readVisionResult(response.data) ?? result;
+  }
+
+  private async requestChatCompletion(apiKey: string, model: string, messages: readonly ChatMessage[]): Promise<VisionHttpResponse> {
+    const baseUrl = this.config.get<string>('HYPHEN_VISION_BASE_URL', 'https://ai.hyphen.it.com/v1').replace(/\/$/, '');
     return this.http.axiosRef.post<unknown>(
       `${baseUrl}/chat/completions`,
       {
         model,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: OCR_PROMPT },
-            { type: 'image_url', image_url: { url: imageUrl } }
-          ]
-        }],
+        messages,
         chat_template_kwargs: { enable_thinking: true }
       },
       {
@@ -66,6 +101,15 @@ export class HyphenVisionOcrService {
     );
   }
 }
+
+type ChatMessage = {
+  readonly role: 'system' | 'user';
+  readonly content: string | readonly ChatContentPart[];
+};
+
+type ChatContentPart =
+  | { readonly type: 'text'; readonly text: string }
+  | { readonly type: 'image_url'; readonly image_url: { readonly url: string } };
 
 function readVisionResult(body: unknown): OcrResult | null {
   const content = readMessageContent(body);
