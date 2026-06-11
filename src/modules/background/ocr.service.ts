@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 import { mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import sharp from 'sharp';
 import { createWorker, PSM, Worker } from 'tesseract.js';
 
@@ -32,12 +32,12 @@ export class OcrService implements OnModuleDestroy {
   }
 
   async extract(storageKey: string): Promise<OcrResult> {
-    if (this.config.get<string>('OCR_ENABLED') !== 'true') {
+    if (this.config.get<string>('OCR_ENABLED', 'true') === 'false') {
       return this.empty();
     }
     try {
       const uploadRoot = this.config.get<string>('UPLOAD_DIR', 'uploads');
-      const imagePath = join(process.cwd(), uploadRoot, storageKey);
+      const imagePath = resolve(process.cwd(), uploadRoot, storageKey);
       const rawText = await this.recognizeBusinessCardVariants(imagePath);
       return this.parse(rawText);
     } catch {
