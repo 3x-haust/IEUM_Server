@@ -191,7 +191,7 @@ describe('OcrService', () => {
         data: {
           choices: [{
             message: {
-              content: '{\n  "rawText": "CEO\\n1. T. SHIN\\n010 2831 0421\\nwww.netclaus.org\\nnetclaus@ogq.me\\nOOGO\\nCEO\\n1'
+              content: '{\n  "rawText": "CEO\\n1. T. SHIN\\n010 2831 0421\\nwww.netclaus.org\\nnetclaus@ogq.me\\nOOGO\\nCEO\\n1. T. SHIN\\n010 2831 0421'
             }
           }]
         }
