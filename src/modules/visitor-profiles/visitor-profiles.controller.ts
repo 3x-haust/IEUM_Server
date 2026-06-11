@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '@3xhaust/nest-response';
@@ -33,6 +33,13 @@ export class VisitorProfilesController {
       front: files?.businessCardFront?.[0] ?? files?.businessCard?.[0],
       back: files?.businessCardBack?.[0]
     });
+  }
+
+  @Get(':id')
+  @SuccessMessage('Found visitor profile')
+  @ApiWrappedResponse({ model: VisitorProfileResponseDto, description: 'Visitor profile detail' })
+  findOne(@Param('id') id: string) {
+    return this.visitorProfilesService.findOne(id);
   }
 
   @Post(':id/reset')
