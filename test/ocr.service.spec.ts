@@ -76,12 +76,11 @@ describe('OcrService', () => {
     expect(parsed.position).toBe('Technology Lead');
   });
 
-  it('uses Hyphen vision before Tesseract when an API key is configured', async () => {
+  it('uses Hyphen vision without LLM normalization by default', async () => {
     const uploadRoot = await mkdtemp(join(tmpdir(), 'ieum-ocr-test-'));
     try {
       await writeBlankImage(join(uploadRoot, 'card.png'));
-      const postMock = jest.fn()
-        .mockResolvedValueOnce({
+      const postMock = jest.fn().mockResolvedValueOnce({
         status: 200,
         data: {
           choices: [{
@@ -97,7 +96,47 @@ describe('OcrService', () => {
             }
           }]
         }
-      })
+      });
+      const service = createOcrService({ HYPHEN_VISION_API_KEY: 'test-key', UPLOAD_DIR: uploadRoot }, postMock);
+      const parsed = await service.extract('card.png');
+
+      expect(postMock).toHaveBeenCalledTimes(1);
+      expect(postMock).toHaveBeenNthCalledWith(
+        1,
+        'https://ai.hyphen.it.com/v1/chat/completions',
+        expect.objectContaining({ model: 'hyphen-vision' }),
+        expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer test-key' }) })
+      );
+      expect(recognizeMock).not.toHaveBeenCalled();
+      expect(parsed.email).toBe('sunqgyun@hyphen.it.com');
+      expect(parsed.phone).toBe('010-5913-4010');
+    } finally {
+      await rm(uploadRoot, { force: true, recursive: true });
+    }
+  });
+
+  it('runs LLM normalization only when explicitly enabled', async () => {
+    const uploadRoot = await mkdtemp(join(tmpdir(), 'ieum-ocr-test-'));
+    try {
+      await writeBlankImage(join(uploadRoot, 'card.png'));
+      const postMock = jest.fn()
+        .mockResolvedValueOnce({
+          status: 200,
+          data: {
+            choices: [{
+              message: {
+                content: JSON.stringify({
+                  rawText: 'Lyu Sunggyun\nTechnolo.gy Lead\nHyphynphen\n010-5913-4010\nsunqgyun@hyphen.it.com',
+                  name: 'Lyu Sunggyun',
+                  organization: 'Hyphynphen',
+                  position: 'Technology Lead',
+                  email: 'sunqgyun@hyphen.it.com',
+                  phone: '010-5913-4010'
+                })
+              }
+            }]
+          }
+        })
         .mockResolvedValueOnce({
           status: 200,
           data: {
@@ -115,9 +154,14 @@ describe('OcrService', () => {
             }]
           }
         });
-      const service = createOcrService({ HYPHEN_VISION_API_KEY: 'test-key', UPLOAD_DIR: uploadRoot }, postMock);
+      const service = createOcrService({
+        HYPHEN_LLM_NORMALIZE_ENABLED: 'true',
+        HYPHEN_VISION_API_KEY: 'test-key',
+        UPLOAD_DIR: uploadRoot
+      }, postMock);
       const parsed = await service.extract('card.png');
 
+      expect(postMock).toHaveBeenCalledTimes(2);
       expect(postMock).toHaveBeenNthCalledWith(
         1,
         'https://ai.hyphen.it.com/v1/chat/completions',
@@ -133,6 +177,34 @@ describe('OcrService', () => {
       expect(recognizeMock).not.toHaveBeenCalled();
       expect(parsed.email).toBe('sungyun@hyphen.it.com');
       expect(parsed.phone).toBe('010-5913-4010');
+    } finally {
+      await rm(uploadRoot, { force: true, recursive: true });
+    }
+  });
+
+  it('recovers OCR fields when vision returns truncated JSON rawText', async () => {
+    const uploadRoot = await mkdtemp(join(tmpdir(), 'ieum-ocr-test-'));
+    try {
+      await writeBlankImage(join(uploadRoot, 'card.png'));
+      const postMock = jest.fn().mockResolvedValueOnce({
+        status: 200,
+        data: {
+          choices: [{
+            message: {
+              content: '{\n  "rawText": "CEO\\n1. T. SHIN\\n010 2831 0421\\nwww.netclaus.org\\nnetclaus@ogq.me\\nOOGO\\nCEO\\n1'
+            }
+          }]
+        }
+      });
+      const service = createOcrService({ HYPHEN_VISION_API_KEY: 'test-key', UPLOAD_DIR: uploadRoot }, postMock);
+      const parsed = await service.extract('card.png');
+
+      expect(postMock).toHaveBeenCalledTimes(1);
+      expect(parsed.position).toBe('CEO');
+      expect(parsed.name).toBe('T. SHIN');
+      expect(parsed.organization).toBe('OOGO');
+      expect(parsed.email).toBe('netclaus@ogq.me');
+      expect(parsed.phone).toBe('010 2831 0421');
     } finally {
       await rm(uploadRoot, { force: true, recursive: true });
     }
