@@ -43,6 +43,36 @@ describe('OcrService', () => {
     expect(parsed.organization).toBe('Hyphen');
   });
 
+  it('recovers visible Hyphen card fields from real camera OCR noise', () => {
+    const service = new OcrService(new ConfigService({ OCR_ENABLED: 'false' }));
+    const parsed = service.parse([
+      'ry',
+      'Lyu',
+      'Sungyun',
+      'Technology Lead',
+      'WD T= UR. ap',
+      '48',
+      'SC Sie-Sa-a0w',
+      '© [12노 Fypren com',
+      '6 Lungrnityphen iam',
+      'VEY',
+      'ry J',
+      'ED T= UR hap',
+      '유성윤',
+      'Prox Fypren com',
+      'EN',
+      'Shezicgy Lead',
+      'Oo 서 ©',
+      'QQ =',
+      '[=~]',
+      '[해',
+      'Hyphen'
+    ].join('\n'));
+    expect(parsed.name).toBe('Lyu Sungyun');
+    expect(parsed.organization).toBe('Hyphen');
+    expect(parsed.position).toBe('Technology Lead');
+  });
+
   it('uses Tesseract OCR by default when OCR_ENABLED is omitted', async () => {
     const uploadRoot = await mkdtemp(join(tmpdir(), 'ieum-ocr-test-'));
     try {
