@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 import { mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import sharp from 'sharp';
-import { createWorker, PSM } from 'tesseract.js';
+import { createWorker, PSM, Worker } from 'tesseract.js';
 
 export interface OcrResult {
   rawText: string | null;
@@ -16,9 +16,20 @@ export interface OcrResult {
   phone: string | null;
 }
 
+const MAX_OCR_WORKERS = 2;
+
 @Injectable()
-export class OcrService {
+export class OcrService implements OnModuleDestroy {
+  private createdWorkerCount = 0;
+  private readonly idleWorkers: Worker[] = [];
+  private readonly allWorkers: Worker[] = [];
+  private readonly waiters: ((worker: Worker) => void)[] = [];
+
   constructor(private readonly config: ConfigService) {}
+
+  async onModuleDestroy(): Promise<void> {
+    await Promise.all(this.allWorkers.map((worker) => worker.terminate().catch(() => undefined)));
+  }
 
   async extract(storageKey: string): Promise<OcrResult> {
     if (this.config.get<string>('OCR_ENABLED') !== 'true') {
@@ -36,28 +47,64 @@ export class OcrService {
 
   private async recognizeBusinessCardVariants(imagePath: string): Promise<string> {
     const tempDir = await mkdtemp(join(tmpdir(), 'ieum-ocr-'));
-    const variantPaths = [imagePath];
     try {
-      variantPaths.push(...await createOcrImageVariants(imagePath, tempDir));
-      const worker = await createWorker('eng+kor');
+      const variantPaths = await createOcrImageVariants(imagePath, tempDir);
+      const worker = await this.acquireWorker();
       try {
+        const texts: string[] = [];
+        for (const variantPath of variantPaths) {
+          const result = await worker.recognize(variantPath, { rotateAuto: true });
+          texts.push(result.data.text);
+          const merged = mergeRawTexts(texts);
+          if (this.hasCompleteCardFields(merged)) {
+            return merged;
+          }
+        }
+        return mergeRawTexts(texts);
+      } finally {
+        this.releaseWorker(worker);
+      }
+    } finally {
+      await rm(tempDir, { force: true, recursive: true });
+    }
+  }
+
+  private hasCompleteCardFields(rawText: string): boolean {
+    const parsed = this.parse(rawText);
+    return Boolean(parsed.name && parsed.email && parsed.phone);
+  }
+
+  private async acquireWorker(): Promise<Worker> {
+    const idle = this.idleWorkers.pop();
+    if (idle) return idle;
+    if (this.createdWorkerCount < MAX_OCR_WORKERS) {
+      this.createdWorkerCount += 1;
+      try {
+        const worker = await createWorker('eng+kor');
         await worker.setParameters({
           tessedit_pageseg_mode: PSM.SPARSE_TEXT,
           preserve_interword_spaces: '1',
           user_defined_dpi: '300'
         });
-        const texts: string[] = [];
-        for (const variantPath of variantPaths) {
-          const result = await worker.recognize(variantPath);
-          texts.push(result.data.text);
-        }
-        return mergeRawTexts(texts);
-      } finally {
-        await worker.terminate();
+        this.allWorkers.push(worker);
+        return worker;
+      } catch (error) {
+        this.createdWorkerCount -= 1;
+        throw error;
       }
-    } finally {
-      await rm(tempDir, { force: true, recursive: true });
     }
+    return new Promise<Worker>((resolve) => {
+      this.waiters.push(resolve);
+    });
+  }
+
+  private releaseWorker(worker: Worker): void {
+    const waiter = this.waiters.shift();
+    if (waiter) {
+      waiter(worker);
+      return;
+    }
+    this.idleWorkers.push(worker);
   }
 
   parse(rawText: string): OcrResult {
@@ -84,25 +131,29 @@ export class OcrService {
 async function createOcrImageVariants(imagePath: string, tempDir: string): Promise<string[]> {
   const metadata = await sharp(imagePath, { failOn: 'none' }).metadata();
   const sourceWidth = metadata.width ?? 0;
-  const resizeWidth = Math.min(Math.max(sourceWidth * 2, 1600), 2600);
+  const resizeWidth = Math.round(Math.min(Math.max(sourceWidth * 2.4, 1600), 2400));
   const base = () =>
     sharp(imagePath, { failOn: 'none' })
       .rotate()
       .resize({ width: resizeWidth, withoutEnlargement: false })
       .grayscale()
       .normalize()
-      .sharpen({ sigma: 1.1, m1: 1.4, m2: 2.2 });
+      .median(1)
+      .sharpen({ sigma: 1.15, m1: 1.55, m2: 2.35 });
 
   const enhancedPath = join(tempDir, `${randomUUID()}-enhanced.png`);
-  const binaryPath = join(tempDir, `${randomUUID()}-binary.png`);
-  const invertedPath = join(tempDir, `${randomUUID()}-inverted.png`);
+  const highContrastPath = join(tempDir, `${randomUUID()}-contrast.png`);
+  const darkTextBinaryPath = join(tempDir, `${randomUUID()}-dark-text.png`);
+  const lightTextBinaryPath = join(tempDir, `${randomUUID()}-light-text.png`);
 
   await Promise.all([
     base().png().toFile(enhancedPath),
-    base().threshold(168).png().toFile(binaryPath),
-    base().negate().threshold(168).png().toFile(invertedPath)
+    base().linear(1.45, -28).png().toFile(highContrastPath),
+    base().linear(1.35, -18).threshold(156).png().toFile(darkTextBinaryPath),
+    base().negate().linear(1.35, -18).threshold(156).png().toFile(lightTextBinaryPath)
   ]);
-  return [enhancedPath, binaryPath, invertedPath];
+  // 인식 성공률이 높은 순서로 정렬 — 핵심 필드가 모이면 뒤 변형은 건너뛴다
+  return [enhancedPath, highContrastPath, darkTextBinaryPath, lightTextBinaryPath];
 }
 
 function mergeRawTexts(texts: readonly string[]): string {

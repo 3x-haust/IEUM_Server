@@ -20,6 +20,11 @@ export class ProjectListQueryDto extends CursorPaginationDto {
   @IsString()
   category?: string;
 
+  @ApiPropertyOptional({ description: 'Filter projects that include this member user id.' })
+  @IsOptional()
+  @IsString()
+  memberUserId?: string;
+
   @ApiPropertyOptional({
     default: true,
     description: 'Set false to skip aggregate counts for faster public lists.',

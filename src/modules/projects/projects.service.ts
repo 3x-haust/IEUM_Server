@@ -108,6 +108,9 @@ export class ProjectsService {
     if (query.category) {
       qb.andWhere('project.experienceCategory = :category', { category: query.category });
     }
+    if (query.memberUserId) {
+      qb.innerJoin('project.members', 'memberFilter', 'memberFilter.userId = :memberUserId', { memberUserId: query.memberUserId });
+    }
     if (query.stack) {
       qb.andWhere('(:stack = ANY(project.developmentStacks) OR :stack = ANY(project.designStacks))', { stack: query.stack });
     }
