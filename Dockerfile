@@ -31,4 +31,4 @@ USER nodejs
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "node dist/database/migrate-and-seed.js && node dist/main.js"]
+CMD ["node", "dist/main.js"]
