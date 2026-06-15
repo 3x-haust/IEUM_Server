@@ -173,4 +173,32 @@ describe('ProjectsService', () => {
       experienceCategory: 'global'
     }));
   });
+
+  it('keeps design department hyphen slots separate from development slots', () => {
+    const projects = loadIeumCatalogProjects();
+    const projectsBySlot = new Map(projects.map((project) => [project.boothSlot, project]));
+
+    expect(projectsBySlot.get('A1')).toEqual(expect.objectContaining({
+      serviceName: 'MALO',
+      experienceCategory: 'ai'
+    }));
+    expect(projectsBySlot.get('A-1')).toEqual(expect.objectContaining({
+      serviceName: 'INFLOW',
+      experienceCategory: 'ai',
+      acceptsFeedback: true
+    }));
+    expect(projectsBySlot.get('E1')).toEqual(expect.objectContaining({
+      serviceName: '쁘이',
+      experienceCategory: 'creative'
+    }));
+    expect(projectsBySlot.get('E-1')).toEqual(expect.objectContaining({
+      serviceName: '십만원권',
+      experienceCategory: 'creative',
+      acceptsFeedback: true
+    }));
+    expect(projectsBySlot.get('B-5')).toEqual(expect.objectContaining({
+      serviceName: '놀다보니',
+      experienceCategory: 'human'
+    }));
+  });
 });
