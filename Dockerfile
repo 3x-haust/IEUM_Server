@@ -1,25 +1,17 @@
-FROM node:22-alpine AS base
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 RUN apk add --no-cache python3 make g++
-RUN npm install -g pnpm@11.6.0
 
-FROM base AS deps
+COPY package*.json ./
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-RUN pnpm install --frozen-lockfile
-
-FROM base AS builder
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN --mount=type=cache,target=/root/.npm npm install
 
 COPY . .
 
-RUN pnpm run build
-RUN pnpm prune --prod
+RUN npm run build
+RUN npm prune --omit=dev
 
 FROM node:22-alpine AS runner
 
