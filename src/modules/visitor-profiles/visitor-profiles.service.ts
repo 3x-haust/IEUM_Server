@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FileAccessLevel, RealtimeEventType, UserRole, VisitorProfileEntity, VisitorType } from '../../database/entities';
@@ -14,6 +14,8 @@ interface BusinessCardUploadInput {
 
 @Injectable()
 export class VisitorProfilesService {
+  private readonly logger = new Logger(VisitorProfilesService.name);
+
   constructor(
     @InjectRepository(VisitorProfileEntity) private readonly profiles: Repository<VisitorProfileEntity>,
     private readonly files: FilesService,
@@ -42,8 +44,8 @@ export class VisitorProfilesService {
       ocrEmail: normalizeManualField(dto.ocrEmail),
       ocrPhone: normalizeManualField(dto.ocrPhone)
     }));
-    await this.enqueueBusinessCardOcr(profile.id, businessCard?.storageKey, businessCardBack?.storageKey);
-    await this.events.publish(RealtimeEventType.VisitorProfileCreated, null, UserRole.Teacher, { visitorProfileId: profile.id, visitorType: profile.visitorType }, 'visitor_profile', profile.id);
+    this.enqueueBusinessCardOcr(profile.id, businessCard?.storageKey, businessCardBack?.storageKey);
+    this.publishVisitorProfileCreated(profile);
     return profile;
   }
 
@@ -58,13 +60,33 @@ export class VisitorProfilesService {
     return profile;
   }
 
-  private async enqueueBusinessCardOcr(profileId: string, frontStorageKey?: string, backStorageKey?: string): Promise<void> {
+  private enqueueBusinessCardOcr(profileId: string, frontStorageKey?: string, backStorageKey?: string): void {
     const storageKeys = [frontStorageKey, backStorageKey].filter((value): value is string => Boolean(value));
-    await this.ocrQueue.enqueueVisitorProfile(profileId, storageKeys);
+    if (storageKeys.length === 0) return;
+    void this.ocrQueue.enqueueVisitorProfile(profileId, storageKeys).catch((error: unknown) => {
+      this.logger.warn(`Failed to enqueue business card OCR for visitor profile ${profileId}: ${readErrorMessage(error)}`);
+    });
+  }
+
+  private publishVisitorProfileCreated(profile: VisitorProfileEntity): void {
+    void this.events.publish(
+      RealtimeEventType.VisitorProfileCreated,
+      null,
+      UserRole.Teacher,
+      { visitorProfileId: profile.id, visitorType: profile.visitorType },
+      'visitor_profile',
+      profile.id
+    ).catch((error: unknown) => {
+      this.logger.warn(`Failed to publish visitor profile created event for ${profile.id}: ${readErrorMessage(error)}`);
+    });
   }
 }
 
 function normalizeManualField(value: string | undefined): string | null {
   const normalized = value?.trim();
   return normalized ? normalized : null;
+}
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : 'Unknown error';
 }

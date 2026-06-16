@@ -1,4 +1,4 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, Worker } from 'bullmq';
@@ -8,9 +8,11 @@ import { OcrService } from './ocr.service';
 import type { OcrResult } from './ocr.types';
 
 type OcrJob = { visitorProfileId: string; storageKeys: readonly string[] };
+const DEFAULT_QUEUE_ADD_TIMEOUT_MS = 1500;
 
 @Injectable()
 export class OcrQueueService implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(OcrQueueService.name);
   private queue: Queue<OcrJob> | null = null;
   private worker: Worker<OcrJob> | null = null;
 
@@ -38,12 +40,20 @@ export class OcrQueueService implements OnModuleInit, OnModuleDestroy {
   async enqueueVisitorProfile(visitorProfileId: string, storageKeys: readonly string[]): Promise<void> {
     if (storageKeys.length === 0) return;
     if (this.queue) {
-      await this.queue.add('visitor-profile', { visitorProfileId, storageKeys }, { attempts: 3, backoff: { type: 'exponential', delay: 5000 } });
-      return;
+      try {
+        await withTimeout(
+          this.queue.add('visitor-profile', { visitorProfileId, storageKeys }, { attempts: 3, backoff: { type: 'exponential', delay: 5000 } }),
+          this.queueAddTimeoutMs()
+        );
+        return;
+      } catch (error: unknown) {
+        this.logger.warn(`Failed to enqueue OCR job for visitor profile ${visitorProfileId}: ${readErrorMessage(error)}`);
+        if (error instanceof QueueAddTimeoutError) {
+          return;
+        }
+      }
     }
-    setImmediate(() => {
-      void this.processVisitorProfile({ visitorProfileId, storageKeys });
-    });
+    this.scheduleInlineProcessing({ visitorProfileId, storageKeys });
   }
 
   private async processVisitorProfile(job: OcrJob): Promise<void> {
@@ -69,6 +79,18 @@ export class OcrQueueService implements OnModuleInit, OnModuleDestroy {
       ocrPhone: contact.ocrPhone ?? result.phone
     })));
   }
+
+  private scheduleInlineProcessing(job: OcrJob): void {
+    setImmediate(() => {
+      void this.processVisitorProfile(job).catch((error: unknown) => {
+        this.logger.warn(`Failed to process OCR job for visitor profile ${job.visitorProfileId}: ${readErrorMessage(error)}`);
+      });
+    });
+  }
+
+  private queueAddTimeoutMs(): number {
+    return Number(this.config.get<string>('OCR_QUEUE_ADD_TIMEOUT_MS', String(DEFAULT_QUEUE_ADD_TIMEOUT_MS)));
+  }
 }
 
 function mergeOcrResults(results: readonly OcrResult[]): OcrResult {
@@ -83,4 +105,27 @@ function mergeOcrResults(results: readonly OcrResult[]): OcrResult {
     email: firstValue('email'),
     phone: firstValue('phone')
   };
+}
+
+class QueueAddTimeoutError extends Error {
+  constructor(timeoutMs: number) {
+    super(`OCR queue add timed out after ${timeoutMs}ms`);
+    this.name = 'QueueAddTimeoutError';
+  }
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timeoutHandle: NodeJS.Timeout | null = null;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutHandle = setTimeout(() => reject(new QueueAddTimeoutError(timeoutMs)), timeoutMs);
+  });
+  try {
+    return await Promise.race([promise, timeout]);
+  } finally {
+    if (timeoutHandle) clearTimeout(timeoutHandle);
+  }
+}
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : 'Unknown error';
 }
