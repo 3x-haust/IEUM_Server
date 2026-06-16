@@ -3,10 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import sharp from 'sharp';
 import { HyphenVisionOcrService } from '../src/modules/background/hyphen-vision-ocr.service';
+import { OcrSpaceOcrService } from '../src/modules/background/ocr-space-ocr.service';
 import { OcrService } from '../src/modules/background/ocr.service';
 import { TesseractOcrService } from '../src/modules/background/tesseract-ocr.service';
+import { writeBlankImage } from './support/write-blank-image';
 
 const recognizeMock = jest.fn();
 const setParametersMock = jest.fn();
@@ -222,6 +223,7 @@ describe('OcrService', () => {
       const service = new OcrService(
         new ConfigService({ UPLOAD_DIR: uploadRoot }),
         tesseract,
+        new OcrSpaceOcrService(new ConfigService({ UPLOAD_DIR: uploadRoot }), { axiosRef: { post: jest.fn() } } as unknown as HttpService),
         createVisionService(new ConfigService({ UPLOAD_DIR: uploadRoot }))
       );
       const parsed = await service.extract('card.png');
@@ -245,22 +247,16 @@ describe('OcrService', () => {
 
 function createOcrService(config: Readonly<Record<string, string>>, postMock = jest.fn()): OcrService {
   const configService = new ConfigService(config);
-  return new OcrService(configService, new TesseractOcrService(), createVisionService(configService, postMock));
+  return new OcrService(
+    configService,
+    new TesseractOcrService(),
+    new OcrSpaceOcrService(configService, { axiosRef: { post: jest.fn() } } as unknown as HttpService),
+    createVisionService(configService, postMock)
+  );
 }
 
 function createVisionService(config: ConfigService, postMock = jest.fn()): HyphenVisionOcrService {
   return new HyphenVisionOcrService(config, {
     axiosRef: { post: postMock }
   } as unknown as HttpService);
-}
-
-async function writeBlankImage(path: string): Promise<void> {
-  await sharp({
-    create: {
-      width: 320,
-      height: 180,
-      channels: 3,
-      background: '#ffffff'
-    }
-  }).png().toFile(path);
 }
