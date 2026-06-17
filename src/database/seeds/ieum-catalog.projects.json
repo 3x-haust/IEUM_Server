@@ -2215,24 +2215,8 @@
     "description": "브랜드와 인플루언서를 연결하여 캠페인 제안부터 콘텐츠 관리, 성과 분석까지 한 번에 지원하는 인플루언서 마케팅 협업 플랫폼",
     "features": [
       {
-        "title": "인플루언서 탐색",
-        "description": "카테고리, 팔로워 수, 참여율 등 다양한 조건으로 인플루언서를 검색 및 탐색"
-      },
-      {
-        "title": "캠페인 관리",
-        "description": "캠페인 등록, 협업 제안, 모집 현황 확인 및 진행 상태 관리"
-      },
-      {
-        "title": "채팅 기능",
-        "description": "브랜드와 인플루언서 간 실시간 소통 및 협업 진행"
-      },
-      {
-        "title": "콘텐츠 관리",
-        "description": "콘텐츠 제출, AI 검수, 수정 요청 및 승인 프로세스 지원"
-      },
-      {
-        "title": "성과 분석",
-        "description": "조회수, 도달수, 좋아요, 참여율 등 캠페인 성과 데이터 제공"
+        "title": "기능소개",
+        "description": "인플루언서 탐색, 캠페인 관리, 채팅, 콘텐츠 관리, 성과 분석을 한 흐름에서 지원합니다."
       }
     ],
     "stacks": [
@@ -2244,7 +2228,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/inflow.webp",
     "acceptsFeedback": true
   },
   {
@@ -2255,36 +2239,8 @@
     "description": "휴머노이드 로봇을 활용해 화재 현장 대응을 통합 관리하는 지능형 소방 관제 서비스",
     "features": [
       {
-        "title": "위험 감지 & 알림 시스템",
-        "description": "로봇이 먼저 들어가 위험 요소를 미리 찾아 전달함."
-      },
-      {
-        "title": "실시간 로봇 시점 뷰",
-        "description": "사람이 직접 가지 않아도 내부 상황을 확인함."
-      },
-      {
-        "title": "로봇 상태 모니터링",
-        "description": "배터리, 고장 여부 등 로봇 상태를 계속 확인할 수 있음."
-      },
-      {
-        "title": "실시간 데이터 공유 시스템",
-        "description": "현장 정보와 영상을 여러 사람에게 동시에 전달함."
-      },
-      {
-        "title": "작전 로그 & 경로 기록",
-        "description": "로봇의 이동 경로와 데이터를 기록함."
-      },
-      {
-        "title": "사후 분석",
-        "description": "항상 최신 상태로 더 정확하고 안정적인 지원이 가능."
-      },
-      {
-        "title": "로봇 제어 (컨트롤)",
-        "description": "로봇 이동, 방향. 작업을 직접 조작."
-      },
-      {
-        "title": "로봇 기반 통신",
-        "description": "로봇을 중계 장치로 사용해 음성을 실시간으로 전달해 협업 정확도가 높아지고 오인/지연 상황을 줄임."
+        "title": "기능소개",
+        "description": "위험 감지, 실시간 로봇 시점 뷰, 로봇 상태 모니터링, 작전 로그, 사후 분석, 로봇 제어와 로봇 기반 통신을 제공합니다."
       }
     ],
     "stacks": [
@@ -2298,7 +2254,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/sfoc.webp",
     "acceptsFeedback": true
   },
   {
@@ -2309,12 +2265,8 @@
     "description": "캐릭터 기반 게으름 테스트를 통해 자신의 게으름 유형과 행동 패턴을 탐색하고, 유형별 해결 방안을 제시하는 콘텐츠",
     "features": [
       {
-        "title": "테스트",
-        "description": "게으름 유형 테스트를 통한 자신의 유형파악"
-      },
-      {
-        "title": "캐릭터 도감",
-        "description": "인터렉션을 통해 캐릭터와 상호작용 가능, 캐릭터 스토리 확인가능"
+        "title": "기능소개",
+        "description": "게으름 유형 테스트와 캐릭터 도감을 통해 사용자의 유형과 캐릭터 스토리를 확인할 수 있습니다."
       }
     ],
     "stacks": [
@@ -2327,7 +2279,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/lazie5.webp",
     "acceptsFeedback": true
   },
   {
@@ -2338,16 +2290,8 @@
     "description": "아이들이 잠드는 순간을 여행의 시작으로 만드는 수면 유도 콘텐츠",
     "features": [
       {
-        "title": "기구별 수면 영상",
-        "description": "다양한 놀이기구를 선택하고 수면 유도 영상을 제공"
-      },
-      {
-        "title": "티켓 기록",
-        "description": "체험한 놀이기구와 기록을 티켓 형태로 저장하여 기록 관리"
-      },
-      {
-        "title": "캐릭터 안내",
-        "description": "캐릭터가 서비스를 친근하게 안내"
+        "title": "기능소개",
+        "description": "기구별 수면 영상, 티켓 기록, 캐릭터 안내를 제공합니다."
       }
     ],
     "stacks": [
@@ -2361,8 +2305,8 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
-    "acceptsFeedback": false
+    "thumbnailPath": "/assets/design-projects/ddomong.webp",
+    "acceptsFeedback": true
   },
   {
     "catalogId": 46,
@@ -2372,20 +2316,8 @@
     "description": "사용자의 감정을 시각적으로 기록하고 정리하는 멘탈 케어 서비스",
     "features": [
       {
-        "title": "감정 기록",
-        "description": "하루의 감정과 생각을 기록하여 나만의 감정 일지 작성"
-      },
-      {
-        "title": "캐릭터 성장",
-        "description": "기록을 통해 비버 캐릭터와 같이 성장하는 경험 제공"
-      },
-      {
-        "title": "위로 제공",
-        "description": "감정 상태에 맞는 위로와 동기부여 문구 제공"
-      },
-      {
-        "title": "기록 보관함",
-        "description": "작성한 감정 기록을 모아보고 회고 가능"
+        "title": "기능소개",
+        "description": "감정 기록, 캐릭터 성장, 위로 문구, 기록 보관함을 제공합니다."
       }
     ],
     "stacks": [
@@ -2400,7 +2332,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": null,
     "acceptsFeedback": true
   },
   {
@@ -2408,27 +2340,11 @@
     "serviceName": "놀다보니",
     "boothSlot": "B-5",
     "experienceCategory": "human",
-    "description": "영유아가 반려 로봇과 함께 일상 루틴을 경험하며 부모의 귀가를 자연스럽게 예측하며 대상항상성을 기르는 서비스",
+    "description": "영유아가 반려 로봇과 함께 일상 루틴을 경험하며 부모의 귀가를 자연스럽게 예측하고 대상항상성을 기르는 서비스",
     "features": [
       {
-        "title": "루틴 가이드",
-        "description": "아이의 눈높이에 맞춘 일상 루틴을 제공하여 하루를 예측 가능하게 안내"
-      },
-      {
-        "title": "AI 로봇 상호작용",
-        "description": "반려 로봇과의 대화·놀이를 통해 루틴 수행과 정서적 안정 지원"
-      },
-      {
-        "title": "부모 귀가 예측",
-        "description": "시간 개념 대신 루틴 진행 상황으로 부모의 귀가 시점을 자연스럽게 이해"
-      },
-      {
-        "title": "성장 리포트",
-        "description": "하루 활동, 감정 변화, 루틴 수행 결과를 보호자에게 요약 제공"
-      },
-      {
-        "title": "공동 돌봄 공유",
-        "description": "부모와 공동 돌봄자가 아이의 상태와 일상을 함께 확인 및 관리"
+        "title": "기능소개",
+        "description": "루틴 가이드, AI 로봇 상호작용, 부모 귀가 예측, 성장 리포트, 공동 돌봄 공유를 제공합니다."
       }
     ],
     "stacks": [
@@ -2441,7 +2357,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": null,
     "acceptsFeedback": true
   },
   {
@@ -2452,20 +2368,8 @@
     "description": "오프라인 구제시장의 한계를 극복하고, 단순한 구매를 넘어 취향에 맞는 아이템을 직접 발견하는 디깅 경험을 제공하는 플랫폼",
     "features": [
       {
-        "title": "아이템 탐색",
-        "description": "옷더미를 뒤지는 듯한 디깅 경험과 함께 상품의 다양한 정보를 제공"
-      },
-      {
-        "title": "구매 기능",
-        "description": "발견한 아이템의 상세 정보를 확인하고 온라인에서 구매 가능"
-      },
-      {
-        "title": "아카이브 탐색",
-        "description": "다른 유저들의 착용 사진과 스타일을 참고하고 공유하는 경험 제공"
-      },
-      {
-        "title": "상품 상태 확인",
-        "description": "상품의 검수 진행 여부와 배송 상태를 실시간으로 확인 가능"
+        "title": "기능소개",
+        "description": "아이템 탐색, 구매, 아카이브 탐색, 상품 상태 확인을 제공합니다."
       }
     ],
     "stacks": [
@@ -2478,7 +2382,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/digit.webp",
     "acceptsFeedback": true
   },
   {
@@ -2486,23 +2390,11 @@
     "serviceName": "BOOKIE",
     "boothSlot": "C-3",
     "experienceCategory": "network",
-    "description": "독서기록을 자유롭게 작성,표현할 수 있는 기록 공유 서비스",
+    "description": "독서기록을 자유롭게 작성하고 표현할 수 있는 기록 공유 서비스",
     "features": [
       {
-        "title": "메인 기능",
-        "description": "기록 추천 및 서비스 활동 확인"
-      },
-      {
-        "title": "기록 기능",
-        "description": "책을 감상한 뒤 그림으로 표현"
-      },
-      {
-        "title": "검색 기능",
-        "description": "사용자와 기록 책 검색 기능"
-      },
-      {
-        "title": "그룹 기능",
-        "description": "사용자간 그룹생성 후 다양한 활동"
+        "title": "기능소개",
+        "description": "기록 추천, 책 감상 기록, 사용자와 책 검색, 사용자 그룹 활동을 제공합니다."
       }
     ],
     "stacks": [
@@ -2517,7 +2409,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/bookie.webp",
     "acceptsFeedback": true
   },
   {
@@ -2528,44 +2420,8 @@
     "description": "고립 은둔 청년과 기부자를 연결하는 커뮤니티형 기부 플랫폼",
     "features": [
       {
-        "title": "협동 미션 참여",
-        "description": "혼자 또는 다른 참여자와 함께 간단한 사회 참여 미션 수행"
-      },
-      {
-        "title": "미션 매칭",
-        "description": "랜덤 매칭 또는 직접 개설을 통해 협동 미션 참여자 연결"
-      },
-      {
-        "title": "실시간 채팅",
-        "description": "미션 참여자 간 소통 및 협력을 위한 그룹 채팅 제공"
-      },
-      {
-        "title": "멘토 매칭",
-        "description": "기부자와 고립 은둔 청년을 연결하여 멘토링 및 정서적 지지 제공"
-      },
-      {
-        "title": "기부 보상 시스템",
-        "description": "미션 달성 시 기부금 기반 보상을 제공하여 참여 동기 부여"
-      },
-      {
-        "title": "성장 기록",
-        "description": "참여 기록, 활동 통계, 변화 과정 등을 시각적으로 확인"
-      },
-      {
-        "title": "응원 메시지",
-        "description": "기부자가 청년에게 응원과 격려 메시지를 전달할 수 있는 기능"
-      },
-      {
-        "title": "활동 리포트",
-        "description": "기부자가 자신의 후원이 만들어낸 변화와 성과를 확인 가능"
-      },
-      {
-        "title": "커뮤니티 기능",
-        "description": "참여자들이 경험과 일상을 공유하며 관계를 형성할 수 있는 공간 제공"
-      },
-      {
-        "title": "익명 참여 지원",
-        "description": "부담 없이 서비스를 이용할 수 있도록 익명 기반 참여 환경 제공"
+        "title": "기능소개",
+        "description": "협동 미션, 미션 매칭, 실시간 채팅, 멘토 매칭, 기부 보상, 성장 기록, 응원 메시지, 활동 리포트, 커뮤니티와 익명 참여를 제공합니다."
       }
     ],
     "stacks": [
@@ -2578,7 +2434,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/stepin.webp",
     "acceptsFeedback": true
   },
   {
@@ -2589,24 +2445,8 @@
     "description": "7개의 죄악이 지닌 상징과 이야기를 니치 향수로 재해석한 시네마틱 영상 웹사이트",
     "features": [
       {
-        "title": "죄악 향수 탐색",
-        "description": "인터랙티브 웹페이지를 통해 사용자가 직접 상호작용하며, 7가지 죄악을 재해석한 향수를 탐색하고 경험할 수 있는 서비스 제공"
-      },
-      {
-        "title": "향수 컬렉션 소개",
-        "description": "교만, 탐욕, 질투, 분노, 색욕, 식탐, 나태 등 7가지 죄악을 니치 향수 컬렉션으로 재해석하여 각 향수의 콘셉트와 특징 제공"
-      },
-      {
-        "title": "인터랙티브 영상 감상",
-        "description": "감상 버튼 클릭 후, 각 향수에 담긴 세계관을 시네마틱 몰입형 영상으로 경험할 수 있는 콘텐츠 제공"
-      },
-      {
-        "title": "스토리 기반 상세 정보",
-        "description": "각 향수에 담긴 죄악의 상징, 오브젝트 의미, 스토리를 직관적으로 확인할 수 있는 정보 제공"
-      },
-      {
-        "title": "향수 디테일 뷰어",
-        "description": "향수병의 디자인, 재질감, 디테일 요소를 다양한 각도에서 감상할 수 있는 3D 회전 뷰 영상 제공"
+        "title": "기능소개",
+        "description": "죄악 향수 탐색, 향수 컬렉션 소개, 인터랙티브 영상 감상, 스토리 기반 상세 정보, 향수 디테일 뷰어를 제공합니다."
       }
     ],
     "stacks": [
@@ -2623,7 +2463,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/veritas.webp",
     "acceptsFeedback": true
   },
   {
@@ -2631,43 +2471,11 @@
     "serviceName": "시선",
     "boothSlot": "D-2",
     "experienceCategory": "personal",
-    "description": "사용자가 이동 중에 주변에 아름다운 장소가 있다면 앱의 배너알림과 대중교통 내 디지털 사이니지로 아름다운 장소가 있으니 주변을 둘러보라고 권유하는 사용자의 이동 경험 확장 서비스",
+    "description": "이동 중 주변의 아름다운 장소를 앱 배너 알림과 대중교통 디지털 사이니지로 권유하는 이동 경험 확장 서비스",
     "features": [
       {
-        "title": "오늘의 시선이 닿은 곳",
-        "description": "사용자가 오늘 지나간 랜드마크나 예쁜 장소 정보 제공"
-      },
-      {
-        "title": "당신의 주변에",
-        "description": "현재 사용자의 위치에서 가장 가까운 아름다운 장소에 대한 정보 제공"
-      },
-      {
-        "title": "광화문 이벤트",
-        "description": "현재 사용자의 위치(광화문)에서 열리는 이벤트나 축제 등 을 알려주는 서비스"
-      },
-      {
-        "title": "광화문에서의 시선들",
-        "description": "현재 사용자의 주변 위치에서 다른 사용자들이 찍어서 올린 사진을 스토리 형식으로 확인할 수 있는 서비스"
-      },
-      {
-        "title": "광화문 주변 맛집&카페",
-        "description": "현재 사용자의 위치 주변에 어떤 맛집이 있는지 정보 제공"
-      },
-      {
-        "title": "주변 게시글",
-        "description": "현재 사용자의 주변 위치에서 다른 사용자들이 찍어서 올린 사진을 간단한 글과 함께 확인할 수 있는 게시글 서비스"
-      },
-      {
-        "title": "시선이 닿은 곳",
-        "description": "설정한 달에 사용자가 어떤 곳을 지나왔는지 아이콘을 통해 확인할 수 있도록 정보 제공"
-      },
-      {
-        "title": "공유한 사진",
-        "description": "설정한 달에 사용자가 직접 작성한 스토리나 게시글을 일별로 모아서 확인할 수 있는 서비스"
-      },
-      {
-        "title": "찍은 사진",
-        "description": "설정한 달에 사용자가 찍은 사진을 일별로 모아볼 수 있으며, 사진을 저장 및 삭제할 수 있는 서비스"
+        "title": "기능소개",
+        "description": "오늘의 시선, 주변 장소, 광화문 이벤트, 주변 스토리, 맛집과 카페, 주변 게시글, 월별 이동 기록과 공유 사진을 제공합니다."
       }
     ],
     "stacks": [
@@ -2681,7 +2489,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/siseon.webp",
     "acceptsFeedback": true
   },
   {
@@ -2692,20 +2500,8 @@
     "description": "소비자 참여를 통해 제품 개발부터 마케팅까지 연결되는 화장품 공동 제작 플랫폼",
     "features": [
       {
-        "title": "투표 참여",
-        "description": "제품 개발 과정에 직접 참여하고 소비자의 의견 반영"
-      },
-      {
-        "title": "DIY 화장품 제작",
-        "description": "원하는 컬러를 조합해 나만의 제품 제안"
-      },
-      {
-        "title": "개발단 활동",
-        "description": "제품 테스트 및 피드백을 통해 출시 전 검증 참여"
-      },
-      {
-        "title": "커뮤니티 소통",
-        "description": "리뷰, 설문, 의견 제안을 통한 뷰티 인사이트 공유"
+        "title": "기능소개",
+        "description": "투표 참여, DIY 화장품 제작, 개발단 활동, 커뮤니티 소통을 제공합니다."
       }
     ],
     "stacks": [
@@ -2717,31 +2513,19 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
-    "acceptsFeedback": false
+    "thumbnailPath": "/assets/design-projects/haube.webp",
+    "acceptsFeedback": true
   },
   {
     "catalogId": 54,
     "serviceName": "퐁당",
     "boothSlot": "D-5",
     "experienceCategory": "personal",
-    "description": "디저트를 모티브로한 캐릭터를 기반으로 감정을 탐색할 수 있는 감정기록 서비스",
+    "description": "디저트를 모티브로 한 캐릭터를 기반으로 감정을 탐색할 수 있는 감정기록 서비스",
     "features": [
       {
-        "title": "캐릭터 도감",
-        "description": "캐릭터의 상세 정보 제공"
-      },
-      {
-        "title": "위젯",
-        "description": "서비스의 핵심 기능으로 즉시 진입할 수 있도록 도움"
-      },
-      {
-        "title": "리포트 기능",
-        "description": "결과를 한 눈에 볼 수 있도록 도움"
-      },
-      {
-        "title": "테스트",
-        "description": "질문에 대한 답을 선택 가능"
+        "title": "기능소개",
+        "description": "캐릭터 도감, 위젯, 리포트, 테스트를 제공합니다."
       }
     ],
     "stacks": [
@@ -2756,7 +2540,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/pongdang.webp",
     "acceptsFeedback": true
   },
   {
@@ -2767,20 +2551,8 @@
     "description": "가상의 10만원권 발행 시나리오를 바탕으로 한 국민 참여형 화폐 디자인 거버넌스 전시",
     "features": [
       {
-        "title": "리플렛",
-        "description": "전시 배경 안내, 투표 QR 탑재 및 출력된 십만원권 홀더"
-      },
-      {
-        "title": "키오스크",
-        "description": "5대 가치별 인물·배경 에셋 조합, 화폐 디자인 체험 및 실물 출력"
-      },
-      {
-        "title": "영상(빔)",
-        "description": "에셋의 상세 정보 제공"
-      },
-      {
-        "title": "모바일",
-        "description": "실제 십만원권 발행에 반영되는 화폐 디자인 투표"
+        "title": "기능소개",
+        "description": "리플렛, 키오스크, 영상, 모바일 투표를 통해 화폐 디자인 체험과 참여를 제공합니다."
       }
     ],
     "stacks": [
@@ -2795,7 +2567,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/100k.webp",
     "acceptsFeedback": true
   },
   {
@@ -2803,11 +2575,11 @@
     "serviceName": "모두와 함께하는 마을",
     "boothSlot": "E-3",
     "experienceCategory": "creative",
-    "description": "포켓몬의 매력적인 세계를 홍보하는 프로모션 비디오.",
+    "description": "포켓몬의 매력적인 세계를 홍보하는 프로모션 비디오",
     "features": [
       {
-        "title": "홍보 기능",
-        "description": "IP의 다양한 정보들을 울림있게 홍보"
+        "title": "기능소개",
+        "description": "IP의 다양한 정보와 매력을 울림 있게 전달하는 홍보 콘텐츠입니다."
       }
     ],
     "stacks": [
@@ -2822,7 +2594,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/moduwa.webp",
     "acceptsFeedback": true
   },
   {
@@ -2833,12 +2605,8 @@
     "description": "빅밴드를 위한 재즈 공연장 브랜딩 및 프로모션 영상",
     "features": [
       {
-        "title": "빅윙 리스닝 스테이션",
-        "description": "재즈의 중요한 악기와 각 악기가 돋보이는 음악을 재생"
-      },
-      {
-        "title": "빅윙 프로모션 영상",
-        "description": "공연장 로비에서 재생하는 프로모션 3D 모션그래픽"
+        "title": "기능소개",
+        "description": "빅윙 리스닝 스테이션과 공연장 로비용 3D 모션그래픽 프로모션 영상을 제공합니다."
       }
     ],
     "stacks": [
@@ -2854,7 +2622,7 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/bigwing.webp",
     "acceptsFeedback": true
   },
   {
@@ -2865,12 +2633,8 @@
     "description": "F1 팬들을 위한 직관 보조 및 팬 허브 앱",
     "features": [
       {
-        "title": "피트인 모드",
-        "description": "f1정보 및 팬들과의 소통을 할 수 있는 모드"
-      },
-      {
-        "title": "트랙 모드",
-        "description": "경기 관람 시 현장의 상황을 한눈에 볼 수 있는 모드"
+        "title": "기능소개",
+        "description": "피트인 모드와 트랙 모드로 F1 정보, 팬 소통, 경기장 현황을 제공합니다."
       }
     ],
     "stacks": [
@@ -2885,8 +2649,8 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
-    "acceptsFeedback": false
+    "thumbnailPath": "/assets/design-projects/f1rst.webp",
+    "acceptsFeedback": true
   },
   {
     "catalogId": 59,
@@ -2896,16 +2660,8 @@
     "description": "실시간 재고 매칭과 안심 물류 보증으로 예약의 불확실성을 해결하는 케이크 특화 통합 플랫폼 서비스",
     "features": [
       {
-        "title": "예약 기능",
-        "description": "한정 기간의 케이크를 손쉽게 예약 가능"
-      },
-      {
-        "title": "주변 케이크 탐색 기능",
-        "description": "자신이 원하는 키워드의 케이크를 탐색 후 가게로 즉시 연결"
-      },
-      {
-        "title": "케이크 예약 실패시 대안 마련",
-        "description": "원하던 케이크가 예약에 실패했을 시 가까운 주변 매장이나 비슷한 케이크를 찾아 사용자와 즉시 연결해 대안을 마련함"
+        "title": "기능소개",
+        "description": "케이크 예약, 주변 케이크 탐색, 예약 실패 시 대안 연결을 제공합니다."
       }
     ],
     "stacks": [
@@ -2919,8 +2675,8 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
-    "acceptsFeedback": false
+    "thumbnailPath": "/assets/design-projects/oke.webp",
+    "acceptsFeedback": true
   },
   {
     "catalogId": 60,
@@ -2930,16 +2686,8 @@
     "description": "간편한 섬유 폐기물 처리와 브랜드·기업으로의 섬유 투자를 연결하는 업사이클링 자원 순환 서비스",
     "features": [
       {
-        "title": "펀딩 섬유 수거",
-        "description": "돈 대신 사용자의 섬유를 업사이클링 브랜드에 투자하여 제품 제작에 투자할 수 있는 기능"
-      },
-      {
-        "title": "간편 펀딩 매칭",
-        "description": "사용자가 올린 섬유 이미지를 AI로 분석해 섬유 양과 종류에 맞는 펀딩을 추천해 주는 기능"
-      },
-      {
-        "title": "정기 구독형 섬유 수거",
-        "description": "지속적으로 배출되는 공예 재료나 생활 섬유를 정기적으로 수거하고 재활용 소재 공장에 투자하는 기능"
+        "title": "기능소개",
+        "description": "펀딩 섬유 수거, 간편 펀딩 매칭, 정기 구독형 섬유 수거를 제공합니다."
       }
     ],
     "stacks": [
@@ -2954,7 +2702,289 @@
         "roleText": "Design"
       }
     ],
-    "thumbnailPath": "/assets/image/growvy.webp",
+    "thumbnailPath": "/assets/design-projects/refab.webp",
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 61,
+    "serviceName": "REQUORD",
+    "boothSlot": "A-5",
+    "experienceCategory": "ai",
+    "description": "법의학자의 업무 효율을 높이는 지능형 워크스테이션 서비스",
+    "features": [
+      {
+        "title": "기능소개",
+        "description": "실시간 음성 기록 및 자막화, 인텔리전트 보이스 매핑, 멀티모달 사건 타임라인, AI 기반 문서 어드바이저, 실시간 사건 현황 지도, 연관 증거 통합 조회, AI 기반 유사사례 매칭을 제공합니다."
+      }
+    ],
+    "stacks": [
+      "Figma",
+      "Photoshop",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "문지우",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": "/assets/design-projects/requord.webp",
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 62,
+    "serviceName": "Last check-in",
+    "boothSlot": "B-1",
+    "experienceCategory": "human",
+    "description": "테스트로 쉽게 찾아내는 나만의 사후세계, 장례문화 큐레이션 웹사이트",
+    "features": [
+      {
+        "title": "기능소개",
+        "description": "성향 테스트로 개인에게 맞는 세계 장례 문화를 매칭하고, 가상 티켓 발행과 국가별 장례 문화 정보를 제공합니다."
+      }
+    ],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "김예진",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 63,
+    "serviceName": "Seumim",
+    "boothSlot": "C-1",
+    "experienceCategory": "network",
+    "description": "전통 수공예를 일상의 감각으로 연결하며 무형문화재 공정과정을 향유하는 플랫폼",
+    "features": [
+      {
+        "title": "기능소개",
+        "description": "향유 스토리 경험, 도구와 신체 확장 아카이브, 제작 공정 참여, 수공예 무형문화재 생태계 펀딩 중심의 시그니처 큐레이션 쇼룸을 제공합니다."
+      }
+    ],
+    "stacks": [
+      "Figma",
+      "Photoshop",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "장윤아",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 64,
+    "serviceName": "퇴근전쟁",
+    "boothSlot": "C-5",
+    "experienceCategory": "network",
+    "description": "비즈니스 매너 학습에 어려움을 겪는 사회초년생들을 위한 모바일 하이브리드 보드게임",
+    "features": [
+      {
+        "title": "기능소개",
+        "description": "멀티플레이, 모바일 점수 기록, 다수결 기반 투표로 비즈니스 매너 학습 경험을 제공합니다."
+      }
+    ],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "봉지민",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 65,
+    "serviceName": "글자방",
+    "boothSlot": "A-3",
+    "experienceCategory": "ai",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "이서현",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 66,
+    "serviceName": "MONODE",
+    "boothSlot": "A-4",
+    "experienceCategory": "ai",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "송채린",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 67,
+    "serviceName": "DECKA",
+    "boothSlot": "D-3",
+    "experienceCategory": "personal",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "신인서",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 68,
+    "serviceName": "스위트룸",
+    "boothSlot": "E-2",
+    "experienceCategory": "creative",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "박솔하",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 69,
+    "serviceName": "인생을 나답게 반스",
+    "boothSlot": "E-5",
+    "experienceCategory": "creative",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "조예찬",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 70,
+    "serviceName": "DESINTO",
+    "boothSlot": "E-6",
+    "experienceCategory": "creative",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "주다인",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 71,
+    "serviceName": "두리번",
+    "boothSlot": "F-2",
+    "experienceCategory": "journey",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "이민지",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 72,
+    "serviceName": "COURTIN",
+    "boothSlot": "F-4",
+    "experienceCategory": "journey",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "박미주",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
+    "acceptsFeedback": true
+  },
+  {
+    "catalogId": 73,
+    "serviceName": "WORLD IN TIME",
+    "boothSlot": "F-5",
+    "experienceCategory": "journey",
+    "description": "",
+    "features": [],
+    "stacks": [
+      "Figma",
+      "Illustrator"
+    ],
+    "members": [
+      {
+        "name": "송지아",
+        "roleText": "Design"
+      }
+    ],
+    "thumbnailPath": null,
     "acceptsFeedback": true
   }
 ]

@@ -24,7 +24,7 @@ jest.mock('typeorm', () => {
 
 import { ProjectsService } from '../src/modules/projects/projects.service';
 import { ProjectMemberRole } from '../src/database/entities';
-import { loadIeumCatalogProjects } from '../src/database/seeds/ieum-catalog.seed-data';
+import { buildDesignStackGroups, flattenStackGroups, loadIeumCatalogProjects } from '../src/database/seeds/ieum-catalog.seed-data';
 
 describe('ProjectsService', () => {
   function queryBuilder(rows: readonly unknown[]) {
@@ -177,6 +177,14 @@ describe('ProjectsService', () => {
   it('keeps design department hyphen slots separate from development slots', () => {
     const projects = loadIeumCatalogProjects();
     const projectsBySlot = new Map(projects.map((project) => [project.boothSlot, project]));
+    const designSlots = [
+      'A-1', 'A-2', 'A-3', 'A-4', 'A-5',
+      'B-1', 'B-2', 'B-3', 'B-4', 'B-5',
+      'C-1', 'C-2', 'C-3', 'C-4', 'C-5',
+      'D-1', 'D-2', 'D-3', 'D-4', 'D-5',
+      'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6',
+      'F-1', 'F-2', 'F-3', 'F-4', 'F-5', 'F-6'
+    ];
 
     expect(projectsBySlot.get('A1')).toEqual(expect.objectContaining({
       serviceName: 'MALO',
@@ -200,5 +208,22 @@ describe('ProjectsService', () => {
       serviceName: '놀다보니',
       experienceCategory: 'human'
     }));
+    for (const slot of designSlots) {
+      expect(projectsBySlot.get(slot)).toEqual(expect.objectContaining({
+        boothSlot: slot,
+        acceptsFeedback: true
+      }));
+    }
+  });
+
+  it('groups design department stacks as design stacks', () => {
+    const groups = buildDesignStackGroups(['Figma', 'Illustrator', 'Figma']);
+
+    expect(groups).toEqual([{
+      category: 'Design',
+      color: '#C797C5',
+      items: ['Figma', 'Illustrator']
+    }]);
+    expect(flattenStackGroups(groups)).toEqual(['Figma', 'Illustrator']);
   });
 });

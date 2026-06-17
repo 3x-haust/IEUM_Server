@@ -16,7 +16,7 @@ export interface SeedProject {
   features: ProjectFeatureDescription[];
   stacks: string[];
   members: SeedMember[];
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   acceptsFeedback: boolean;
 }
 
@@ -59,6 +59,13 @@ export function buildStackGroups(stacks: readonly string[]): ProjectStackGroup[]
     }
   }
   return groups.filter((group) => group.items.length > 0);
+}
+
+export function buildDesignStackGroups(stacks: readonly string[]): ProjectStackGroup[] {
+  const items = stacks.map(normalizeStack).filter((stack, index, source) => source.indexOf(stack) === index);
+  return items.length > 0
+    ? [{ category: 'Design', color: '#C797C5', items }]
+    : [];
 }
 
 export function flattenStackGroups(groups: readonly ProjectStackGroup[]): string[] {
@@ -117,7 +124,9 @@ function parseSeedProject(value: unknown, index: number): SeedProject {
     features: expectArray(record.features, `project[${index}].features`).map(parseFeature),
     stacks: expectArray(record.stacks, `project[${index}].stacks`).map((stack, stackIndex) => expectString(stack, `project[${index}].stacks[${stackIndex}]`)),
     members: expectArray(record.members, `project[${index}].members`).map(parseMember),
-    thumbnailPath: expectString(record.thumbnailPath, `project[${index}].thumbnailPath`),
+    thumbnailPath: record.thumbnailPath === null || record.thumbnailPath === undefined
+      ? null
+      : expectString(record.thumbnailPath, `project[${index}].thumbnailPath`),
     acceptsFeedback: record.acceptsFeedback === undefined ? true : expectBoolean(record.acceptsFeedback, `project[${index}].acceptsFeedback`)
   };
 }

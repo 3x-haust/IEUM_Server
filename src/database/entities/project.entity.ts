@@ -10,7 +10,8 @@ export type ProjectStackCategory =
   | 'Framework'
   | 'Database'
   | 'Tools & Container'
-  | 'External API / AI';
+  | 'External API / AI'
+  | 'Design';
 
 export interface ProjectStackGroup {
   category: ProjectStackCategory;

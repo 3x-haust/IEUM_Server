@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { ProjectEntity, ProjectMemberEntity, UserEntity, UserRole } from '../entities';
-import { buildStackGroups, flattenStackGroups, loadIeumCatalogProjects, rolesFromText } from './ieum-catalog.seed-data';
+import { buildDesignStackGroups, buildStackGroups, flattenStackGroups, loadIeumCatalogProjects, rolesFromText } from './ieum-catalog.seed-data';
 
 export async function seedProjects(dataSource: DataSource): Promise<void> {
   const users = dataSource.getRepository(UserEntity);
@@ -9,7 +9,11 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
   await projects.update({ serviceName: 'IEUM Demo', teamName: 'IEUM Team' }, { isPublished: false });
 
   for (const seedProject of loadIeumCatalogProjects()) {
-    const stackGroups = buildStackGroups(seedProject.stacks);
+    const isDesignDepartmentProject = seedProject.boothSlot.includes('-');
+    const stackGroups = isDesignDepartmentProject
+      ? buildDesignStackGroups(seedProject.stacks)
+      : buildStackGroups(seedProject.stacks);
+    const flatStacks = flattenStackGroups(stackGroups);
     const existingProject = await projects.findOne({ where: { boothSlot: seedProject.boothSlot } });
     const project = await projects.save(projects.create({
       ...(existingProject ?? {}),
@@ -19,8 +23,8 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
       thumbnailPath: seedProject.thumbnailPath,
       experienceCategory: seedProject.experienceCategory,
       boothSlot: seedProject.boothSlot,
-      developmentStacks: flattenStackGroups(stackGroups),
-      designStacks: [],
+      developmentStacks: isDesignDepartmentProject ? [] : flatStacks,
+      designStacks: isDesignDepartmentProject ? flatStacks : [],
       stackGroups,
       featureDescriptions: seedProject.features,
       acceptsFeedback: seedProject.acceptsFeedback,
