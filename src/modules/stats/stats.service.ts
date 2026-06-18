@@ -28,6 +28,9 @@ type DashboardSnapshot = {
   readonly newContactCount: number;
   readonly interestCount: number;
   readonly feedbackByStatus: StatusCounts;
+  readonly feedbackByAgeGroup: StatusCounts;
+  readonly feedbackByGender: StatusCounts;
+  readonly feedbackByVisitorType: StatusCounts;
   readonly contactsByStatus: StatusCounts;
 };
 type ReportSnapshot = {
@@ -51,9 +54,12 @@ export class StatsService {
 
   async dashboard(): Promise<DashboardSnapshot> {
     return this.readThrough('stats:dashboard', STATS_CACHE_TTL_SECONDS, async () => {
-      const [projectCount, feedbackByStatus, contactsByStatus, interestCount] = await Promise.all([
+      const [projectCount, feedbackByStatus, feedbackByAgeGroup, feedbackByGender, feedbackByVisitorType, contactsByStatus, interestCount] = await Promise.all([
         this.projects.count({ where: { isPublished: true } }),
         this.countFeedbackByStatus(),
+        this.countFeedbackByField('ageGroup'),
+        this.countFeedbackByField('gender'),
+        this.countFeedbackByField('visitorType'),
         this.countContactsByStatus(),
         this.interests.count()
       ]);
@@ -68,6 +74,9 @@ export class StatsService {
         newContactCount: contactsByStatus[ContactStatus.New] ?? 0,
         interestCount,
         feedbackByStatus,
+        feedbackByAgeGroup,
+        feedbackByGender,
+        feedbackByVisitorType,
         contactsByStatus
       };
     });
@@ -134,6 +143,17 @@ export class StatsService {
   private async countFeedbackByStatus(): Promise<Record<string, number>> {
     const rows = await this.feedback.createQueryBuilder('feedback').select('feedback.status', 'status').addSelect('COUNT(*)', 'count').groupBy('feedback.status').getRawMany<{ status: string; count: string }>();
     return Object.fromEntries(rows.map((row) => [row.status, Number(row.count)]));
+  }
+
+  private async countFeedbackByField(field: 'ageGroup' | 'gender' | 'visitorType'): Promise<Record<string, number>> {
+    const rows = await this.feedback.createQueryBuilder('feedback')
+      .select(`feedback.${field}`, 'key')
+      .addSelect('COUNT(*)', 'count')
+      .where('feedback.status != :deletedStatus', { deletedStatus: FeedbackStatus.Deleted })
+      .andWhere(`feedback.${field} IS NOT NULL`)
+      .groupBy(`feedback.${field}`)
+      .getRawMany<{ key: string; count: string }>();
+    return Object.fromEntries(rows.map((row) => [row.key, Number(row.count)]));
   }
 
   private async countContactsByStatus(): Promise<Record<string, number>> {

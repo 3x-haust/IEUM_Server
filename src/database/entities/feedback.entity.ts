@@ -1,10 +1,12 @@
 import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { FeedbackStatus } from './enums';
 import { ProjectEntity } from './project.entity';
+import { VisitorProfileEntity } from './visitor-profile.entity';
 
 @Entity('feedback')
 @Index(['projectId', 'status', 'createdAt'])
 @Index(['status', 'createdAt'])
+@Index(['ageGroup', 'gender', 'visitorType'])
 export class FeedbackEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -15,6 +17,22 @@ export class FeedbackEntity {
   @ManyToOne(() => ProjectEntity, (project) => project.feedback, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'project_id' })
   project: ProjectEntity;
+
+  @Column({ name: 'visitor_profile_id', type: 'uuid', nullable: true })
+  visitorProfileId: string | null;
+
+  @ManyToOne(() => VisitorProfileEntity, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'visitor_profile_id' })
+  visitorProfile: VisitorProfileEntity | null;
+
+  @Column({ name: 'age_group', type: 'varchar', length: 40, nullable: true })
+  ageGroup: string | null;
+
+  @Column({ name: 'visitor_type', type: 'varchar', length: 40, nullable: true })
+  visitorType: string | null;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  gender: string | null;
 
   @Column({ type: 'text' })
   content: string;

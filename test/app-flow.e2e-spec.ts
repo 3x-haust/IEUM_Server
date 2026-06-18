@@ -26,6 +26,9 @@ type FeedbackBody = {
   readonly id: string;
   readonly content: string;
   readonly status: FeedbackStatus;
+  readonly ageGroup: string | null;
+  readonly visitorType: string | null;
+  readonly gender: string | null;
 };
 
 type ContactBody = {
@@ -72,9 +75,10 @@ describe('IEUM e2e app flow', () => {
 
     const feedback = await request(server)
       .post(`/projects/${project.id}/feedback`)
-      .send({ content: '발표에서 기술 선택 이유를 더 듣고 싶어요.' })
+      .send({ content: '발표에서 기술 선택 이유를 더 듣고 싶어요.', visitorProfileId: visitorId, ageGroup: 'adult', visitorType: VisitorType.Recruiter, gender: 'male' })
       .expect(201);
     const feedbackId = body<FeedbackBody>(feedback).data.id;
+    expect(body<FeedbackBody>(feedback).data).toMatchObject({ ageGroup: 'adult', visitorType: VisitorType.Recruiter, gender: 'male' });
 
     const contact = await request(server)
       .post(`/projects/${project.id}/contacts`)
@@ -98,6 +102,7 @@ describe('IEUM e2e app flow', () => {
 
     const adminFeedback = await request(server).get('/admin/feedback').set('Cookie', adminCookie).expect(200);
     expect(body<Page<FeedbackBody>>(adminFeedback).data.items[0].id).toBe(feedbackId);
+    expect(body<Page<FeedbackBody>>(adminFeedback).data.items[0]).toMatchObject({ ageGroup: 'adult', visitorType: VisitorType.Recruiter, gender: 'male' });
 
     const adminContacts = await request(server).get('/admin/contacts').set('Cookie', adminCookie).expect(200);
     expect(body<Page<ContactBody>>(adminContacts).data.items[0].id).toBe(contactId);

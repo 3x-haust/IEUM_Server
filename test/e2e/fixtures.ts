@@ -49,6 +49,10 @@ export type VisitorProfile = {
 export type Feedback = {
   readonly id: string;
   readonly projectId: string;
+  readonly visitorProfileId: string | null;
+  readonly ageGroup: string | null;
+  readonly visitorType: string | null;
+  readonly gender: string | null;
   readonly content: string;
   readonly status: FeedbackStatus;
   readonly moderationReason: string | null;

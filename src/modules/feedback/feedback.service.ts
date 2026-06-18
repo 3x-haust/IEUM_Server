@@ -11,6 +11,7 @@ import { BannedWordsService } from '../banned-words/banned-words.service';
 import { RateLimitService } from '../cache/rate-limit.service';
 import { EventsService } from '../events/events.service';
 import { ProjectsService } from '../projects/projects.service';
+import { VisitorProfilesService } from '../visitor-profiles/visitor-profiles.service';
 import { CreateFeedbackDto, FeedbackListQueryDto, UpdateFeedbackStatusDto } from './feedback.dto';
 
 @Injectable()
@@ -21,7 +22,8 @@ export class FeedbackService {
     private readonly bannedWords: BannedWordsService,
     private readonly rateLimit: RateLimitService,
     private readonly events: EventsService,
-    private readonly audit: AuditService
+    private readonly audit: AuditService,
+    private readonly visitorProfiles: VisitorProfilesService
   ) {}
 
   async create(projectId: string, dto: CreateFeedbackDto, ip: string | undefined, userAgent: string | undefined): Promise<FeedbackEntity> {
@@ -37,8 +39,20 @@ export class FeedbackService {
     const matches = await this.bannedWords.findMatches(content);
     const status = matches.length ? FeedbackStatus.Blocked : FeedbackStatus.Public;
     const moderationReason = matches.length ? `banned_words:${matches.join(',')}` : null;
-    const saved = await this.feedback.save(this.feedback.create({ projectId, content, status, moderationReason, ipHash, userAgent: userAgent ?? null }));
-    await this.events.publish(RealtimeEventType.FeedbackCreated, projectId, UserRole.Student, { feedbackId: saved.id, status: saved.status }, 'feedback', saved.id);
+    const visitorProfile = dto.visitorProfileId ? await this.visitorProfiles.findOne(dto.visitorProfileId).catch(() => null) : null;
+    const saved = await this.feedback.save(this.feedback.create({
+      projectId,
+      content,
+      visitorProfileId: visitorProfile?.id ?? null,
+      ageGroup: normalizeOptionalText(dto.ageGroup ?? visitorProfile?.ageGroup),
+      visitorType: normalizeOptionalText(dto.visitorType ?? visitorProfile?.visitorType),
+      gender: normalizeOptionalText(dto.gender),
+      status,
+      moderationReason,
+      ipHash,
+      userAgent: userAgent ?? null
+    }));
+    await this.events.publish(RealtimeEventType.FeedbackCreated, projectId, UserRole.Teacher, { feedbackId: saved.id, status: saved.status }, 'feedback', saved.id);
     return saved;
   }
 
@@ -61,7 +75,7 @@ export class FeedbackService {
     feedback.moderationReason = dto.moderationReason ?? feedback.moderationReason;
     const saved = await this.feedback.save(feedback);
     await this.audit.record(actor, AuditAction.FeedbackStatusChanged, 'feedback', saved.id, { previousStatus, status: saved.status, moderationReason: saved.moderationReason });
-    await this.events.publish(RealtimeEventType.FeedbackStatusChanged, saved.projectId, UserRole.Student, { feedbackId: saved.id, status: saved.status }, 'feedback', saved.id);
+    await this.events.publish(RealtimeEventType.FeedbackStatusChanged, saved.projectId, UserRole.Teacher, { feedbackId: saved.id, status: saved.status }, 'feedback', saved.id);
     return saved;
   }
 
@@ -86,4 +100,9 @@ export class FeedbackService {
     const last = items.at(-1);
     return { items, nextCursor: rows.length > limit && last ? encodeCursor(last.createdAt, last.id) : null };
   }
+}
+
+function normalizeOptionalText(value: string | null | undefined): string | null {
+  const normalized = value?.trim();
+  return normalized ? normalized : null;
 }

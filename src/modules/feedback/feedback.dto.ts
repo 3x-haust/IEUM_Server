@@ -1,13 +1,38 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
+import { IsEnum, IsIn, IsOptional, IsString, IsUUID, Length } from 'class-validator';
 import { CursorPaginationDto } from '../../common/dto/pagination.dto';
-import { FeedbackStatus } from '../../database/entities';
+import { FeedbackStatus, VisitorType } from '../../database/entities';
+
+export const FEEDBACK_AGE_GROUPS = ['child', 'youth', 'adult', 'senior', 'middle_school', 'high_school', 'university', 'other'] as const;
+export const FEEDBACK_GENDERS = ['male', 'female', 'other'] as const;
 
 export class CreateFeedbackDto {
   @ApiProperty({ minLength: 2, maxLength: 500 })
   @IsString()
   @Length(2, 500)
   content: string;
+
+  @ApiPropertyOptional({ format: 'uuid', nullable: true })
+  @IsOptional()
+  @IsUUID()
+  visitorProfileId?: string | null;
+
+  @ApiPropertyOptional({ enum: FEEDBACK_AGE_GROUPS, nullable: true })
+  @IsOptional()
+  @IsString()
+  @IsIn(FEEDBACK_AGE_GROUPS)
+  ageGroup?: string | null;
+
+  @ApiPropertyOptional({ enum: VisitorType, nullable: true })
+  @IsOptional()
+  @IsEnum(VisitorType)
+  visitorType?: VisitorType | null;
+
+  @ApiPropertyOptional({ enum: FEEDBACK_GENDERS, nullable: true })
+  @IsOptional()
+  @IsString()
+  @IsIn(FEEDBACK_GENDERS)
+  gender?: string | null;
 }
 
 export class FeedbackListQueryDto extends CursorPaginationDto {
@@ -44,6 +69,18 @@ export class FeedbackResponseDto {
 
   @ApiProperty({ format: 'uuid' })
   projectId: string;
+
+  @ApiProperty({ format: 'uuid', nullable: true })
+  visitorProfileId: string | null;
+
+  @ApiProperty({ nullable: true, example: 'adult' })
+  ageGroup: string | null;
+
+  @ApiProperty({ nullable: true, example: 'general' })
+  visitorType: string | null;
+
+  @ApiProperty({ nullable: true, example: 'male' })
+  gender: string | null;
 
   @ApiProperty({ example: '발표에서 기술 선택 이유를 더 듣고 싶어요.' })
   content: string;

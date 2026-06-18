@@ -28,6 +28,8 @@ describe('StatsService', () => {
     return {
       select: jest.fn().mockReturnThis(),
       addSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
       groupBy: jest.fn().mockReturnThis(),
       getRawMany: jest.fn().mockResolvedValue(rows)
     };
@@ -36,10 +38,14 @@ describe('StatsService', () => {
   it('builds dashboard from grouped status queries and caches the result', async () => {
     const projects = { count: jest.fn().mockResolvedValue(2) };
     const feedback = {
-      createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([
-        { status: FeedbackStatus.Public, count: '10' },
-        { status: FeedbackStatus.Blocked, count: '1' }
-      ]))
+      createQueryBuilder: jest.fn()
+        .mockReturnValueOnce(queryBuilder([
+          { status: FeedbackStatus.Public, count: '10' },
+          { status: FeedbackStatus.Blocked, count: '1' }
+        ]))
+        .mockReturnValueOnce(queryBuilder([{ key: 'adult', count: '7' }]))
+        .mockReturnValueOnce(queryBuilder([{ key: 'male', count: '4' }, { key: 'female', count: '3' }]))
+        .mockReturnValueOnce(queryBuilder([{ key: 'general', count: '5' }, { key: 'recruiter', count: '2' }]))
     };
     const contacts = {
       createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([
@@ -62,6 +68,9 @@ describe('StatsService', () => {
       newContactCount: 4,
       interestCount: 12,
       feedbackByStatus: { public: 10, blocked: 1 },
+      feedbackByAgeGroup: { adult: 7 },
+      feedbackByGender: { male: 4, female: 3 },
+      feedbackByVisitorType: { general: 5, recruiter: 2 },
       contactsByStatus: { new: 4, checked: 6, deleted: 2 }
     });
     expect(cache.get).toHaveBeenCalledWith('stats:dashboard');

@@ -42,14 +42,24 @@ export class FakeVisitorProfilesService {
 export class FakeFeedbackService {
   constructor(private readonly store: E2eStore) {}
 
-  create(projectId: string, dto: { readonly content: string }, ipHash?: string, userAgent?: string): Feedback {
+  create(
+    projectId: string,
+    dto: { readonly content: string; readonly visitorProfileId?: string | null; readonly ageGroup?: string | null; readonly visitorType?: string | null; readonly gender?: string | null },
+    ipHash?: string,
+    userAgent?: string
+  ): Feedback {
     const project = this.store.projects.find((candidate) => candidate.id === projectId);
     if (project && !project.acceptsFeedback) {
       throw new ForbiddenException('Feedback is disabled for this project');
     }
+    const visitorProfile = dto.visitorProfileId ? this.store.visitors.find((candidate) => candidate.id === dto.visitorProfileId) ?? null : null;
     const feedback: Feedback = {
       id: `feedback-${this.store.feedback.length + 1}`,
       projectId,
+      visitorProfileId: visitorProfile?.id ?? null,
+      ageGroup: dto.ageGroup ?? visitorProfile?.ageGroup ?? null,
+      visitorType: dto.visitorType ?? visitorProfile?.visitorType ?? null,
+      gender: dto.gender ?? null,
       content: dto.content,
       status: FeedbackStatus.Public,
       moderationReason: null,

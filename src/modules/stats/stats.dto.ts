@@ -20,6 +20,35 @@ export class StatusCountMapDto {
   archived?: number;
 }
 
+export class FeedbackAudienceCountMapDto {
+  @ApiProperty({ example: 5, required: false })
+  child?: number;
+
+  @ApiProperty({ example: 12, required: false })
+  youth?: number;
+
+  @ApiProperty({ example: 37, required: false })
+  adult?: number;
+
+  @ApiProperty({ example: 4, required: false })
+  senior?: number;
+
+  @ApiProperty({ example: 18, required: false })
+  male?: number;
+
+  @ApiProperty({ example: 21, required: false })
+  female?: number;
+
+  @ApiProperty({ example: 30, required: false })
+  general?: number;
+
+  @ApiProperty({ example: 9, required: false })
+  recruiter?: number;
+
+  @ApiProperty({ example: 3, required: false })
+  other?: number;
+}
+
 export class DateCountDto {
   @ApiProperty({ example: '2026-05-26' })
   date: string;
@@ -46,6 +75,15 @@ export class DashboardStatsResponseDto {
 
   @ApiProperty({ type: StatusCountMapDto })
   feedbackByStatus: StatusCountMapDto;
+
+  @ApiProperty({ type: FeedbackAudienceCountMapDto })
+  feedbackByAgeGroup: FeedbackAudienceCountMapDto;
+
+  @ApiProperty({ type: FeedbackAudienceCountMapDto })
+  feedbackByGender: FeedbackAudienceCountMapDto;
+
+  @ApiProperty({ type: FeedbackAudienceCountMapDto })
+  feedbackByVisitorType: FeedbackAudienceCountMapDto;
 
   @ApiProperty({ type: StatusCountMapDto })
   contactsByStatus: StatusCountMapDto;
