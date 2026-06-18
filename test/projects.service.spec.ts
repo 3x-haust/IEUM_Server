@@ -27,10 +27,12 @@ import { ProjectMemberRole } from '../src/database/entities';
 import { buildDesignStackGroups, flattenStackGroups, loadIeumCatalogProjects } from '../src/database/seeds/ieum-catalog.seed-data';
 
 describe('ProjectsService', () => {
-  function queryBuilder(rows: readonly unknown[]) {
+  function queryBuilder(rows: readonly unknown[], exists = rows.length > 0) {
     return {
+      leftJoin: jest.fn().mockReturnThis(),
       leftJoinAndSelect: jest.fn().mockReturnThis(),
       where: jest.fn().mockReturnThis(),
+      orWhere: jest.fn().mockReturnThis(),
       andWhere: jest.fn().mockReturnThis(),
       orderBy: jest.fn().mockReturnThis(),
       addOrderBy: jest.fn().mockReturnThis(),
@@ -39,6 +41,7 @@ describe('ProjectsService', () => {
       addSelect: jest.fn().mockReturnThis(),
       groupBy: jest.fn().mockReturnThis(),
       getMany: jest.fn().mockResolvedValue(rows),
+      getExists: jest.fn().mockResolvedValue(exists),
       getRawMany: jest.fn().mockResolvedValue(rows)
     };
   }
@@ -160,6 +163,39 @@ describe('ProjectsService', () => {
         roles: [ProjectMemberRole.Backend, ProjectMemberRole.Frontend]
       }]
     }));
+  });
+
+  it('resolves student projects by normalized member name when oauth ids differ from seed users', async () => {
+    const project = {
+      id: 'project-1',
+      serviceName: 'IEUM',
+      teamName: '3xhaust',
+      description: null,
+      thumbnailFile: null,
+      boothSlot: 'G7',
+      developmentStacks: ['NestJS'],
+      designStacks: [],
+      acceptsFeedback: true,
+      isPublished: true,
+      deletedAt: null,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-01T00:00:00.000Z')
+    };
+    const projects = {};
+    const memberQueryBuilder = queryBuilder([{ project }]);
+    const members = { createQueryBuilder: jest.fn().mockReturnValue(memberQueryBuilder) };
+    const feedback = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const contacts = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const interests = { createQueryBuilder: jest.fn().mockReturnValue(queryBuilder([])) };
+    const service = new ProjectsService(projects as never, members as never, feedback as never, contacts as never, interests as never);
+
+    const result = await service.listStudentProjects({ id: 'oauth-user-1', name: '3307 유성윤' } as never);
+
+    expect(members.createQueryBuilder).toHaveBeenCalledWith('member');
+    expect(memberQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith('member.user', 'memberUser');
+    expect(result).toEqual([
+      expect.objectContaining({ id: project.id, boothSlot: 'G7', serviceName: 'IEUM' })
+    ]);
   });
 
   it('loads the G7 booth zone from the IEUM catalog seed data', () => {

@@ -45,8 +45,14 @@ export class ProjectsService {
   }
 
   async listStudentProjects(user: UserEntity): Promise<unknown[]> {
-    const rows = await this.members.find({ where: { userId: user.id }, relations: { project: true }, order: { displayOrder: 'ASC' } });
-    const projects = rows.map((row) => row.project).filter((project) => !project.deletedAt);
+    const rows = await this.members.createQueryBuilder('member')
+      .leftJoinAndSelect('member.project', 'project')
+      .leftJoinAndSelect('member.user', 'memberUser')
+      .where(this.memberUserMatch(user))
+      .orderBy('project.createdAt', 'DESC')
+      .addOrderBy('member.displayOrder', 'ASC')
+      .getMany();
+    const projects = uniqueProjects(rows.map((row) => row.project).filter((project) => !project.deletedAt));
     const counts = await this.countProjects(projects.map((project) => project.id));
     return projects.map((project) => this.toSummary(project, false, counts.get(project.id)));
   }
@@ -70,8 +76,12 @@ export class ProjectsService {
     if ([UserRole.Teacher, UserRole.Admin].includes(user.role)) {
       return;
     }
-    const membership = await this.members.findOne({ where: { projectId, userId: user.id } });
-    if (!membership) {
+    const membershipExists = await this.members.createQueryBuilder('member')
+      .leftJoin('member.user', 'memberUser')
+      .where('member.projectId = :projectId', { projectId })
+      .andWhere(this.memberUserMatch(user))
+      .getExists();
+    if (!membershipExists) {
       throw new ForbiddenException('Project membership is required');
     }
   }
@@ -196,4 +206,29 @@ export class ProjectsService {
     }
     return counts;
   }
+
+  private memberUserMatch(user: UserEntity): Brackets {
+    const memberNames = studentNameCandidates(user.name);
+    return new Brackets((nested) => {
+      nested.where('member.userId = :userId', { userId: user.id });
+      if (memberNames.length > 0) {
+        nested.orWhere('memberUser.name IN (:...memberNames)', { memberNames });
+      }
+    });
+  }
+}
+
+function uniqueProjects(projects: ProjectEntity[]): ProjectEntity[] {
+  const seen = new Set<string>();
+  return projects.filter((project) => {
+    if (seen.has(project.id)) return false;
+    seen.add(project.id);
+    return true;
+  });
+}
+
+function studentNameCandidates(name: string): string[] {
+  const trimmed = name.trim();
+  const withoutStudentNumber = trimmed.replace(/^\d{4}\s+/, '').trim();
+  return [...new Set([trimmed, withoutStudentNumber].filter(Boolean))];
 }

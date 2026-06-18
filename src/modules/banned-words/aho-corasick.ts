@@ -14,9 +14,18 @@ export class AhoCorasickMatcher {
 
   find(value: string): string[] {
     const normalized = normalizeText(value);
+    const compact = normalized.replace(/\s+/g, '');
     const matches = new Set<string>();
+    this.collectMatches(normalized, matches);
+    if (compact !== normalized) {
+      this.collectMatches(compact, matches);
+    }
+    return [...matches];
+  }
+
+  private collectMatches(value: string, matches: Set<string>): void {
     let node = this.root;
-    for (const char of normalized) {
+    for (const char of value) {
       while (node !== this.root && !node.next.has(char)) {
         node = node.fail ?? this.root;
       }
@@ -25,7 +34,6 @@ export class AhoCorasickMatcher {
         matches.add(output);
       }
     }
-    return [...matches];
   }
 
   private insert(word: string): void {

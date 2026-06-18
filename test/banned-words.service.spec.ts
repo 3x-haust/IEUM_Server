@@ -37,4 +37,13 @@ describe('BannedWordsService', () => {
     expect(left).toEqual(['badword']);
     expect(right).toEqual(['badword']);
   });
+
+  it('falls back to the built-in catalog when database words are empty', async () => {
+    const bannedWords = {
+      find: jest.fn().mockResolvedValue([])
+    };
+    const service = new BannedWordsService(bannedWords as never, {} as never);
+
+    await expect(service.findMatches('씨발 같은 말')).resolves.toContain('씨발');
+  });
 });

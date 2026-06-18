@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
 import { normalizeText } from '../../common/utils/text-normalizer';
 import { AuditAction, BannedWordEntity, UserEntity } from '../../database/entities';
+import { seedBannedWordsList } from '../../database/seeds/banned-words.seed';
 import { AuditService } from '../audit/audit.service';
 import { AhoCorasickMatcher } from './aho-corasick';
 import { BannedWordListQueryDto, CreateBannedWordDto, UpdateBannedWordDto } from './banned-words.dto';
@@ -131,7 +132,11 @@ export class BannedWordsService {
 
   private async rebuildMatcher(version: number): Promise<void> {
     const words = await this.bannedWords.find({ where: { isActive: true } });
-    const matcher = new AhoCorasickMatcher(words.map((word) => word.normalizedWord));
+    const matcher = new AhoCorasickMatcher(
+      words.length > 0
+        ? words.map((word) => word.normalizedWord)
+        : [...seedBannedWordsList],
+    );
     if (version === this.matcherVersion) {
       this.matcher = matcher;
     }
