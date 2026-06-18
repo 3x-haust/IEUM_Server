@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createHash } from 'crypto';
 import type { CookieOptions } from 'express';
 import { Repository } from 'typeorm';
+import { resolveRosterStudentByName, seedNameOauthId, seedStudentOauthId } from '../../common/student-roster';
 import { UserEntity, UserRole } from '../../database/entities';
 import { CacheService } from '../cache/cache.service';
 import { JwtSessionPayload, MirimUserPayload, VerifiedUserPayload } from './auth.types';
@@ -19,8 +20,6 @@ interface ProviderHttpResponse {
   status: number;
   data: unknown;
 }
-
-const ITSHOW_SEED_USER_PREFIX = 'seed-itshow-';
 
 @Injectable()
 export class AuthService {
@@ -124,20 +123,29 @@ export class AuthService {
     if (payload.role !== UserRole.Student) {
       return null;
     }
-    if (typeof this.users.find !== 'function') {
-      return null;
+    const candidateOauthIds = this.seedClaimCandidateOauthIds(payload);
+    for (const oauthId of candidateOauthIds) {
+      const user = await this.users.findOne({ where: { oauthId } });
+      if (user) {
+        return user;
+      }
     }
-    const normalizedName = this.normalizeStudentName(payload.name);
-    const users = await this.users.find();
-    const matches = users.filter((user) => (
-      user.oauthId.startsWith(ITSHOW_SEED_USER_PREFIX) &&
-      this.normalizeStudentName(user.name) === normalizedName
-    ));
-    return matches.length === 1 ? matches[0] : null;
+    return null;
   }
 
-  private normalizeStudentName(name: string): string {
-    return name.replace(/^\s*\d{4}\s+/, '').trim();
+  private seedClaimCandidateOauthIds(payload: VerifiedUserPayload): string[] {
+    const candidates = new Set<string>();
+    if (payload.studentNumber) {
+      candidates.add(seedStudentOauthId(payload.studentNumber));
+    }
+    const rosterStudent = resolveRosterStudentByName(payload.name);
+    if (rosterStudent) {
+      candidates.add(seedStudentOauthId(rosterStudent.studentNumber));
+    }
+    if (payload.name.trim()) {
+      candidates.add(seedNameOauthId(payload.name));
+    }
+    return [...candidates];
   }
 
   private async verifyProviderToken(token: string): Promise<VerifiedUserPayload> {
@@ -180,7 +188,8 @@ export class AuthService {
       email: mirimUser.email,
       profileImageUrl: this.readProfileImageUrl(mirimUser),
       role,
-      grade
+      grade,
+      studentNumber: this.readStudentNumber(mirimUser)
     };
   }
 
@@ -250,7 +259,7 @@ export class AuthService {
       return null;
     }
     const resolvedRole = Object.values(UserRole).includes(role as UserRole) ? role as UserRole : UserRole.Student;
-    return { oauthId, name, email, profileImageUrl: null, role: resolvedRole, grade: 3 };
+    return { oauthId, name, email, profileImageUrl: null, role: resolvedRole, grade: 3, studentNumber: this.readStudentNumber({ id: oauthId, email, name }) };
   }
 
   private extractMirimUser(body: unknown): MirimUserPayload | null {
@@ -265,6 +274,40 @@ export class AuthService {
 
   private readProfileImageUrl(user: MirimUserPayload): string | null {
     return user.profileImageUrl ?? user.profile_image_url ?? null;
+  }
+
+  private readStudentNumber(user: MirimUserPayload): string | null {
+    const directCandidates = [
+      user.studentNumber,
+      user.student_number,
+      user.studentNo,
+      user.student_no,
+      user.studentId,
+      user.student_id,
+      user.schoolNumber,
+      user.school_number,
+      user.number
+    ];
+    for (const candidate of directCandidates) {
+      const studentNumber = this.normalizeStudentNumber(candidate);
+      if (studentNumber) return studentNumber;
+    }
+    return this.readStudentNumberFromText(user.nickname) ?? this.readStudentNumberFromText(user.name) ?? null;
+  }
+
+  private normalizeStudentNumber(value: string | number | undefined): string | null {
+    if (typeof value === 'number') {
+      return Number.isInteger(value) ? String(value).padStart(4, '0') : null;
+    }
+    if (typeof value !== 'string') {
+      return null;
+    }
+    const matched = value.match(/\b(3[1-6]\d{2})\b/);
+    return matched?.[1] ?? null;
+  }
+
+  private readStudentNumberFromText(value: string | undefined): string | null {
+    return this.normalizeStudentNumber(value);
   }
 
   private readRecordField(value: unknown, key: string): unknown {

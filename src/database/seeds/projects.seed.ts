@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import { isSeedUserOauthId, resolveSeedStudentIdentity } from '../../common/student-roster';
 import { ProjectEntity, ProjectMemberEntity, UserEntity, UserRole } from '../entities';
 import { buildDesignStackGroups, buildStackGroups, flattenStackGroups, loadIeumCatalogProjects, rolesFromText } from './ieum-catalog.seed-data';
 
@@ -32,20 +33,22 @@ export async function seedProjects(dataSource: DataSource): Promise<void> {
     }));
 
     for (const [index, seedMember] of seedProject.members.entries()) {
-      const oauthId = `seed-itshow-${seedProject.catalogId}-${index + 1}`;
+      const seedIdentity = resolveSeedStudentIdentity(seedMember.name);
       const displayOrder = index + 1;
       const existingSlot = await members.findOne({
         where: { projectId: project.id, displayOrder },
         relations: { user: true }
       });
-      const user = existingSlot?.user ?? await users.save(users.create({
-        ...(await users.findOne({ where: { oauthId } }) ?? {}),
-        oauthProvider: 'mirim_oauth',
-        oauthId,
-        name: seedMember.name,
-        email: `${oauthId}@ieum.local`,
-        role: UserRole.Student
-      }));
+      const user = existingSlot?.user && !isSeedUserOauthId(existingSlot.user.oauthId)
+        ? existingSlot.user
+        : await users.save(users.create({
+          ...(await users.findOne({ where: { oauthId: seedIdentity.oauthId } }) ?? {}),
+          oauthProvider: 'mirim_oauth',
+          oauthId: seedIdentity.oauthId,
+          name: seedIdentity.name,
+          email: seedIdentity.email,
+          role: UserRole.Student
+        }));
       const existingMember = existingSlot ?? await members.findOne({ where: { projectId: project.id, userId: user.id } });
       await members.save(members.create({
         ...(existingMember ?? {}),

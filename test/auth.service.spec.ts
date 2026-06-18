@@ -218,21 +218,75 @@ describe('AuthService', () => {
     expect(user).toEqual(sessionUser);
     expect(httpPost).not.toHaveBeenCalled();
   });
+
+  it('claims the canonical seed student by student number even when the OAuth name changed', async () => {
+    const seedUser = createUser({
+      id: 'seed-student-user-id',
+      oauthId: 'seed-student-3102',
+      name: '김민재',
+      email: 'seed-student-3102@ieum.local',
+    });
+    const service = createService({ users: [seedUser] });
+    mockMirimVerifyToken({
+      id: 'mirim-kim-minjae',
+      email: 'minjae@e-mirim.hs.kr',
+      nickname: '민재',
+      role: 'student',
+      grade: 3,
+      studentNumber: '3102',
+    });
+
+    const user = await service.verifyBearerToken('provider-token');
+
+    expect(user).toEqual(expect.objectContaining({
+      id: seedUser.id,
+      oauthId: 'mirim-kim-minjae',
+      name: '민재',
+      email: 'minjae@e-mirim.hs.kr',
+      role: UserRole.Student,
+    }));
+  });
+
+  it('claims the canonical seed student by roster name when no student number is provided', async () => {
+    const seedUser = createUser({
+      id: 'seed-student-user-id',
+      oauthId: 'seed-student-3307',
+      name: '유성윤',
+      email: 'seed-student-3307@ieum.local',
+    });
+    const service = createService({ users: [seedUser] });
+    mockMirimVerifyToken({
+      id: 'mirim-yoo',
+      email: 'sungyun@e-mirim.hs.kr',
+      nickname: '유성윤',
+      role: 'student',
+      grade: 3,
+    });
+
+    const user = await service.verifyBearerToken('provider-token');
+
+    expect(user).toEqual(expect.objectContaining({
+      id: seedUser.id,
+      oauthId: 'mirim-yoo',
+      name: '유성윤',
+    }));
+  });
 });
 
 function createService(options: {
   readonly adminMirimOauthIds?: string;
   readonly teacherMirimOauthIds?: string;
   readonly sessionUser?: UserEntity;
+  readonly users?: readonly UserEntity[];
 } = {}): AuthService {
   httpPost = jest.fn();
   httpGet = jest.fn();
+  const storedUsers = [...(options.users ?? []), ...(options.sessionUser ? [options.sessionUser] : [])];
   const users = {
-    findOne: jest.fn().mockImplementation(({ where }: { readonly where: { readonly id?: string } }) => {
-      if (options.sessionUser && where.id === options.sessionUser.id) {
-        return Promise.resolve(options.sessionUser);
-      }
-      return Promise.resolve(null);
+    findOne: jest.fn().mockImplementation(({ where }: { readonly where: { readonly id?: string; readonly oauthId?: string } }) => {
+      return Promise.resolve(storedUsers.find((user) => (
+        (where.id && user.id === where.id) || (where.oauthId && user.oauthId === where.oauthId)
+      )) ?? null);
     }),
     create: jest.fn((user: Partial<UserEntity>) => ({ id: 'user-id', ...user })),
     save: jest.fn(async (user: UserEntity) => user),

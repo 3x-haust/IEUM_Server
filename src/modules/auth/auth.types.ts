@@ -5,6 +5,15 @@ export interface MirimUserPayload {
   email: string;
   nickname?: string;
   name?: string;
+  number?: string | number;
+  schoolNumber?: string | number;
+  school_number?: string | number;
+  studentId?: string | number;
+  student_id?: string | number;
+  studentNo?: string | number;
+  student_no?: string | number;
+  studentNumber?: string | number;
+  student_number?: string | number;
   profileImageUrl?: string;
   profile_image_url?: string;
   role?: string;
@@ -22,6 +31,7 @@ export interface VerifiedUserPayload {
   profileImageUrl: string | null;
   role: UserRole;
   grade: number | null;
+  studentNumber: string | null;
 }
 
 export interface JwtSessionPayload {

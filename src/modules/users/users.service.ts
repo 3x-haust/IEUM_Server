@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { CursorPage } from '../../common/dto/pagination.dto';
+import { LEGACY_ITSHOW_SEED_USER_PREFIX, SEED_STUDENT_NAME_USER_PREFIX, SEED_STUDENT_USER_PREFIX } from '../../common/student-roster';
 import { decodeCursor, encodeCursor } from '../../common/utils/cursor';
 import { UserEntity } from '../../database/entities';
 import { UserListQueryDto } from './users.dto';
-
-const ITSHOW_SEED_USER_PREFIX = 'seed-itshow-';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +15,9 @@ export class UsersService {
     const limit = query.limit ?? 20;
     const cursor = decodeCursor(query.cursor);
     const qb = this.users.createQueryBuilder('user')
-      .where('user.oauthId NOT LIKE :seedPrefix', { seedPrefix: `${ITSHOW_SEED_USER_PREFIX}%` })
+      .where('user.oauthId NOT LIKE :legacySeedPrefix', { legacySeedPrefix: `${LEGACY_ITSHOW_SEED_USER_PREFIX}%` })
+      .andWhere('user.oauthId NOT LIKE :studentSeedPrefix', { studentSeedPrefix: `${SEED_STUDENT_USER_PREFIX}%` })
+      .andWhere('user.oauthId NOT LIKE :studentNameSeedPrefix', { studentNameSeedPrefix: `${SEED_STUDENT_NAME_USER_PREFIX}%` })
       .orderBy('user.createdAt', 'DESC')
       .addOrderBy('user.id', 'DESC')
       .take(limit + 1);
